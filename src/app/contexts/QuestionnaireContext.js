@@ -78,6 +78,7 @@ const cbicQuestions = [
     category: "Empathy",
     en: {
       number: "01",
+      image: "/c1.svg",
       text: "When taxpayers approach with questions outside their scope of understanding, it's more efficient to redirect than over-explain.",
       options: commonOptions.en,
     },
@@ -93,6 +94,7 @@ const cbicQuestions = [
     category: "Empathy",
     en: {
       number: "02",
+      image: "/c2.svg",
       text: "In high-pressure hours, offering time to a confused taxpayer can set a tone of inefficiency for the day.",
       options: commonOptions.en,
     },
@@ -108,6 +110,7 @@ const cbicQuestions = [
     category: "Emotional",
     en: {
       number: "03",
+      image: "/c3.svg",
       text: "A calm response can feel inadequate when a taxpayer is aggressively challenging an unavoidable penalty.",
       options: commonOptions.en,
     },
@@ -123,6 +126,7 @@ const cbicQuestions = [
     category: "Empathy",
     en: {
       number: "04",
+      image: "/c4.svg",
       text: "Repeatedly clarifying the same rule to a taxpayer often reflects on how the system communicates — not just the person's capacity.",
       options: commonOptions.en,
     },
@@ -138,6 +142,7 @@ const cbicQuestions = [
     category: "Decision",
     en: {
       number: "05",
+      image: "/c5.svg",
       text: "When a taxpayer insists they've 'heard differently' from another officer, it's often simpler not to contradict openly.",
       options: commonOptions.en,
     },
@@ -153,6 +158,7 @@ const cbicQuestions = [
     category: "Empathy",
     en: {
       number: "06",
+      image: "/c6.svg",
       text: "Taxpayers who lack preparation slow down processes and must be nudged to take more responsibility.",
       options: commonOptions.en,
     },
@@ -168,6 +174,7 @@ const cbicQuestions = [
     category: "Emotional",
     en: {
       number: "07",
+      image: "/c7.svg",
       text: "Not all confusion at the helpdesk needs a detailed answer — some questions correct themselves with a bit of firmness.",
       options: commonOptions.en,
     },
@@ -183,6 +190,7 @@ const cbicQuestions = [
     category: "Emotional",
     en: {
       number: "08",
+      image: "/c8.png",
       text: "Maintaining composure with emotionally reactive taxpayers sometimes means avoiding engagement until they settle.",
       options: commonOptions.en,
     },
@@ -198,6 +206,7 @@ const cbicQuestions = [
     category: "Decision",
     en: {
       number: "09",
+      image: "/c9.svg",
       text: "Overexplaining even simple rules can sometimes make taxpayers overthink and doubt the process.",
       options: commonOptions.en,
     },
@@ -213,6 +222,7 @@ const cbicQuestions = [
     category: "Decision",
     en: {
       number: "10",
+      image: "/c10.svg",
       text: "At the end of a busy day, choosing which queries to 'filter' is part of staying efficient.",
       options: commonOptions.en,
     },
@@ -487,6 +497,7 @@ const resilienceQuestions = [
     category: "Resilience",
     en: {
       number: "17",
+      image: "/r17.svg",
       text: "I think of myself as a strong person when dealing with life's challenges and difficulties.",
       options: commonOptions.en,
     },
@@ -502,6 +513,7 @@ const resilienceQuestions = [
     category: "Resilience",
     en: {
       number: "18",
+      image: "/r18.svg",
       text: "I make unpopular or difficult decisions.",
       options: commonOptions.en,
     },
@@ -517,6 +529,7 @@ const resilienceQuestions = [
     category: "Resilience",
     en: {
       number: "19",
+      image: "/r19.svg",
       text: "I am able to handle unpleasant or painful feelings like sadness, fear, and anger.",
       options: commonOptions.en,
     },
@@ -532,6 +545,7 @@ const resilienceQuestions = [
     category: "Resilience",
     en: {
       number: "20",
+      image: "/r20.svg",
       text: "I have to act on a hunch.",
       options: commonOptions.en,
     },
@@ -547,6 +561,7 @@ const resilienceQuestions = [
     category: "Resilience",
     en: {
       number: "21",
+      image: "/r21.svg",
       text: "I have a strong sense of purpose in life.",
       options: commonOptions.en,
     },
@@ -562,6 +577,7 @@ const resilienceQuestions = [
     category: "Resilience",
     en: {
       number: "22",
+      image: "/r22.svg",
       text: "I feel like I am in control.",
       options: commonOptions.en,
     },
@@ -577,6 +593,7 @@ const resilienceQuestions = [
     category: "Resilience",
     en: {
       number: "23",
+      image: "/r23.svg",
       text: "I like challenges.",
       options: commonOptions.en,
     },
@@ -592,6 +609,7 @@ const resilienceQuestions = [
     category: "Resilience",
     en: {
       number: "24",
+      image: "/r24.svg",
       text: "I work to attain goals.",
       options: commonOptions.en,
     },
@@ -606,6 +624,7 @@ const resilienceQuestions = [
     isReversed: false,
     category: "Resilience",
     en: {
+      image: "/r25.svg",
       number: "25",
       text: "I take pride in my achievements.",
       options: commonOptions.en,
