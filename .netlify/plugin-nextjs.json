@@ -1,0 +1,10 @@
+{
+  "build": {
+    "command": "npm run netlify-build",
+    "publish": ".next"
+  },
+  "dev": {
+    "command": "npm run dev",
+    "port": 3000
+  }
+}
