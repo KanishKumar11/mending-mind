@@ -70,6 +70,10 @@ export function LanguageProvider({ children }) {
 export function useLanguage() {
   const context = useContext(LanguageContext);
   if (!context) {
+    // For static rendering, return a default context instead of throwing an error
+    if (typeof window === "undefined") {
+      return { language: "en", t: translations["en"] };
+    }
     throw new Error("useLanguage must be used within a LanguageProvider");
   }
   return context;

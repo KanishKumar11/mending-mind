@@ -13,6 +13,16 @@ const nextConfig = {
     // !! WARN !!
     ignoreBuildErrors: true,
   },
+  // Configure static exports for Netlify
+  output: "export",
+  // Disable server components for static export
+  experimental: {
+    appDir: true,
+  },
+  // Handle images in static export
+  images: {
+    unoptimized: true,
+  },
 };
 
 module.exports = nextConfig;

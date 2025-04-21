@@ -1364,6 +1364,20 @@ export function QuestionnaireProvider({ children }) {
 export function useQuestionnaire() {
   const context = useContext(QuestionnaireContext);
   if (!context) {
+    // For static rendering, return a default context instead of throwing an error
+    if (typeof window === "undefined") {
+      return {
+        questions: [],
+        currentQuestion: 0,
+        setCurrentQuestion: () => {},
+        answers: [],
+        setAnswers: () => {},
+        scores: {},
+        handleAnswer: () => {},
+        resetQuestionnaire: () => {},
+        totalQuestions: 0,
+      };
+    }
     throw new Error(
       "useQuestionnaire must be used within a QuestionnaireProvider"
     );

@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { useLanguage } from "../../contexts/LanguageContext";
+import { useLanguage, LanguageProvider } from "../../contexts/LanguageContext";
 import { QuestionnaireProvider } from "../../contexts/QuestionnaireContext";
 import Questionnaire from "../../components/Questionnaire";
 
-export default function QuestionnairePage() {
+// Create a wrapper component that uses the hooks
+function QuestionnaireContent() {
   const { language } = useLanguage();
   const [completed, setCompleted] = useState(false);
   const [results, setResults] = useState(null);
@@ -44,5 +45,13 @@ export default function QuestionnairePage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function QuestionnairePage() {
+  return (
+    <LanguageProvider>
+      <QuestionnaireContent />
+    </LanguageProvider>
   );
 }
