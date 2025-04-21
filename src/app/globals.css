@@ -1,26 +1,118 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
 }
 
-@media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+    /* Client's brand colors */
+    /* Primary Colors */
+    --mint: #B4E0E0;
+    --gold: #F0C93B;
+    --black: #1E1E1E;
+    /* Secondary Colors */
+    --rust: #D15B3B;
+    --coral: #F58D6F;
+    --lavender: #9A8BC5;
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    /* Theme variables */
+    --background: 180 50% 98%;
+    --foreground: 0 0% 12%;
+    --muted: 180 40% 95%;
+    --muted-foreground: 0 0% 40%;
+    --popover: 180 50% 98%;
+    --popover-foreground: 0 0% 12%;
+    --card: 180 50% 97%;
+    --card-foreground: 0 0% 12%;
+    --border: 180 30% 90%;
+    --input: 180 30% 90%;
+    --primary: 45 86% 58%;
+    --primary-foreground: 0 0% 12%;
+    --secondary: 12 67% 52%;
+    --secondary-foreground: 0 0% 100%;
+    --accent: 180 60% 79%;
+    --accent-foreground: 0 0% 12%;
+    --destructive: 12 67% 52%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 45 86% 58%;
+    --chart-1: 45 86% 58%;
+    --chart-2: 12 67% 52%;
+    --chart-3: 180 60% 79%;
+    --chart-4: 16 80% 70%;
+    --chart-5: 260 40% 66%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 12%;
+    --foreground: 180 50% 98%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 180 30% 80%;
+    --popover: 0 0% 12%;
+    --popover-foreground: 180 50% 98%;
+    --card: 0 0% 15%;
+    --card-foreground: 180 50% 98%;
+    --border: 0 0% 25%;
+    --input: 0 0% 25%;
+    --primary: 45 86% 58%;
+    --primary-foreground: 0 0% 12%;
+    --secondary: 12 67% 52%;
+    --secondary-foreground: 0 0% 100%;
+    --accent: 180 60% 79%;
+    --accent-foreground: 0 0% 12%;
+    --destructive: 12 67% 52%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 45 86% 58%;
+    --chart-1: 45 86% 58%;
+    --chart-2: 12 67% 52%;
+    --chart-3: 180 60% 79%;
+    --chart-4: 16 80% 70%;
+    --chart-5: 260 40% 66%;
+  }
+
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
 }
