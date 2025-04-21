@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import { useLanguage } from "../contexts/LanguageContext";
 import { useQuestionnaire } from "../contexts/QuestionnaireContext";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionPopup from "./SectionPopup";
+import ImagePreloader from "./ImagePreloader";
 
 export default function Questionnaire({ onComplete }) {
   const { language } = useLanguage();
@@ -16,6 +17,33 @@ export default function Questionnaire({ onComplete }) {
   const [direction, setDirection] = useState(1); // 1 for forward, -1 for backward
   const [showSectionPopup, setShowSectionPopup] = useState(false);
   const [sectionData, setSectionData] = useState(null);
+
+  // Calculate images to preload based on current question
+  const imagesToPreload = useMemo(() => {
+    const nextImages = [];
+
+    // Get the next two questions' images
+    for (let i = 1; i <= 2; i++) {
+      const nextQuestionIndex = currentQuestion + i;
+      if (nextQuestionIndex < questions.length) {
+        const nextQuestion = questions[nextQuestionIndex];
+        // Skip section start questions
+        if (nextQuestion.type !== "section_start") {
+          const nextQuestionContent = nextQuestion[language];
+          if (nextQuestionContent?.image) {
+            nextImages.push(nextQuestionContent.image);
+          }
+        } else if (nextQuestion.type === "section_start") {
+          // For section start, also preload the section image
+          if (nextQuestion[language]?.image) {
+            nextImages.push(nextQuestion[language].image);
+          }
+        }
+      }
+    }
+
+    return nextImages;
+  }, [currentQuestion, questions, language]);
 
   // Track previous question to determine direction
   const [prevQuestion, setPrevQuestion] = useState(currentQuestion);
@@ -78,6 +106,9 @@ export default function Questionnaire({ onComplete }) {
 
   return (
     <div className="min-h-svh flex flex-col items-center py-4 px-6 bg-gradient-to-b from-white to-gray-50">
+      {/* Image Preloader - invisible component that preloads the next images */}
+      <ImagePreloader imagesToPreload={imagesToPreload} />
+
       {/* Section Popup */}
       {sectionData && (
         <SectionPopup

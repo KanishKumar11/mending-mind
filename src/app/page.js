@@ -99,7 +99,9 @@ export default function Home() {
 
           {currentScreen === "userInfo" && (
             <PageTransition>
-              <UserForm onComplete={handleUserInfoComplete} />
+              <QuestionnaireProvider>
+                <UserForm onComplete={handleUserInfoComplete} />
+              </QuestionnaireProvider>
             </PageTransition>
           )}
 

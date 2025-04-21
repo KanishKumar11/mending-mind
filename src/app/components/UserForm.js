@@ -1,11 +1,13 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { useLanguage } from "../contexts/LanguageContext";
+import { useQuestionnaire } from "../contexts/QuestionnaireContext";
 import Image from "next/image";
 import { format } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { motion } from "framer-motion";
 import LottieAnimation from "./LottieAnimation";
 import BackgroundAnimation from "./BackgroundAnimation";
+import ImagePreloader from "./ImagePreloader";
 import {
   Popover,
   PopoverContent,
@@ -23,6 +25,7 @@ import {
 
 export default function UserForm({ onComplete }) {
   const { t, language } = useLanguage();
+  const { questions } = useQuestionnaire();
   const [errors, setErrors] = useState({});
   const [focusedField, setFocusedField] = useState(null);
   const formRef = useRef(null);
@@ -38,6 +41,34 @@ export default function UserForm({ onComplete }) {
 
   // Animation states for creative elements
   const [animationComplete, setAnimationComplete] = useState(false);
+
+  // Preload the first two question images
+  const imagesToPreload = useMemo(() => {
+    const preloadImages = [];
+
+    // Find the first two actual questions (not section headers)
+    let count = 0;
+    let index = 0;
+
+    while (count < 2 && index < questions.length) {
+      const question = questions[index];
+      if (question.type !== "section_start") {
+        const questionContent = question[language];
+        if (questionContent?.image) {
+          preloadImages.push(questionContent.image);
+          count++;
+        }
+      } else if (question.type === "section_start") {
+        // Also preload section images
+        if (question[language]?.image) {
+          preloadImages.push(question[language].image);
+        }
+      }
+      index++;
+    }
+
+    return preloadImages;
+  }, [questions, language]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -134,6 +165,8 @@ export default function UserForm({ onComplete }) {
       role="main"
       aria-labelledby="form-title"
     >
+      {/* Image Preloader - invisible component that preloads the first two question images */}
+      <ImagePreloader imagesToPreload={imagesToPreload} />
       {/* Animated background elements */}
       <motion.div
         className="absolute -top-20 -right-20 w-40 h-40 rounded-full bg-[#B4E0E0]/30 z-10"
