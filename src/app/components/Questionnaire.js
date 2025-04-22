@@ -121,7 +121,7 @@ export default function Questionnaire({ onComplete }) {
       {/* Progress Bar */}
       {/* <div className="w-full max-w-lg bg-gray-100 h-3 rounded-full relative mb-4 shadow-sm">
         <motion.div
-          className="absolute left-0 top-0 h-full bg-gradient-to-r from-[#B4E0E0] to-[#F0C93B] rounded-full"
+          className="absolute left-0 top-0 h-full bg-gradient-to-r from-[#F0C93B] to-[#F0C93B] rounded-full"
           style={{
             width: `${((currentQuestion + 1) / totalQuestions) * 100}%`,
           }}
@@ -190,7 +190,7 @@ export default function Questionnaire({ onComplete }) {
                   <motion.div
                     className={`rounded-full flex items-center justify-center ${
                       isActive
-                        ? "bg-[#F0C93B] w-6 h-6 ring-2 ring-[#B4E0E0]"
+                        ? "bg-[#F0C93B] w-6 h-6 ring-2 ring-[#F0C93B]"
                         : isCompleted
                         ? "bg-[#F58D6F] w-5 h-5"
                         : "bg-gray-200 w-5 h-5"
@@ -305,7 +305,9 @@ export default function Questionnaire({ onComplete }) {
             )}
 
             {/* Question Image or Description - hide when section popup is shown */}
-            {currentQuestionData.type !== "description" && !showSectionPopup ? (
+            {currentQuestionData.type !== "description" &&
+            !showSectionPopup &&
+            questionContent.image ? (
               <motion.div
                 className="w-full max-w-xs mb-4 flex justify-center relative"
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -313,7 +315,7 @@ export default function Questionnaire({ onComplete }) {
                 transition={{ delay: 0.4, duration: 0.6, ease: "easeOut" }}
               >
                 <motion.div
-                  className="absolute -z-10 w-40 h-40 rounded-full bg-[#B4E0E0] opacity-40"
+                  className="absolute -z-10 w-40 h-40 rounded-full bg-[#F0C93B] opacity-40"
                   animate={{
                     scale: [1, 1.05, 1],
                     rotate: [0, 5, 0, -5, 0],
@@ -367,8 +369,8 @@ export default function Questionnaire({ onComplete }) {
                       disabled={isTransitioning}
                       className={`w-full py-3 px-6 border-2 rounded-lg text-center transition-all duration-300 relative font-semibold overflow-hidden text-sm shadow-sm ${
                         selectedOption === option.value
-                          ? "border-[#F58D6F] bg-gradient-to-r from-[#F58D6F]/10 to-[#B4E0E0]/20 text-[#1E1E1E] font-bold shadow-md"
-                          : "border-[#B4E0E0]/30 hover:border-[#9A8BC5]/50 hover:bg-gradient-to-r hover:from-[#B4E0E0]/5 hover:to-[#9A8BC5]/5 text-gray-700 hover:shadow"
+                          ? "border-[#F0C93B] bg-gradient-to-r from-[#F0C93B]/20 to-[#F0C93B]/10 text-[#1E1E1E] font-bold shadow-md"
+                          : "border-[#F0C93B]/30 hover:border-[#9A8BC5]/50 hover:bg-gradient-to-r hover:from-[#F0C93B]/5 hover:to-[#9A8BC5]/5 text-gray-700 hover:shadow"
                       }`}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
@@ -376,13 +378,13 @@ export default function Questionnaire({ onComplete }) {
                       {selectedOption === option.value && (
                         <>
                           <motion.div
-                            className="absolute inset-0 bg-[#F58D6F]/20"
+                            className="absolute inset-0 bg-[#F0C93B]/20"
                             initial={{ scale: 0, borderRadius: "100%" }}
                             animate={{ scale: 20, opacity: 0 }}
                             transition={{ duration: 0.6 }}
                           />
                           <motion.div
-                            className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#F58D6F] flex items-center justify-center"
+                            className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-[#F0C93B] flex items-center justify-center"
                             initial={{ scale: 0, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             transition={{ duration: 0.3, delay: 0.1 }}

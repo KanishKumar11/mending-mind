@@ -61,7 +61,7 @@ const SectionPopup = ({ data, language, onContinue, isOpen }) => {
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
           >
             {/* Decorative top bar with gradient */}
-            <div className="h-2 bg-gradient-to-r from-[#B4E0E0] via-[#9A8BC5] to-[#F58D6F]" />
+            <div className="h-2 bg-gradient-to-r from-[#F0C93B]  to-[#F0C93B]" />
 
             {/* Background decorative elements */}
             <div className="absolute top-12 right-6 w-20 h-20 rounded-full bg-[#B4E0E0]/10 -z-10" />
@@ -88,27 +88,29 @@ const SectionPopup = ({ data, language, onContinue, isOpen }) => {
               >
                 {data[language].subtitle}
               </motion.p>
-              <motion.div
-                className="relative w-64 h-64 mb-6"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.5 }}
-              >
-                <Image
-                  src={data[language].image}
-                  alt="Section illustration"
-                  fill
-                  className="object-contain"
-                />
-
-                {/* Animated ring around the image */}
+              {data[language].image && (
                 <motion.div
-                  className="absolute inset-0 border-4 border-[#B4E0E0]/30 rounded-full"
-                  initial={{ scale: 1.2, opacity: 0 }}
+                  className="relative w-64 h-64 mb-6"
+                  initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 0.4, duration: 0.5 }}
-                />
-              </motion.div>
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                >
+                  <Image
+                    src={data[language].image}
+                    alt="Section illustration"
+                    fill
+                    className="object-contain"
+                  />
+
+                  {/* Animated ring around the image */}
+                  <motion.div
+                    className="absolute inset-0 border-4 border-[#B4E0E0]/30 rounded-full"
+                    initial={{ scale: 1.2, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.4, duration: 0.5 }}
+                  />
+                </motion.div>
+              )}
 
               {/* Section title */}
 

@@ -110,7 +110,7 @@ const cbicQuestions = [
     category: "Emotional",
     en: {
       number: "03",
-      image: "/c3.svg",
+      image: "/c3.png",
       text: "A calm response can feel inadequate when a taxpayer is aggressively challenging an unavoidable penalty.",
       options: commonOptions.en,
     },
@@ -174,7 +174,7 @@ const cbicQuestions = [
     category: "Emotional",
     en: {
       number: "07",
-      image: "/c7.svg",
+      image: "/c7.png",
       text: "Not all confusion at the helpdesk needs a detailed answer — some questions correct themselves with a bit of firmness.",
       options: commonOptions.en,
     },
@@ -1155,32 +1155,46 @@ const baseQuestions = [
     id: "section1",
     type: "section_start",
     en: {
-      title: "SKILL PROFILING",
-      subtitle: "An opportunity to reflect on your skills and potential.",
-      image: "/begin.svg",
+      title: "Let's get started",
+      // subtitle: "Answer each question at your own pace.",
+      // image: "/begin.svg",
+      // subtitle: "An opportunity to reflect on your skills and potential.",
+      // image: "/begin.svg",
     },
     hi: {
-      title:
-        "आइए शुरू करें—कृपया प्रत्येक प्रश्न का उत्तर सोच-समझकर और अपनी गति से दें।",
-      image: "/begin.svg",
+      title: "आइए शुरू करें",
+      // subtitle: "प्रत्येक प्रश्न का उत्तर अपनी गति से दें।",
+      // image: "/begin.svg",
     },
   },
   ...bfiQuestions,
+  {
+    id: "section2",
+    type: "section_start",
+    en: {
+      title: "Great job, continue",
+      // subtitle: "You're making excellent progress!",
+      // image: "/personality.svg",
+    },
+    hi: {
+      title: "शानदार काम, जारी रखें",
+      subtitle: "आप बहुत अच्छी प्रगति कर रहे हैं!",
+      image: "/personality.svg",
+    },
+  },
   ...pssQuestions,
   {
     id: "section3",
     type: "section_start",
     en: {
-      title: "You're halfway through—great progress.",
-      // subtitle:
-      //   "Please indicate how well these statements describe your decision-making style",
-      image: "/personality.svg",
+      title: "You're doing great",
+      // subtitle: "Keep up the good work!",
+      // image: "/personality.svg",
     },
     hi: {
-      title: "आप आधे रास्ते तक पहुंच गए हैं—बहुत अच्छी प्रगति।",
-      // subtitle:
-      //   "कृपया बताएं कि ये कथन आपकी निर्णय लेने की शैली का कितना अच्छी तरह वर्णन करते हैं",
-      // image: "/personality.svg",
+      title: "आप बहुत अच्छा कर रहे हैं",
+      subtitle: "अच्छा काम जारी रखें!",
+      image: "/personality.svg",
     },
   },
   ...decisionStyleQuestions,
@@ -1188,20 +1202,31 @@ const baseQuestions = [
     id: "section4",
     type: "section_start",
     en: {
-      title: "Please keep going—we're almost done.",
-      subtitle:
-        "Please indicate how much you agree with the following statements as they apply to you over the last month",
-      image: "/resilience.svg",
+      title: "Almost there!",
+      // subtitle: "Just a few more questions to go.",
+      // image: "/resilience.svg",
     },
     hi: {
-      title: "कृपया जारी रखें—हम लगभग समाप्त हो गए हैं।",
-      subtitle:
-        "कृपया बताएं कि आप पिछले महीने में आप पर लागू होने वाले निम्नलिखित कथनों से कितना सहमत हैं",
+      title: "बस थोड़ा और!",
+      subtitle: "बस कुछ और प्रश्न बाकी हैं।",
       image: "/resilience.svg",
     },
   },
   ...resilienceQuestions,
-
+  {
+    id: "section5",
+    type: "section_start",
+    en: {
+      title: "Almost at end",
+      // subtitle: "Final set of questions.",
+      // image: "/resilience.svg",
+    },
+    hi: {
+      title: "लगभग अंत में",
+      subtitle: "प्रश्नों का अंतिम सेट।",
+      image: "/resilience.svg",
+    },
+  },
   ...cbicQuestions,
 ];
 

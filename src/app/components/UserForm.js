@@ -161,7 +161,7 @@ export default function UserForm({ onComplete }) {
 
   return (
     <div
-      className="min-h-screen py-8 px-4 pb-60 relative max-w-md mx-auto overflow-hidden"
+      className="min-h-screen px-4 pb-20  relative max-w-md mx-auto overflow-hidden"
       role="main"
       aria-labelledby="form-title"
     >
@@ -175,7 +175,7 @@ export default function UserForm({ onComplete }) {
         transition={{ duration: 1, delay: 0.2 }}
       />
       <motion.div
-        className="absolute -top-4 -left-20 w-40 h-40 rounded-full bg-[#B4E0E0]/30 z-10"
+        className="absolute -top-4 -left-20 w-40 h-40 rounded-full bg-[#F0C93B]/30 z-10"
         initial={{ scale: 0, opacity: 0 }}
         animate={{ scale: 1, opacity: 0.6 }}
         transition={{ duration: 1, delay: 0.2 }}
@@ -193,7 +193,7 @@ export default function UserForm({ onComplete }) {
         transition={{ duration: 1.2, delay: 0.8 }}
       />
 
-      <div className="max-w-lg mx-auto z-10 relative">
+      <div className="max-w-lg mx-auto z-10 relative ">
         <motion.div
           className="flex justify-between items-end bg-background mb-6"
           initial={{ y: -20, opacity: 0 }}
@@ -202,7 +202,7 @@ export default function UserForm({ onComplete }) {
         >
           <h1
             id="form-title"
-            className="text-3xl font-bold bg-gradient-to-r from-[#D15B3B] to-[#F0C93B] text-transparent bg-clip-text"
+            className="text-3xl font-bold bg-gradient-to-r from-[#1E1E1E] to-[#1E1E1E] text-transparent bg-clip-text"
           >
             {t.hello}
           </h1>
@@ -395,8 +395,6 @@ export default function UserForm({ onComplete }) {
             )}
           </div>
 
-          {/* Location field removed */}
-
           {/* Gender */}
           <div>
             <label id="gender-label" className="block mb-1">
@@ -462,10 +460,6 @@ export default function UserForm({ onComplete }) {
             </div>
           </motion.button>
         </motion.form>
-      </div>
-      {/* Background Animation */}
-      <div className="absolute bottom-0 z-0 w-full left-0 bg-background">
-        <BackgroundAnimation />
       </div>
     </div>
   );

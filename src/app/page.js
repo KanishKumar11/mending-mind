@@ -9,8 +9,6 @@ import Questionnaire from "./components/Questionnaire";
 import UserForm from "./components/UserForm";
 import PageTransition from "./components/PageTransition";
 import Results from "./components/Results";
-import LottieAnimation from "./components/LottieAnimation";
-import BackgroundAnimation from "./components/BackgroundAnimation";
 
 export default function Home() {
   // App state to control which screen is visible
