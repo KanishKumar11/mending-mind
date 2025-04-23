@@ -337,7 +337,7 @@ const resilienceQuestions = [
     category: "Resilience",
     en: {
       number: "07",
-      image: "/r7.svg",
+      image: "/r7.png",
       text: "Having to cope with stress can make me stronger.",
       options: commonOptions.en,
     },
@@ -789,7 +789,7 @@ const decisionStyleQuestions = [
     category: "Intuitive",
     en: {
       number: "10",
-      image: "/d10.svg",
+      image: "/d10.png",
       text: "I weigh feelings more than analysis in making decisions.",
       options: commonOptions.en,
     },
