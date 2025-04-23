@@ -12,7 +12,7 @@ import Results from "./components/Results";
 
 export default function Home() {
   // App state to control which screen is visible
-  const [currentScreen, setCurrentScreen] = useState("questionnaire"); // home, userInfo, questionnaire, results
+  const [currentScreen, setCurrentScreen] = useState("home"); // home, userInfo, questionnaire, results
   const [userInfo, setUserInfo] = useState(null);
   const [questionnaireResults, setQuestionnaireResults] = useState(null);
 
