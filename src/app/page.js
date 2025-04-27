@@ -8,13 +8,15 @@ import Questionnaire from "./components/Questionnaire";
 
 import UserForm from "./components/UserForm";
 import PageTransition from "./components/PageTransition";
-import Results from "./components/Results";
+import ReportGenerator from "./components/ReportGenerator";
+import ResultsScreen from "./components/ResultsScreen";
+import { generateAndDownloadPDF } from "./utils/generatePDF";
 
 export default function Home() {
   // App state to control which screen is visible
   const [currentScreen, setCurrentScreen] = useState("home"); // home, userInfo, questionnaire, results
   const [userInfo, setUserInfo] = useState(null);
-  const [questionnaireResults, setQuestionnaireResults] = useState(null);
+  const [questionnaireScores, setQuestionnaireScores] = useState();
 
   // Handle navigation between screens
   const handleGetStarted = () => {
@@ -26,36 +28,43 @@ export default function Home() {
     setCurrentScreen("questionnaire");
   };
 
-  const handleQuestionnaireComplete = (answers) => {
-    setQuestionnaireResults(answers);
+  const handleQuestionnaireComplete = (scores) => {
+    setQuestionnaireScores(scores);
+
+    // Store data in sessionStorage for the report page
+    try {
+      sessionStorage.setItem("userInfo", JSON.stringify(userInfo));
+      sessionStorage.setItem("questionnaireScores", JSON.stringify(scores));
+    } catch (e) {
+      // Handle storage error silently
+    }
+
     setCurrentScreen("results");
   };
 
   const handleRestart = () => {
     setCurrentScreen("home");
     setUserInfo(null);
-    setQuestionnaireResults(null);
+    setQuestionnaireScores(null);
   };
 
   return (
     <LanguageProvider>
-      <div className="h-auto overflow-hidden font-montserrat relative">
+      <div className=" overflow-hidden font-montserrat relative h-full">
         <PageTransition>
           {currentScreen === "home" && (
-            <div className="flex flex-col items-center justify-between min-h-[98vh] bg-[#FDF9F1]">
-              <div className="w-full max-w-4xl flex flex-col items-center justify-between h-full py-8">
-                {/* Logo Section */}
-
+            <div className="flex flex-col items-center justify-between min-h-[98vh] h-full bg-[#FDF9F1]">
+              <div className="w-full max-w-4xl flex flex-col items-center justify-between h-full pb-8 pt-2">
                 {/* Main Content Section */}
-                <div className="w-full flex flex-col md:flex-row items-center justify-between gap-8 px-4 md:px-8">
+                <div className="w-full flex flex-col md:flex-row items-center justify-between gap-8 px-4 md:px-8 h-full  min-h-[90vh]">
                   {/* Left Side - Illustration */}
-                  <div className="w-full md:w-1/2 max-h-[450px] h-[350px]  relative">
+                  <div className="w-full md:w-1/2  h-[38vh] min-h-[230px]  relative">
                     <Image
                       src="/welcome.png"
                       alt="Welcome Banner"
                       fill
                       priority
-                      className="object-contain  mx-auto h-[350px]"
+                      className="object-contain  mx-auto h-[300px]"
                     />
                   </div>
                   <div className="w-full max-w-[200px] mx-auto mb-4">
@@ -81,26 +90,28 @@ export default function Home() {
                     </p>
 
                     {/* Get Started Button */}
-                    <button
-                      onClick={handleGetStarted}
-                      className="bg-[#F0C93B] hover:bg-[#E6B92E] text-[#1E1E1E] font-semibold py-3 px-8 rounded-md transition-all duration-300 flex items-center justify-center gap-2 shadow-md"
-                    >
-                      <span>LET&#39;S GET STARTED</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <button
+                        onClick={handleGetStarted}
+                        className="bg-[#F0C93B] hover:bg-[#E6B92E] text-[#1E1E1E] font-semibold py-3 px-8 rounded-md transition-all duration-300 flex items-center justify-center gap-2 shadow-md"
                       >
-                        <path d="M5 12h14"></path>
-                        <path d="m12 5 7 7-7 7"></path>
-                      </svg>
-                    </button>
+                        <span>LET&#39;S GET STARTED</span>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <path d="M5 12h14"></path>
+                          <path d="m12 5 7 7-7 7"></path>
+                        </svg>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -125,11 +136,7 @@ export default function Home() {
 
           {currentScreen === "results" && (
             <PageTransition>
-              <Results
-                userInfo={userInfo}
-                answers={questionnaireResults}
-                onRestart={handleRestart}
-              />
+              <ResultsScreen userInfo={userInfo} scores={questionnaireScores} />
             </PageTransition>
           )}
         </PageTransition>

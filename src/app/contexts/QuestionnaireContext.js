@@ -481,7 +481,7 @@ const resilienceQuestions = [
     category: "Resilience",
     en: {
       number: "16",
-      image: "/r16.svg",
+      image: "/r16.png",
       text: "I am not easily discouraged by failure.",
       options: commonOptions.en,
     },
@@ -757,7 +757,7 @@ const decisionStyleQuestions = [
     category: "Intuitive",
     en: {
       number: "08",
-      image: "/d8.svg",
+      image: "/d8.png",
       text: "I make decisions based on intuition.",
       options: commonOptions.en,
     },
@@ -1252,6 +1252,7 @@ export function QuestionnaireProvider({ children }) {
       intuitive: 0,
     },
     resilience: 0,
+    taxpayerJudgement: 0, // Added back for storing the average CBIC score
     cbic: {
       empathy: 0,
       emotional: 0,
@@ -1276,6 +1277,7 @@ export function QuestionnaireProvider({ children }) {
         intuitive: 0,
       },
       resilience: 0,
+      taxpayerJudgement: 0, // Added back for storing the average CBIC score
       cbic: {
         empathy: 0,
         emotional: 0,
@@ -1306,8 +1308,14 @@ export function QuestionnaireProvider({ children }) {
         const trait = questionObj.category;
         const score = questionObj.isReversed ? 6 - value : value;
 
-        if (trait in newScores.personality) {
-          newScores.personality[trait.toLowerCase()] += score;
+        const traitLower = trait.toLowerCase();
+        if (traitLower in newScores.personality) {
+          newScores.personality[traitLower] += score;
+          console.log(
+            `Added ${score} to ${traitLower}, now: ${newScores.personality[traitLower]}`
+          );
+        } else {
+          console.log(`Trait not found: ${trait} (${traitLower})`);
         }
       } else if (questionId.startsWith("pss_")) {
         // PSS-10 scoring
@@ -1337,6 +1345,52 @@ export function QuestionnaireProvider({ children }) {
       }
     });
 
+    // Calculate taxpayerJudgement as the average of CBIC dimensions
+    // Count how many questions were answered in each category
+    const empathyQuestions = allAnswers.filter(
+      (a) =>
+        a &&
+        a.questionId.startsWith("cbic_") &&
+        cbicQuestions.find((q) => q.id === a.questionId)?.category === "Empathy"
+    ).length;
+
+    const emotionalQuestions = allAnswers.filter(
+      (a) =>
+        a &&
+        a.questionId.startsWith("cbic_") &&
+        cbicQuestions.find((q) => q.id === a.questionId)?.category ===
+          "Emotional"
+    ).length;
+
+    const decisionQuestions = allAnswers.filter(
+      (a) =>
+        a &&
+        a.questionId.startsWith("cbic_") &&
+        cbicQuestions.find((q) => q.id === a.questionId)?.category ===
+          "Decision"
+    ).length;
+
+    // Calculate averages for each dimension
+    const empathyAvg =
+      empathyQuestions > 0 ? newScores.cbic.empathy / empathyQuestions : 0;
+    const emotionalAvg =
+      emotionalQuestions > 0
+        ? newScores.cbic.emotional / emotionalQuestions
+        : 0;
+    const decisionAvg =
+      decisionQuestions > 0 ? newScores.cbic.decision / decisionQuestions : 0;
+
+    // Calculate overall average
+    const totalDimensions =
+      (empathyQuestions > 0 ? 1 : 0) +
+      (emotionalQuestions > 0 ? 1 : 0) +
+      (decisionQuestions > 0 ? 1 : 0);
+    if (totalDimensions > 0) {
+      newScores.taxpayerJudgement = Math.round(
+        (empathyAvg + emotionalAvg + decisionAvg) / totalDimensions
+      );
+    }
+    console.log(newScores);
     return newScores;
   };
 
@@ -1378,6 +1432,7 @@ export function QuestionnaireProvider({ children }) {
         intuitive: 0,
       },
       resilience: 0,
+      taxpayerJudgement: 0, // Added back for storing the average CBIC score
       cbic: {
         empathy: 0,
         emotional: 0,

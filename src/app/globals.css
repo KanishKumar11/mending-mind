@@ -53,18 +53,18 @@
     --lavender: #9A8BC5;
 
     /* Theme variables */
-    --background: 180 50% 98%;
-    --foreground: 0 0% 12%;
-    --muted: 180 40% 95%;
-    --muted-foreground: 0 0% 40%;
-    --popover: 180 50% 98%;
-    --popover-foreground: 0 0% 12%;
-    --card: 180 50% 97%;
-    --card-foreground: 0 0% 12%;
-    --border: 180 30% 90%;
-    --input: 180 30% 90%;
-    --primary: 45 86% 58%;
-    --primary-foreground: 0 0% 12%;
+    --background: hsl(0, 0%, 100%);
+    --foreground: hsl(0 0% 12%);
+    --muted: hsl(180 40% 95%);
+    --muted-foreground: hsl(0 0% 40%);
+    --popover: hsl(180 50% 98%);
+    --popover-foreground: hsl(0 0% 12%);
+    --card: hsl(0, 0%, 97%);
+    --card-foreground: hsl(0 0% 12%);
+    --border: hsl(180 30% 90%);
+    --input: hsl(180 30% 90%);
+    --primary: hsl(45 86% 58%);
+    --primary-foreground: hsl(0 0% 12%);
     --secondary: 12 67% 52%;
     --secondary-foreground: 0 0% 100%;
     --accent: 180 60% 79%;

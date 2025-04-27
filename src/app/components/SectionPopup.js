@@ -54,14 +54,14 @@ const SectionPopup = ({ data, language, onContinue, isOpen }) => {
 
           {/* Popup content */}
           <motion.div
-            className="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden w-full max-w-md z-20 relative border border-[#B4E0E0]/30"
+            className="bg-[#f5d971] brightness-110 backdrop-blur-md rounded-2xl shadow-xl overflow-hidden w-full max-w-md z-20 relative border border-[#B4E0E0]/30"
             initial={{ scale: 0.8, y: 20 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.8, y: 20 }}
             transition={{ type: "spring", damping: 25, stiffness: 300 }}
           >
             {/* Decorative top bar with gradient */}
-            <div className="h-2 bg-gradient-to-r from-[#F0C93B]  to-[#F0C93B]" />
+            <div className="h-2 bg-gradient-to-r from-[#ffffff]  to-[#F0C93B]" />
 
             {/* Background decorative elements */}
             <div className="absolute top-12 right-6 w-20 h-20 rounded-full bg-[#B4E0E0]/10 -z-10" />
@@ -71,7 +71,7 @@ const SectionPopup = ({ data, language, onContinue, isOpen }) => {
             <div className="p-6 flex flex-col items-center">
               {/* Section image */}
               <motion.h2
-                className="text-2xl font-bold mb-3 text-center bg-gradient-to-r from-[#D15B3B] to-[#9A8BC5] text-transparent bg-clip-text"
+                className="text-2xl font-bold mb-3 text-center text-[#1e1e1e]"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3, duration: 0.5 }}

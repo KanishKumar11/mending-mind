@@ -17,6 +17,7 @@ export default function Questionnaire({ onComplete }) {
     answers,
     handleAnswer,
     totalQuestions,
+    scores, // Add scores from the context
   } = useQuestionnaire();
   const [selectedOption, setSelectedOption] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -89,9 +90,10 @@ export default function Questionnaire({ onComplete }) {
   // Check if questionnaire is complete
   useEffect(() => {
     if (answers.length === totalQuestions && onComplete) {
-      onComplete(answers);
+      // Only call onComplete when the questionnaire is actually complete
+      onComplete(scores);
     }
-  }, [answers, totalQuestions, onComplete]);
+  }, [answers, totalQuestions, onComplete, scores]);
 
   const handleOptionSelect = (optionValue) => {
     setSelectedOption(optionValue);
@@ -424,7 +426,7 @@ export default function Questionnaire({ onComplete }) {
                   width={200}
                   height={200}
                   priority
-                  className="w-auto h-auto max-h-[250px] drop-shadow-md"
+                  className="w-auto h-auto max-h-[200px] drop-shadow-md"
                 />
               </motion.div>
             ) : (

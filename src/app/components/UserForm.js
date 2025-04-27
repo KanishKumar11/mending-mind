@@ -39,6 +39,21 @@ export default function UserForm({ onComplete }) {
     contactNo: "",
   });
 
+  // Dummy test data for quick form filling
+  const testData = {
+    name: "Test User",
+    age: "30",
+    gender: "Male",
+    emailId: "test@example.com",
+    contactNo: "9876543210",
+  };
+
+  // Function to fill the form with test data
+  const fillWithTestData = () => {
+    setFormData(testData);
+    setErrors({});
+  };
+
   // Animation states for creative elements
   const [animationComplete, setAnimationComplete] = useState(false);
 
@@ -230,14 +245,16 @@ export default function UserForm({ onComplete }) {
             role="status"
           ></div>
 
-          <motion.p
-            className="text-[#1E1E1E]/70 text-sm italic"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
-          >
-            Please share a few details to begin your assessment journey
-          </motion.p>
+          <div className="flex justify-between items-center">
+            <motion.p
+              className="text-[#1E1E1E]/70 text-sm italic"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1 }}
+            >
+              Please share a few details to begin your assessment journey
+            </motion.p>
+          </div>
           {/* Name */}
           <div>
             <label htmlFor="name" className="block mb-1">
