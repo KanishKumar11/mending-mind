@@ -33,15 +33,19 @@ const scoresSchema = new mongoose.Schema({
 });
 
 // Define the main user schema
-const userSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  age: { type: String, required: true },
-  gender: { type: String, required: true },
-  email: { type: String, required: true },
-  contact: { type: String, required: true },
-  scores: { type: scoresSchema, required: true },
-  createdAt: { type: Date, default: Date.now },
-});
+const userSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    age: { type: String, required: true },
+    gender: { type: String, required: true },
+    email: { type: String, required: true },
+    contact: { type: String, required: true },
+    scores: { type: scoresSchema, required: true },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 // Create the model if it doesn't exist already
 const User = mongoose.models.User || mongoose.model("User", userSchema);
