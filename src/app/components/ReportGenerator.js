@@ -365,8 +365,8 @@ const ReportGenerator = ({ userInfo, scores, onRestart }) => {
                           // Create a temporary link element
                           const link = document.createElement("a");
                           link.href = url;
-                          link.download = "Mending_Mind_Assessment_Report.pdf";
-
+                          link.download =
+                            "Skill_Based_Psychometric_Assessment_Report:Mending_Mind.pdf";
                           // Append to the document, click it, and remove it
                           document.body.appendChild(link);
                           link.click();
@@ -494,8 +494,8 @@ const ReportGenerator = ({ userInfo, scores, onRestart }) => {
                       // Create a temporary link element
                       const link = document.createElement("a");
                       link.href = url;
-                      link.download = "Mending_Mind_Assessment_Report.pdf";
-
+                      link.download =
+                        "Skill_Based_Psychometric_Assessment_Report:Mending_Mind.pdf";
                       // Append to the document, click it, and remove it
                       document.body.appendChild(link);
                       link.click();

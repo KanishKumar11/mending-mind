@@ -44,21 +44,21 @@ const styles = StyleSheet.create({
 const getJudgementLevelInfo = (score) => {
   if (score >= 4) {
     return {
-      level: "Higher Scores (4-5)",
+      level: "Higher Scores ",
       subtitle: "You may be Insightful & System-Oriented",
       description:
         "You approach complex scenarios with emotional intelligence, strategic insight, and system-oriented thinking. You prioritize long-term goals, balance flexibility with structure, and respond to challenges with clarity and thoughtful decision-making.",
     };
   } else if (score === 3) {
     return {
-      level: "Moderate Scores (3)",
+      level: "Moderate Scores",
       subtitle: "You may be Responsible & Strategically Emerging",
       description:
         "You demonstrate responsibility, fairness, and practical adaptability. You are balanced in your approach, blending ethical judgment with strategic growth, and are committed to learning and evolving your decision-making over time.",
     };
   } else {
     return {
-      level: "Lower Scores (1-2)",
+      level: "Lower Scores ",
       subtitle: "You may be Detail-Focused & Principles-Driven",
       description:
         "You are detail-focused, principle-driven, and thoughtful in your choices. You value clarity, ethical standards, and practical execution, prioritizing precision and consistency even in complex or uncertain situations.",

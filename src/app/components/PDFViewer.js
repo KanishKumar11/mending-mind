@@ -838,7 +838,7 @@ const MyDocument = (props) => {
               color: "#333",
             }}
           >
-            For inquiry click on the WhatsApp icon
+            {/* For inquiry click on the WhatsApp icon */}-
           </Text>
           <View style={{ flex: 1, height: 1, backgroundColor: "#F0C93B" }} />
         </View>
