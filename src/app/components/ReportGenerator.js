@@ -20,6 +20,7 @@ import {
 } from "chart.js";
 import { Bar, Doughnut, Radar } from "react-chartjs-2";
 import PDFViewer from "./PDFViewer";
+import WebResilienceScaleDisplay from "./WebResilienceScaleDisplay";
 
 // Register ChartJS components
 ChartJS.register(
@@ -286,6 +287,14 @@ const ReportGenerator = ({ userInfo, scores, onRestart }) => {
                     : "intuitive and instinctive"}
                   .
                 </p>
+              </div>
+
+              {/* Resilience Section */}
+              <div className="mb-10">
+                <h2 className="text-2xl font-semibold mb-4 pb-2 border-b border-gray-200">
+                  Resilience Assessment
+                </h2>
+                <WebResilienceScaleDisplay score={reportScores.resilience} />
               </div>
 
               {/* CBIC Section */}

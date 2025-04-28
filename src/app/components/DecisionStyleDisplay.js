@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Text, View, StyleSheet } from "@react-pdf/renderer";
+import { Text, View, StyleSheet, Image } from "@react-pdf/renderer";
 
 // Define the styles for our component
 const styles = StyleSheet.create({
@@ -94,6 +94,8 @@ const getDecisionStyleInfo = (rationalScore, intuitiveScore) => {
   const isRationalLow = rationalScore <= 12;
   const isIntuitiveHigh = intuitiveScore >= 21;
   const isIntuitiveLow = intuitiveScore <= 12;
+  const isRationalBalanced = rationalScore >= 13 && rationalScore <= 20;
+  const isIntuitiveBalanced = intuitiveScore >= 13 && intuitiveScore <= 20;
 
   // Determine overall style
   let styleType = "";
@@ -102,52 +104,42 @@ const getDecisionStyleInfo = (rationalScore, intuitiveScore) => {
   if (isRationalHigh && isIntuitiveLow) {
     styleType = "Dominant Rational Style";
     styleDescription =
-      "Your responses suggest that you tend to be Evaluative, Detail-oriented, Strategic, Policy-focused, Insightful";
+      "You approach decision-making through strategic evaluation, methodical analysis, and policy-oriented thinking. You prefer well-defined structures, plans, and policies to guide your choices.";
   } else if (isIntuitiveHigh && isRationalLow) {
     styleType = "Dominant Intuitive Style";
     styleDescription =
-      "Your responses suggest that you tend to be Strategic, Decisive, Adaptable, Visionary, Conceptual";
-  } else if (
-    !isRationalHigh &&
-    !isRationalLow &&
-    !isIntuitiveHigh &&
-    !isIntuitiveLow
-  ) {
+      "You make decisions through visionary, adaptable, and conceptual thinking. You trust your internal compass, relying on foresight and instinct to shape your actions, often favoring innovation over rigid systems.";
+  } else if (isRationalBalanced && isIntuitiveBalanced) {
     styleType = "Balanced Style";
     styleDescription =
-      "Your responses suggest that you tend to be Adaptable, Context-sensitive, Versatile, Strategic, Situationally aware";
+      "You demonstrate versatility by integrating both rational analysis and intuitive insight. You adapt your decision-making style depending on the situation, balancing structure and flexibility to make contextually appropriate choices.";
   } else {
     // If no specific pattern, just use the higher score
     styleType =
       rationalScore > intuitiveScore ? "Rational Style" : "Intuitive Style";
-    if (rationalScore > intuitiveScore) {
-      styleDescription = isRationalHigh
-        ? "Your responses suggest that you tend to be Systematic, Analytical, Methodical, Deliberate, Evidence-oriented"
-        : "Your responses suggest that you tend to be Flexible, Spontaneous, Experiential, Minimalist, Less analytical";
-    } else {
-      styleDescription = isIntuitiveHigh
-        ? "Your responses suggest that you tend to be Perceptive, Instinctive, Decisive, Emotionally attuned, Rapid-response"
-        : "Your responses suggest that you tend to be Structured, Calculative, Cautious, Data-sensitive, Deliberation-focused";
-    }
   }
 
   return {
     styleType,
     styleDescription,
     rationalDescription: isRationalHigh
-      ? "Your responses suggest that you tend to be Systematic, Analytical, Methodical, Deliberate, Evidence-oriented"
+      ? "You favor a logical, analytical, and structured approach to decision-making. You systematically evaluate facts, consider evidence, and make deliberate, calculated choices that prioritize accuracy and strategic planning."
       : isRationalLow
-      ? "Your responses suggest that you tend to be Flexible, Spontaneous, Experiential, Minimalist, Less analytical"
-      : "Your responses suggest that you tend to be Adaptable, Context-sensitive, Versatile, Strategic, Situationally aware",
+      ? "You demonstrate a preference for flexibility, spontaneity, and experiential learning when making decisions. You rely more on lived experiences and real-time adaptability rather than exhaustive analysis and overplanning."
+      : "You balance analytical thinking with flexibility in your decision-making approach. You can evaluate information systematically while remaining adaptable to changing circumstances.",
     intuitiveDescription: isIntuitiveHigh
-      ? "Your responses suggest that you tend to be Perceptive, Instinctive, Decisive, Emotionally attuned, Rapid-response"
+      ? "You trust your instincts, emotional attunement, and perceptive abilities to make quick, confident decisions. Your capacity to connect deeply with situations enables you to respond rapidly with insight and decisiveness."
       : isIntuitiveLow
-      ? "Your responses suggest that you tend to be Structured, Calculative, Cautious, Data-sensitive, Deliberation-focused"
-      : "Your responses suggest that you tend to be Adaptable, Context-sensitive, Versatile, Strategic, Situationally aware",
+      ? "You tend to be cautious, structured, and data-sensitive in your decision-making. You prefer verifying details and weighing information before arriving at a conclusion, ensuring that risks are carefully considered."
+      : "You balance intuitive insights with careful consideration in your decision-making. You can trust your instincts while still taking time to verify information when needed.",
   };
 };
 
-const DecisionStyleDisplay = ({ rationalScore, intuitiveScore }) => {
+const DecisionStyleDisplay = ({
+  rationalScore,
+  intuitiveScore,
+  chartImage,
+}) => {
   const {
     styleType,
     styleDescription,
@@ -180,45 +172,93 @@ const DecisionStyleDisplay = ({ rationalScore, intuitiveScore }) => {
 
   return (
     <View style={styles.container}>
-      {/* Rational Style */}
+      {/* Decision Style Chart */}
+      <View style={[styles.styleContainer]}>
+        {/* Chart image if available, otherwise fallback to simple bars */}
+        {chartImage ? (
+          <View style={{ marginVertical: 10, alignItems: "center" }}>
+            <Image
+              src={chartImage}
+              style={{
+                width: 400,
+                height: 150,
+                objectFit: "contain",
+              }}
+            />
+          </View>
+        ) : (
+          <View>
+            {/* Rational Style Bar */}
+            <Text style={[styles.styleDescription, { marginTop: 10 }]}>
+              Rational
+            </Text>
+            <View style={styles.barContainer}>
+              <View style={styles.barBackground}>
+                <View
+                  style={[
+                    styles.barFill,
+                    {
+                      width: `${rationalPercentage}%`,
+                      backgroundColor: getRationalColor(),
+                    },
+                  ]}
+                />
+              </View>
+              <View style={styles.scaleLabels}>
+                <Text style={styles.scaleLabel}>Low </Text>
+                <Text style={styles.scaleLabel}>Balanced </Text>
+                <Text style={styles.scaleLabel}>High </Text>
+              </View>
+            </View>
+
+            {/* Intuitive Style Bar */}
+            <Text style={[styles.styleDescription, { marginTop: 10 }]}>
+              Intuitive
+            </Text>
+            <View style={styles.barContainer}>
+              <View style={styles.barBackground}>
+                <View
+                  style={[
+                    styles.barFill,
+                    {
+                      width: `${intuitivePercentage}%`,
+                      backgroundColor: getIntuitiveColor(),
+                    },
+                  ]}
+                />
+              </View>
+              <View style={styles.scaleLabels}>
+                <Text style={styles.scaleLabel}>Low </Text>
+                <Text style={styles.scaleLabel}>Balanced </Text>
+                <Text style={styles.scaleLabel}>High </Text>
+              </View>
+            </View>
+          </View>
+        )}
+
+        {/* Overall Style Type and Description */}
+        <View style={{ marginTop: 15 }}>
+          <Text style={[styles.styleName, { marginBottom: 5 }]}>
+            {styleType}
+          </Text>
+          <Text style={styles.attributes}>{styleDescription}</Text>
+        </View>
+      </View>
+
+      {/* Rational Style Description */}
       <View
         style={[
           styles.styleContainer,
-          { borderLeft: "4px solid #7B68EE", marginTop: 15 },
+          { borderLeft: "4px solid #7B68EE", marginTop: -15 },
         ]}
       >
         <View style={styles.styleHeader}>
-          <Text style={styles.styleName}>Rational Style</Text>
+          <Text style={styles.styleName}>Rational </Text>
         </View>
-
-        {/* Visual bar */}
-        <View style={styles.barContainer}>
-          <View style={styles.barBackground}>
-            <View
-              style={[
-                styles.barFill,
-                {
-                  width: `${rationalPercentage}%`,
-                  backgroundColor: getRationalColor(),
-                },
-              ]}
-            />
-          </View>
-
-          <View style={styles.scaleLabels}>
-            <Text style={styles.scaleLabel}>Low </Text>
-            <Text style={styles.scaleLabel}>Balanced </Text>
-            <Text style={styles.scaleLabel}>High </Text>
-          </View>
-        </View>
-
-        <Text style={styles.styleDescription}>
-          {rationalScore >= 21 ? "" : rationalScore <= 12 ? "" : ""}
-        </Text>
         <Text style={styles.attributes}>{rationalDescription}</Text>
       </View>
 
-      {/* Intuitive Style */}
+      {/* Intuitive Style Description */}
       <View
         style={[
           styles.styleContainer,
@@ -226,33 +266,8 @@ const DecisionStyleDisplay = ({ rationalScore, intuitiveScore }) => {
         ]}
       >
         <View style={styles.styleHeader}>
-          <Text style={styles.styleName}>Intuitive Style</Text>
+          <Text style={styles.styleName}>Intuitive </Text>
         </View>
-
-        {/* Visual bar */}
-        <View style={styles.barContainer}>
-          <View style={styles.barBackground}>
-            <View
-              style={[
-                styles.barFill,
-                {
-                  width: `${intuitivePercentage}%`,
-                  backgroundColor: getIntuitiveColor(),
-                },
-              ]}
-            />
-          </View>
-
-          <View style={styles.scaleLabels}>
-            <Text style={styles.scaleLabel}>Low </Text>
-            <Text style={styles.scaleLabel}>Balanced </Text>
-            <Text style={styles.scaleLabel}>High </Text>
-          </View>
-        </View>
-
-        <Text style={styles.styleDescription}>
-          {intuitiveScore >= 21 ? "" : intuitiveScore <= 12 ? "" : ""}
-        </Text>
         <Text style={styles.attributes}>{intuitiveDescription}</Text>
       </View>
     </View>

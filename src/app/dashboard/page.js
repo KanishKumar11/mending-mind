@@ -11,37 +11,55 @@ import { LogOut } from "lucide-react";
 import Image from "next/image";
 
 export default function DashboardPage() {
-  const { isAuthenticated, logout } = useAuth();
+  const { isAuthenticated, logout, loading: authLoading, token } = useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState("summary"); // "summary" or "users"
 
   useEffect(() => {
-    if (isAuthenticated) {
+    if (isAuthenticated && token) {
       fetchUsers();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, token]);
 
   const fetchUsers = async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/users");
+
+      // Include the auth token in the request headers
+      const response = await fetch("/api/users", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       const data = await response.json();
 
       if (data.success) {
         console.log("API Response:", data.users);
         setUsers(data.users);
       } else {
-        setError("Failed to fetch users");
+        setError(data.message || "Failed to fetch users");
       }
     } catch (error) {
+      console.error("Error fetching users:", error);
       setError("An error occurred while fetching users");
     } finally {
       setLoading(false);
     }
   };
 
+  // Show loading spinner while checking authentication
+  if (authLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#F0C93B]"></div>
+      </div>
+    );
+  }
+
+  // Show login form if not authenticated
   if (!isAuthenticated) {
     return <LoginForm />;
   }

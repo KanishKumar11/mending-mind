@@ -417,142 +417,53 @@ const MyDocument = (props) => {
 
         {/* BFI-10 Personality Test Section */}
         <View style={styles.testSectionContainer}>
-          <Text style={styles.testSectionTitle}>
-            BFI-10 Personality Assessment
-          </Text>
+          <Text style={styles.testSectionTitle}>PERSONALITY TRAITS</Text>
           {/* Personality chart with description */}
-          <View style={{ flexDirection: "row", marginBottom: 15 }}>
-            {/* Left side - Personality chart */}
+          {/* <View style={{ flexDirection: "row", height: 270 }}>
             <View style={{ flex: 3 }}>
               {chartImages?.personalityChart ? (
                 <PDFImage
                   src={chartImages.personalityChart}
-                  style={{ width: "100%", height: 230, objectFit: "contain" }}
+                  style={{
+                    width: 230,
+                    height: 240,
+                    objectFit: "contain",
+                    marginLeft: -20,
+                  }}
                 />
               ) : (
-                /* Fallback if chart image is not available */
                 <View style={styles.pieChartPlaceholder}>
                   <Text style={styles.pieChartText}>Personality Profile</Text>
                 </View>
               )}
             </View>
 
-            {/* Right side - Description */}
             <View
               style={{
-                flex: 2,
-                paddingLeft: 15,
-                paddingRight: 10,
+                flex: 4,
+                paddingLeft: 20,
+                // paddingRight: 2,
+                // marginLeft: -20,
                 alignItems: "center",
                 justifyContent: "center",
+                maxWidth: 400,
               }}
             >
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: "bold",
-                  fontFamily: "Montserrat",
-                  color: "#333",
-                  marginBottom: 8,
-                  textAlign: "center",
-                }}
-              >
-                Understanding Your Personality Profile
-              </Text>
-
-              <Text
-                style={{
-                  fontSize: 11,
-                  fontFamily: "Montserrat",
-                  color: "#333",
-                  marginBottom: 8,
-                  lineHeight: 1.4,
-
-                  textAlign: "center",
-                }}
-              >
-                {(() => {
-                  // Get personality scores
-                  const extraversion =
-                    reportScores?.personality?.extraversion || 5;
-                  const agreeableness =
-                    reportScores?.personality?.agreeableness || 5;
-                  const conscientiousness =
-                    reportScores?.personality?.conscientiousness || 5;
-                  const neuroticism =
-                    reportScores?.personality?.neuroticism || 5;
-                  const openness = reportScores?.personality?.openness || 5;
-
-                  // Generate personalized summary based on dominant traits
-                  let summary = "";
-
-                  // Check for high extraversion
-                  if (extraversion >= 7) {
-                    summary +=
-                      "You tend to be sociable, energetic, and outgoing. ";
-                  } else if (extraversion <= 3) {
-                    summary +=
-                      "You value your personal space and time for reflection. ";
-                  }
-
-                  // Check for high agreeableness
-                  if (agreeableness >= 7) {
-                    summary +=
-                      "You show compassion and cooperation in your interactions. ";
-                  } else if (agreeableness <= 3) {
-                    summary +=
-                      "You approach situations with a healthy skepticism. ";
-                  }
-
-                  // Check for high conscientiousness
-                  if (conscientiousness >= 7) {
-                    summary +=
-                      "You are organized and disciplined in pursuing your goals. ";
-                  } else if (conscientiousness <= 3) {
-                    summary += "You prefer flexibility over rigid structure. ";
-                  }
-
-                  // Check for high neuroticism (reversed, as lower is better)
-                  if (neuroticism <= 3) {
-                    summary +=
-                      "You maintain emotional stability under pressure. ";
-                  } else if (neuroticism >= 7) {
-                    summary +=
-                      "You are sensitive to emotional nuances in situations. ";
-                  }
-
-                  // Check for high openness
-                  if (openness >= 7) {
-                    summary +=
-                      "You embrace new ideas and creative approaches. ";
-                  } else if (openness <= 3) {
-                    summary += "You value practical, proven solutions. ";
-                  }
-
-                  // If no strong traits were found, provide a balanced summary
-                  if (!summary) {
-                    summary =
-                      "Your profile shows a balanced personality with moderate traits across all dimensions. You adapt well to different situations and bring a well-rounded perspective.";
-                  }
-
-                  return summary;
-                })()}
-              </Text>
+              <PersonalityTraitDisplay
+                trait="Extraversion"
+                score={reportScores?.personality?.extraversion || 7}
+              />
             </View>
-          </View>
+          </View> */}
 
           {/* Personality traits with visual scales and descriptions */}
           <View style={styles.personalityDescriptionContainer}>
-            <Text style={styles.resultsText}>
-              Based on your responses, your personality profile shows:
-            </Text>
-
-            {/* Extraversion */}
-            <PersonalityTraitDisplay
-              trait="Extraversion"
-              score={reportScores?.personality?.extraversion || 7}
-            />
-
+            <View style={{ marginVertical: 20 }}>
+              <PersonalityTraitDisplay
+                trait="Extraversion"
+                score={reportScores?.personality?.extraversion || 7}
+              />
+            </View>
             {/* Agreeableness */}
             <PersonalityTraitDisplay
               trait="Agreeableness"
@@ -598,10 +509,11 @@ const MyDocument = (props) => {
             Decision Making Style Assessment
           </Text>
 
-          {/* Decision style visualization with horizontal bars */}
+          {/* Decision style visualization with chart */}
           <DecisionStyleDisplay
             rationalScore={reportScores?.decisionStyle?.rational || 18}
             intuitiveScore={reportScores?.decisionStyle?.intuitive || 22}
+            chartImage={chartImages?.decisionChart}
           />
         </View>
 
@@ -610,7 +522,10 @@ const MyDocument = (props) => {
           <Text style={styles.testSectionTitle}>Resilience Assessment</Text>
 
           {/* Resilience scale visualization with horizontal bar */}
-          <ResilienceScaleDisplay score={reportScores?.resilience || 65} />
+          <ResilienceScaleDisplay
+            score={reportScores?.resilience || 65}
+            chartImage={chartImages?.resilienceChart}
+          />
         </View>
 
         {/* Taxpayer Situational Judgement Test Section */}
@@ -963,7 +878,7 @@ const MyDocument = (props) => {
             >
               For collaborations Contact:
             </Text>
-            <Link src="mailto:kinjaljain@mendingmind.org">
+            {/* <Link src="mailto:kinjaljain@mendingmind.org">
               <Text
                 style={{
                   fontSize: 11,
@@ -974,7 +889,7 @@ const MyDocument = (props) => {
               >
                 kinjaljain@mendingmind.org
               </Text>
-            </Link>
+            </Link> */}
             <Link src="mailto:support@mendingmind.org">
               <Text
                 style={{
@@ -990,7 +905,7 @@ const MyDocument = (props) => {
           </View>
 
           {/* Right side - Founder image */}
-          <View
+          {/* <View
             style={{
               flex: 1,
               alignItems: "center",
@@ -1020,153 +935,165 @@ const MyDocument = (props) => {
                 }}
               />
             )}
-          </View>
+          </View> */}
         </View>
 
         {/* Social media section */}
         <View
           style={{
-            flexDirection: "row",
-            padding: 15,
+            backgroundColor: "#F0C93B",
             marginTop: "auto",
+            borderRadius: 8,
           }}
         >
-          {/* Follow us section */}
-          <View style={{ flex: 1 }}>
-            <Text
-              style={{
-                fontSize: 11,
-                fontWeight: "bold",
-                fontFamily: "Montserrat",
-                color: "#333",
-                marginBottom: 10,
-              }}
-            >
-              Follow us on:
-            </Text>
-            <View style={{ flexDirection: "row", gap: 10 }}>
-              {/* Instagram */}
-              <Link src="https://www.instagram.com/mending__mind/">
-                {instaIconUrl ? (
-                  <PDFImage
-                    src={instaIconUrl}
-                    style={{ width: 20, height: 20 }}
-                  />
-                ) : (
-                  <View
-                    style={{
-                      width: 20,
-                      height: 20,
-                      backgroundColor: "#f0f0f0",
-                    }}
-                  />
-                )}
-              </Link>
+          <View
+            style={{
+              flexDirection: "row",
+              padding: 15,
+              marginTop: "auto",
+              backgroundColor: "#F0C93B",
+              borderRadius: 8,
+            }}
+          >
+            {/* Follow us section */}
+            <View style={{ flex: 1 }}>
+              <Text
+                style={{
+                  fontSize: 11,
+                  fontWeight: "bold",
+                  fontFamily: "Montserrat",
+                  color: "#333",
+                  marginBottom: 10,
+                }}
+              >
+                Follow us on:
+              </Text>
+              <View style={{ flexDirection: "row", gap: 10 }}>
+                {/* Instagram */}
+                <Link src="https://www.instagram.com/mending__mind/">
+                  {instaIconUrl ? (
+                    <PDFImage
+                      src={instaIconUrl}
+                      style={{ width: 20, height: 20 }}
+                    />
+                  ) : (
+                    <View
+                      style={{
+                        width: 20,
+                        height: 20,
+                        backgroundColor: "#f0f0f0",
+                      }}
+                    />
+                  )}
+                </Link>
 
-              {/* Facebook */}
-              <Link src="https://www.facebook.com/mendingmindfoundation/">
-                {fbIconUrl ? (
-                  <PDFImage src={fbIconUrl} style={{ width: 20, height: 20 }} />
-                ) : (
-                  <View
-                    style={{
-                      width: 20,
-                      height: 20,
-                      backgroundColor: "#f0f0f0",
-                    }}
-                  />
-                )}
-              </Link>
+                {/* Facebook */}
+                <Link src="https://www.facebook.com/mendingmindfoundation/">
+                  {fbIconUrl ? (
+                    <PDFImage
+                      src={fbIconUrl}
+                      style={{ width: 20, height: 20 }}
+                    />
+                  ) : (
+                    <View
+                      style={{
+                        width: 20,
+                        height: 20,
+                        backgroundColor: "#f0f0f0",
+                      }}
+                    />
+                  )}
+                </Link>
 
-              {/* LinkedIn */}
-              <Link src="https://www.linkedin.com/company/mendingmind/">
-                {linkedinIconUrl ? (
-                  <PDFImage
-                    src={linkedinIconUrl}
-                    style={{ width: 20, height: 20 }}
-                  />
-                ) : (
-                  <View
-                    style={{
-                      width: 20,
-                      height: 20,
-                      backgroundColor: "#f0f0f0",
-                    }}
-                  />
-                )}
-              </Link>
+                {/* LinkedIn */}
+                <Link src="https://www.linkedin.com/company/mendingmind/">
+                  {linkedinIconUrl ? (
+                    <PDFImage
+                      src={linkedinIconUrl}
+                      style={{ width: 20, height: 20 }}
+                    />
+                  ) : (
+                    <View
+                      style={{
+                        width: 20,
+                        height: 20,
+                        backgroundColor: "#f0f0f0",
+                      }}
+                    />
+                  )}
+                </Link>
+              </View>
             </View>
-          </View>
 
-          {/* Connect with us section */}
-          <View style={{ flex: 1 }}>
-            <Text
-              style={{
-                fontSize: 11,
-                fontWeight: "bold",
-                fontFamily: "Montserrat",
-                color: "#333",
-                marginBottom: 10,
-              }}
-            >
-              Connect with us:
-            </Text>
-            <View style={{ flexDirection: "row", gap: 10 }}>
-              {/* WhatsApp */}
-              <Link src="https://api.whatsapp.com/send?phone=918433805514">
-                {whatsappIconUrl ? (
-                  <PDFImage
-                    src={whatsappIconUrl}
-                    style={{ width: 20, height: 20 }}
-                  />
-                ) : (
-                  <View
-                    style={{
-                      width: 20,
-                      height: 20,
-                      backgroundColor: "#f0f0f0",
-                    }}
-                  />
-                )}
-              </Link>
+            {/* Connect with us section */}
+            <View style={{ flex: 1 }}>
+              <Text
+                style={{
+                  fontSize: 11,
+                  fontWeight: "bold",
+                  fontFamily: "Montserrat",
+                  color: "#333",
+                  marginBottom: 10,
+                }}
+              >
+                Connect with us:
+              </Text>
+              <View style={{ flexDirection: "row", gap: 10 }}>
+                {/* WhatsApp */}
+                <Link src="https://api.whatsapp.com/send?phone=918433805514">
+                  {whatsappIconUrl ? (
+                    <PDFImage
+                      src={whatsappIconUrl}
+                      style={{ width: 20, height: 20 }}
+                    />
+                  ) : (
+                    <View
+                      style={{
+                        width: 20,
+                        height: 20,
+                        backgroundColor: "#f0f0f0",
+                      }}
+                    />
+                  )}
+                </Link>
 
-              <Link src="tel:+918433805514">
-                {callIconUrl ? (
-                  <PDFImage
-                    src={callIconUrl}
-                    style={{ width: 20, height: 20 }}
-                  />
-                ) : (
-                  <View
-                    style={{
-                      width: 20,
-                      height: 20,
-                      backgroundColor: "#f0f0f0",
-                    }}
-                  />
-                )}
-              </Link>
+                <Link src="tel:+918433805514">
+                  {callIconUrl ? (
+                    <PDFImage
+                      src={callIconUrl}
+                      style={{ width: 20, height: 20 }}
+                    />
+                  ) : (
+                    <View
+                      style={{
+                        width: 20,
+                        height: 20,
+                        backgroundColor: "#f0f0f0",
+                      }}
+                    />
+                  )}
+                </Link>
 
-              <Link src="mailto:support@mendingmind.org">
-                {gmailIconUrl ? (
-                  <PDFImage
-                    src={gmailIconUrl}
-                    style={{ width: 20, height: 20 }}
-                  />
-                ) : (
-                  <View
-                    style={{
-                      width: 20,
-                      height: 20,
-                      backgroundColor: "#f0f0f0",
-                    }}
-                  />
-                )}
-              </Link>
+                <Link src="mailto:support@mendingmind.org">
+                  {gmailIconUrl ? (
+                    <PDFImage
+                      src={gmailIconUrl}
+                      style={{ width: 20, height: 20 }}
+                    />
+                  ) : (
+                    <View
+                      style={{
+                        width: 20,
+                        height: 20,
+                        backgroundColor: "#f0f0f0",
+                      }}
+                    />
+                  )}
+                </Link>
+              </View>
             </View>
-          </View>
 
-          {/* Founder section */}
+            {/* Founder section
           <View style={{ flex: 1, alignItems: "flex-end" }}>
             <Text
               style={{
@@ -1187,112 +1114,118 @@ const MyDocument = (props) => {
             >
               Kinjal M Jain
             </Text>
-          </View>
-        </View>
-
-        {/* Contact details */}
-        <View
-          style={{
-            flexDirection: "row",
-            padding: 15,
-            paddingTop: 5,
-          }}
-        >
-          <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
-            {phoneIconUrl ? (
-              <PDFImage
-                src={phoneIconUrl}
-                style={{ width: 15, height: 15, marginRight: 5 }}
-              />
-            ) : (
-              <View
-                style={{
-                  width: 15,
-                  height: 15,
-                  marginRight: 5,
-                  backgroundColor: "#f0f0f0",
-                }}
-              />
-            )}
-            <Link src="tel:+918433805514">
-              <Text
-                style={{
-                  fontSize: 10,
-                  fontFamily: "Montserrat",
-                  color: "#333",
-                }}
-              >
-                +91-8433805514
-              </Text>
-            </Link>
+          </View> */}
           </View>
 
-          <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
-            {emailIconUrl ? (
-              <PDFImage
-                src={emailIconUrl}
-                style={{ width: 15, height: 15, marginRight: 5 }}
-              />
-            ) : (
-              <View
-                style={{
-                  width: 15,
-                  height: 15,
-                  marginRight: 5,
-                  backgroundColor: "#f0f0f0",
-                }}
-              />
-            )}
-            <Link src="mailto:support@mendingmind.org">
-              <Text
-                style={{
-                  fontSize: 10,
-                  fontFamily: "Montserrat",
-                  color: "#333",
-                }}
-              >
-                support@mendingmind.org
-              </Text>
-            </Link>
-          </View>
-
+          {/* Contact details */}
           <View
             style={{
-              flex: 1,
               flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "flex-end",
+              padding: 15,
+              paddingTop: 5,
+              backgroundColor: "#F0C93B",
             }}
           >
-            {webIconUrl ? (
-              <PDFImage
-                src={webIconUrl}
-                style={{ width: 15, height: 15, marginRight: 5 }}
-              />
-            ) : (
-              <View
-                style={{
-                  width: 15,
-                  height: 15,
-                  marginRight: 5,
-                  backgroundColor: "#f0f0f0",
-                }}
-              />
-            )}
-            <Link src="https://mendingmind.org">
-              <Text
-                style={{
-                  fontSize: 10,
-                  fontFamily: "Montserrat",
-                  color: "#333",
-                }}
-              >
-                mendingmind.org
-              </Text>
-            </Link>
+            <View
+              style={{ flex: 1, flexDirection: "row", alignItems: "center" }}
+            >
+              {phoneIconUrl ? (
+                <PDFImage
+                  src={phoneIconUrl}
+                  style={{ width: 15, height: 15, marginRight: 5 }}
+                />
+              ) : (
+                <View
+                  style={{
+                    width: 15,
+                    height: 15,
+                    marginRight: 5,
+                    backgroundColor: "#f0f0f0",
+                  }}
+                />
+              )}
+              <Link src="tel:+918433805514">
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontFamily: "Montserrat",
+                    color: "#333",
+                  }}
+                >
+                  +91-8433805514
+                </Text>
+              </Link>
+            </View>
+
+            <View
+              style={{ flex: 1, flexDirection: "row", alignItems: "center" }}
+            >
+              {emailIconUrl ? (
+                <PDFImage
+                  src={emailIconUrl}
+                  style={{ width: 15, height: 15, marginRight: 5 }}
+                />
+              ) : (
+                <View
+                  style={{
+                    width: 15,
+                    height: 15,
+                    marginRight: 5,
+                    backgroundColor: "#f0f0f0",
+                  }}
+                />
+              )}
+              <Link src="mailto:support@mendingmind.org">
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontFamily: "Montserrat",
+                    color: "#333",
+                  }}
+                >
+                  support@mendingmind.org
+                </Text>
+              </Link>
+            </View>
+
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "flex-end",
+              }}
+            >
+              {webIconUrl ? (
+                <PDFImage
+                  src={webIconUrl}
+                  style={{ width: 15, height: 15, marginRight: 5 }}
+                />
+              ) : (
+                <View
+                  style={{
+                    width: 15,
+                    height: 15,
+                    marginRight: 5,
+                    backgroundColor: "#f0f0f0",
+                  }}
+                />
+              )}
+              <Link src="https://mendingmind.org">
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontFamily: "Montserrat",
+                    color: "#333",
+                  }}
+                >
+                  mendingmind.org
+                </Text>
+              </Link>
+            </View>
           </View>
         </View>
-        {bgImageUrl && (
+        {/* {bgImageUrl && (
           <PDFImage
             src={bgImageUrl}
             style={{
@@ -1305,7 +1238,7 @@ const MyDocument = (props) => {
               opacity: 1,
             }}
           />
-        )}
+        )} */}
       </Page>
     </Document>
   );

@@ -1,25 +1,49 @@
 "use client";
 
-import { useState } from 'react';
-import { useAuth } from '@/app/lib/auth';
-import { Button } from '@/app/components/ui/button';
-import { Input } from '@/app/components/ui/input';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/app/components/ui/card';
-import Image from 'next/image';
+import { useState } from "react";
+import { useAuth } from "@/app/lib/auth";
+import { Button } from "@/app/components/ui/button";
+import { Input } from "@/app/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/app/components/ui/card";
+import Image from "next/image";
 
 export default function LoginForm() {
-  const [pin, setPin] = useState('');
-  const [error, setError] = useState('');
+  const [pin, setPin] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (login(pin)) {
-      setError('');
-    } else {
-      setError('Invalid PIN. Please try again.');
-      setPin('');
+
+    if (!pin) {
+      setError("Please enter a PIN");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const success = await login(pin);
+
+      if (success) {
+        setError("");
+      } else {
+        setError("Invalid PIN. Please try again.");
+        setPin("");
+      }
+    } catch (error) {
+      setError("An error occurred. Please try again.");
+      console.error("Login error:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -37,7 +61,9 @@ export default function LoginForm() {
               className="object-contain"
             />
           </div>
-          <CardTitle className="text-2xl font-bold text-center">Dashboard Access</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">
+            Dashboard Access
+          </CardTitle>
           <CardDescription className="text-center">
             Enter your PIN to access the admin dashboard
           </CardDescription>
@@ -55,14 +81,17 @@ export default function LoginForm() {
                 maxLength={4}
               />
               {error && (
-                <p className="text-sm font-medium text-red-500 text-center">{error}</p>
+                <p className="text-sm font-medium text-red-500 text-center">
+                  {error}
+                </p>
               )}
             </div>
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               className="w-full mt-4 bg-[#F0C93B] hover:bg-[#e0b92b] text-black"
+              disabled={isLoading}
             >
-              Login
+              {isLoading ? "Logging in..." : "Login"}
             </Button>
           </form>
         </CardContent>

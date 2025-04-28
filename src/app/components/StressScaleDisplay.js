@@ -99,19 +99,19 @@ const getStressLevelInfo = (score) => {
     return {
       level: "You appear to manage stress effectively",
       interpretation:
-        "Based on your responses, you may be someone who is Resilient, Emotionally steady, Composed under pressure, Self-regulated, Focused, Confident, Calm in high-stakes situations",
+        "You manage stress effectively, maintaining emotional steadiness, self-control, and clarity during demanding circumstances. Your composed mindset allows you to stay grounded under pressure, approach challenges with confidence, and bounce back with resilience.",
     };
   } else if (score <= 26) {
     return {
       level: "You seem to adapt well, with occasional emotional load",
       interpretation:
-        "Based on your responses, you may be someone who is Adaptable, Self-aware, Generally steady, Occasionally strained, In need of recharge, Emotionally responsive, Balanced with room to pause",
+        "You adapt well to stress with occasional emotional fluctuations. You are generally steady and self-aware but may experience moments of strain requiring rest or realignment. Your awareness of when to step back and recharge supports ongoing emotional balance and growth.",
     };
   } else {
     return {
       level: "You may currently be navigating a higher mental load",
       interpretation:
-        "Based on your responses, you may be someone who is Sensitive to pressure, Emotionally intense, Thought-heavy, Easily affected by workload shifts, Highly empathetic, Reflective, Growth-minded",
+        "You may currently be experiencing a heightened mental load and emotional sensitivity. You are thoughtful and reflective but may find yourself more easily affected by workload shifts or environmental pressures. Your growth mindset and willingness to self-explore can help you move through stress constructively with the right support systems.",
     };
   }
 };

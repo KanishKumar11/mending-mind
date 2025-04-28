@@ -90,29 +90,29 @@ const getTraitColor = (trait) => {
 const getTraitLevelDescription = (trait, score) => {
   const traitData = {
     extraversion: {
-      high: "You tend to be Expressive & Proactive",
-      medium: "You tend to be Calmly Engaged & Situationally Social",
-      low: "You tend to be Reserved & Reflectively Independent",
+      high: "You tend to be expressive & proactive",
+      medium: "You tend to be calmly engaged & situationally social",
+      low: "You tend to be reserved & reflectively independent",
     },
     agreeableness: {
-      high: "You tend to be Highly Cooperative & Empathetic",
-      medium: "You tend to be Tactful & Objectively Balanced",
-      low: "You tend to be Task-Focused & Logic-Oriented",
+      high: "You tend to be highly cooperative & empathetic",
+      medium: "You tend to be tactful & objectively balanced",
+      low: "You tend to be task focused & logic oriented",
     },
     conscientiousness: {
-      high: "You tend to be Exceptionally Reliable & Goal-Oriented",
-      medium: "You tend to be Efficient & Practically Balanced",
-      low: "You tend to be Adaptive & Flexible in Structure",
+      high: "You tend to be exceptionally reliable & goal oriented",
+      medium: "You tend to be efficient & practically balanced",
+      low: "You tend to be adaptive & flexible in structure",
     },
     neuroticism: {
-      high: "You tend to be Composed & Emotionally Grounded",
-      medium: "You tend to be Emotionally Aware & Responsive",
-      low: "You tend to be Sensitive & Deeply Reflective",
+      high: "You tend to be composed & emotionally grounded",
+      medium: "You tend to be emotionally aware & responsive",
+      low: "You tend to be sensitive & deeply reflective",
     },
     openness: {
-      high: "You tend to be Innovative & Open-Minded",
-      medium: "You tend to be Balanced & Thoughtfully Receptive",
-      low: "You tend to be Structured & Consistency-Driven",
+      high: "You tend to be innovative & open-minded",
+      medium: "You tend to be balanced & thoughtfully receptive",
+      low: "You tend to be structured & consistency driven",
     },
   };
 
@@ -136,34 +136,34 @@ const getTraitLevelDescription = (trait, score) => {
 const getTraitAttributes = (trait, level) => {
   const attributes = {
     extraversion: {
-      high: "Energetic, Extroverted, Proactive, Persuasive, Charismatic, Talkative, Socially confident, Enthusiastic, Assertive, Outgoing",
+      high: "You are likely energetic, outgoing, persuasive, and socially confident. You thrive in environments that require communication, collaboration, and engagement with others. Your proactive and enthusiastic nature often draws people toward you, making you naturally charismatic and approachable.",
       medium:
-        "Approachable, Composed, Observant, Thoughtful, Adaptable, Diplomatic, Emotionally steady, Attuned to social cues, Selectively expressive",
-      low: "Introverted, Reflective, Independent, Focused, Discreet, Deep listener, Introspective, Self-contained, Calm under pressure",
+        "You appear composed, adaptable, and selectively social. You balance being engaging when required with maintaining personal space when needed. You are thoughtful, diplomatic, and responsive to social cues, making you an effective communicator without being overly extroverted.",
+      low: "You tend to be reflective, independent, and introspective. You prefer meaningful conversations over small talk and often seek depth in your interactions. Your calm and self-contained demeanor allows you to remain centered even in socially demanding environments.",
     },
     agreeableness: {
-      high: "Compassionate, Trusting, Supportive, Emotionally understanding, Warm, Team-oriented, Generous, Conflict-avoidant, Respectful, Nurturing",
+      high: "You demonstrate compassion, emotional warmth, and a team-oriented mindset. You are likely empathetic, trusting, supportive, and nurturing toward others. You value harmony and collaboration and often prioritize the emotional well-being of people around you.",
       medium:
-        "Tactful, Fair, Objective, Respectfully assertive, Situationally accommodating, Open-minded, Reasonable, Considerate, Discerning",
-      low: "Pragmatic, Independent, Direct, Results-driven, Rational, Reserved in empathy, Less emotionally expressive, Self-reliant, Candid",
+        "You exhibit tact, objectivity, and a balanced approach to social interactions. You can be considerate and fair without overextending emotionally. You appreciate different perspectives, practice respectful assertiveness, and maintain healthy boundaries while staying open-minded.",
+      low: "You lean toward pragmatism, independence, and task-orientation. You prioritize outcomes over emotional exchanges and are comfortable making decisions that are rational rather than sentiment-driven. You value efficiency, logical reasoning, and self-sufficiency.",
     },
     conscientiousness: {
-      high: "Organized, Responsible, Detail-oriented, Disciplined, Structured, Achievement-focused, Dependable, Meticulous, Persistent, Self-motivated",
+      high: " You are exceptionally reliable, goal-driven, and disciplined. You maintain high standards of organization, structure, and precision in your work. Your focus on achievement and persistence in pursuing objectives make you a dependable and dedicated individual.",
       medium:
-        "Reliable, Adaptable, Moderately structured, Realistic, Focused, Steady, Responsive, Goal-aware, Thoughtfully organized, Accountable",
-      low: "Flexible, Spontaneous, Responsive to guidance, Informal in planning, Creative in approach, Comfortable in dynamic environments, Curious",
+        "You are steady, efficient, and practically structured. You demonstrate responsibility and focus while remaining adaptable to changing circumstances. You value balance between planning and flexibility, ensuring tasks are handled thoughtfully without rigidity.",
+      low: "You display spontaneity, creativity, and flexibility in planning. You are comfortable operating in dynamic environments where change is constant. Your informal, adaptive style encourages innovation and responsiveness rather than strict adherence to rules.",
     },
     neuroticism: {
-      high: "Resilient, Calm under pressure, Self-regulated, Steady, Reflective, Emotionally aware, Centered, Even-tempered, Grounded",
+      high: "You exhibit emotional resilience, self-regulation, and inner steadiness. You manage emotional fluctuations effectively, remaining composed and centered under pressure. Your calmness and reflective nature support consistent and balanced emotional responses.",
       medium:
-        "Balanced, Thoughtfully expressive, Self-aware, In tune with emotions, Reasonable under pressure, Adaptive, Honest, Introspective",
-      low: "Empathetic, Emotionally open, Responsive to environment, Deep thinker, Growth-oriented, Self-explorative, Learns through emotion",
+        "You show emotional awareness, thoughtful expression, and adaptability under moderate stress. You remain self-aware of your emotions and manage them constructively, maintaining a reasonable balance between expression and regulation during challenging times.",
+      low: "Youare emotionally sensitive, deeply introspective, and highly reflective. You engage closely with your inner emotional world and are attuned to both internal and external changes. Your emotional openness allows you to experience and process deeper levels of self-awareness and connection.",
     },
     openness: {
-      high: "Curious, Imaginative, Open to change, Creative, Insightful, Adaptive, Culturally aware, Explorative, Conceptual thinker, Receptive",
+      high: "You are curious, innovative, and highly receptive to new ideas and experiences. You seek opportunities to learn, explore, and grow, showing adaptability, cultural awareness, and creative problem-solving. You are naturally inclined toward imagination and broad conceptual thinking.",
       medium:
-        "Thoughtful, Discerning, Balanced risk-taker, Reflective, Practically creative, Intellectually engaged, Learns from experience",
-      low: "Practical, Routine-focused, Organized, Steady, Systematic, Loyal to proven methods, Reliable, Methodical, Detail-attentive",
+        "You maintain a balanced openness to new experiences, engaging thoughtfully with novel ideas while maintaining practical realism. You are reflective, solution-focused, and intellectually engaged, appreciating both innovation and grounded application.",
+      low: "You favor structure, consistency, and proven methods. You prefer stability and routine over unpredictable or unfamiliar experiences. Your focus on reliability, organization, and tradition helps you maintain a steady and dependable environment.",
     },
   };
 
@@ -225,9 +225,7 @@ const PersonalityTraitDisplay = ({ trait, score }) => {
       </View>
 
       <Text style={styles.traitDescription}>{description}</Text>
-      <Text style={styles.traitAttributes}>
-        Based on your responses, you may be someone who {attributes}
-      </Text>
+      <Text style={styles.traitAttributes}>{attributes}</Text>
     </View>
   );
 };

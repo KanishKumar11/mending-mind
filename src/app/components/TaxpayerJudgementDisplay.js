@@ -44,36 +44,30 @@ const styles = StyleSheet.create({
 const getJudgementLevelInfo = (score) => {
   if (score >= 4) {
     return {
-      level: "Higher Scores",
+      level: "Higher Scores (4-5)",
       subtitle: "You may be Insightful & System-Oriented",
       description:
-        "Your results suggest that you may be Perceptive, Emotionally aware, Strategic, Composed, Efficient, Vision-driven, Flexible, Prioritization-savvy, System thinker, Long-term focused",
-      impact:
-        "You likely approach complex scenarios with clarity, strategy, and emotional intelligence.",
+        "You approach complex scenarios with emotional intelligence, strategic insight, and system-oriented thinking. You prioritize long-term goals, balance flexibility with structure, and respond to challenges with clarity and thoughtful decision-making.",
     };
   } else if (score === 3) {
     return {
-      level: "Moderate Scores",
+      level: "Moderate Scores (3)",
       subtitle: "You may be Responsible & Strategically Emerging",
       description:
-        "Your results suggest that you may be Reliable, Fair, Diligent, Balanced, Reasonable, Practically adaptive, Strategic in progress, Level-headed, Purposeful, Growth-minded",
-      impact:
-        "Your decision-making shows a blend of responsibility and adaptability.",
+        "You demonstrate responsibility, fairness, and practical adaptability. You are balanced in your approach, blending ethical judgment with strategic growth, and are committed to learning and evolving your decision-making over time.",
     };
   } else {
     return {
-      level: "Lower Scores",
+      level: "Lower Scores (1-2)",
       subtitle: "You may be Detail-Focused & Principles-Driven",
       description:
-        "Your results suggest that you may be Precise, Thoughtful, Considerate, Cautious, Values clarity, Rule-conscious, Practical, Detail-oriented, Ethical, Steady",
-      impact:
-        "You tend to focus on immediate needs and uphold principles with care.",
+        "You are detail-focused, principle-driven, and thoughtful in your choices. You value clarity, ethical standards, and practical execution, prioritizing precision and consistency even in complex or uncertain situations.",
     };
   }
 };
 
 const TaxpayerJudgementDisplay = ({ score }) => {
-  const { level, subtitle, description, impact } = getJudgementLevelInfo(score);
+  const { level, subtitle, description } = getJudgementLevelInfo(score);
 
   return (
     <View style={styles.container}>
@@ -81,7 +75,6 @@ const TaxpayerJudgementDisplay = ({ score }) => {
         <Text style={styles.scoreHeader}>{level}</Text>
         <Text style={styles.subtitle}>{subtitle}</Text>
         <Text style={styles.attributes}>{description}</Text>
-        <Text style={styles.impact}>{impact}</Text>
       </View>
     </View>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Text, View, StyleSheet } from "@react-pdf/renderer";
+import { Text, View, StyleSheet, Image } from "@react-pdf/renderer";
 
 // Define the styles for our component
 const styles = StyleSheet.create({
@@ -69,32 +69,27 @@ const getResilienceLevelInfo = (score) => {
       level: "Low Resilience",
       subtitle: "You may be Reflective & Building Stability",
       description:
-        "Your results suggest that you may be Emotionally sensitive, Honest, Self-aware, Open to support, Deep thinker, Growth-minded, Curious, In progress, Thoughtful, Observant",
-      impact:
-        "You may currently feel more affected by stress or unexpected changes",
+        "You are currently reflective and working toward building greater emotional stability. While you may feel more affected by external stressors, your self-awareness, honesty, and openness to growth suggest strong potential for strengthening your resilience over time.",
     };
   } else if (score <= 75) {
     return {
       level: "Moderate Resilience",
       subtitle: "You may be Steady & Adaptively Growing",
       description:
-        "Your results suggest that you may be Reliable, Cautiously optimistic, Reflective, Adaptable, Grounded, Calm under pressure, Self-improving, Emotionally aware, Solution-inclined, Willing to learn",
-      impact: "You often handle challenges with balance and care.",
+        "You demonstrate steadiness and adaptable growth. You handle challenges thoughtfully, maintaining calmness under pressure while remaining emotionally aware and solution-focused. Your willingness to learn and improve supports continued resilience development.",
     };
   } else {
     return {
       level: "High Resilience",
       subtitle: "You may be Resilient & Resourceful",
       description:
-        "Your results suggest that you may be Confident, Emotionally strong, Optimistic, Flexible, Composed, Proactive, Grounded, Quick to recover, Empowered, Self-assured",
-      impact: "You likely navigate adversity with clarity and confidence.",
+        "You are emotionally strong, confident, and resourceful in adversity. You recover quickly from setbacks, approach challenges with clarity and optimism, and embody a grounded and proactive attitude toward change and uncertainty.",
     };
   }
 };
 
-const ResilienceScaleDisplay = ({ score }) => {
-  const { level, subtitle, description, impact } =
-    getResilienceLevelInfo(score);
+const ResilienceScaleDisplay = ({ score, chartImage }) => {
+  const { subtitle, description } = getResilienceLevelInfo(score);
 
   // Calculate percentage for the bar (assuming max score is 100)
   const percentage = Math.min(100, Math.max(0, score));
@@ -102,7 +97,7 @@ const ResilienceScaleDisplay = ({ score }) => {
   // Determine color based on score
   const getColor = () => {
     if (score <= 50) return "#B4E0E0"; // Mint for low resilience
-    if (score <= 75) return "#FFC107"; // Amber for moderate resilience
+    if (score <= 75) return "#F0C93B"; // Gold for moderate resilience
     return "#4CAF50"; // Green for high resilience
   };
 
@@ -115,36 +110,42 @@ const ResilienceScaleDisplay = ({ score }) => {
           { borderLeft: `4px solid ${getColor()}` },
         ]}
       >
-        <Text style={styles.styleDescription}>Resilience Scale</Text>
-
-        {/* Visual bar */}
-        <View style={styles.barContainer}>
-          <View style={styles.barBackground}>
-            <View
-              style={[
-                styles.barFill,
-                {
-                  width: `${percentage}%`,
-                  backgroundColor: getColor(),
-                },
-              ]}
+        {/* Chart image if available, otherwise fallback to simple bar */}
+        {chartImage ? (
+          <View style={{ marginVertical: 10, alignItems: "center" }}>
+            <Image
+              src={chartImage}
+              style={{
+                width: 800,
+                height: 120,
+                objectFit: "contain",
+              }}
             />
           </View>
+        ) : (
+          <View style={styles.barContainer}>
+            <View style={styles.barBackground}>
+              <View
+                style={[
+                  styles.barFill,
+                  {
+                    width: `${percentage}%`,
+                    backgroundColor: getColor(),
+                  },
+                ]}
+              />
+            </View>
 
-          <View style={styles.scaleLabels}>
-            <Text style={styles.scaleLabel}>Low</Text>
-            <Text style={styles.scaleLabel}>Moderate</Text>
-            <Text style={styles.scaleLabel}>High</Text>
+            <View style={styles.scaleLabels}>
+              <Text style={styles.scaleLabel}>Low</Text>
+              <Text style={styles.scaleLabel}>Moderate</Text>
+              <Text style={styles.scaleLabel}>High</Text>
+            </View>
           </View>
-        </View>
+        )}
 
         <Text style={styles.subtitle}>{subtitle}</Text>
         <Text style={styles.attributes}>{description}</Text>
-        <Text
-          style={[styles.attributes, { fontStyle: "italic", marginTop: 8 }]}
-        >
-          {impact}
-        </Text>
       </View>
     </View>
   );

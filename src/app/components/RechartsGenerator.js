@@ -50,7 +50,7 @@ const RechartsGenerator = ({
     if (imageGeneratedRef.current) return;
 
     const canvas = document.createElement("canvas");
-    canvas.width = chartType === "personality" ? 600 : 300;
+    canvas.width = chartType === "personality" ? 400 : 300;
     canvas.height = chartType === "personality" ? 400 : 300;
     const ctx = canvas.getContext("2d");
 
@@ -76,26 +76,31 @@ const RechartsGenerator = ({
           name: "Openness",
           color: "#F0C93B", // gold
           value: reportScores?.openness || 9,
+          rotation: -30, // Specific rotation angle
         },
         {
           name: "Conscientiousness",
           color: "#B4E0E0", // mint
           value: reportScores?.conscientiousness || 6,
+          rotation: 40, // Rotate by -10 degrees as requested
         },
         {
           name: "Extraversion",
           color: "#FF5757", // vibrant red
           value: reportScores?.extraversion || 7,
+          rotation: -65, // Rotate by 45 degrees as requested
         },
         {
           name: "Agreeableness",
           color: "#7B68EE", // vibrant purple
           value: reportScores?.agreeableness || 8,
+          rotation: 0,
         },
         {
           name: "Neuroticism",
           color: "#00C2A8", // vibrant teal
           value: reportScores?.neuroticism || 4,
+          rotation: 50, // Rotate by 10 degrees as requested
         },
       ];
 
@@ -105,7 +110,7 @@ const RechartsGenerator = ({
       let startAngle = 0;
 
       // Draw pie slices
-      traits.forEach((trait) => {
+      traits.forEach((trait, index) => {
         // Calculate slice angle based on proportion of total
         const sliceAngle = (trait.value / totalValue) * 2 * Math.PI;
 
@@ -123,19 +128,9 @@ const RechartsGenerator = ({
         const valueX = centerX + Math.cos(valueAngle) * valueRadius;
         const valueY = centerY + Math.sin(valueAngle) * valueRadius;
 
-        // Draw value text with shadow for better visibility
-        ctx.fillStyle = "#000000";
-        ctx.font = "bold 16px Montserrat, Arial, sans-serif";
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.strokeStyle = "#FFFFFF";
-        ctx.lineWidth = 2;
-        // ctx.strokeText(trait.value.toString(), valueX, valueY);
-        // ctx.fillText(trait.value.toString(), valueX, valueY);
-
-        // Draw label
+        // Draw label with custom rotated text
         const labelAngle = startAngle + sliceAngle / 2;
-        const labelRadius = radius * 1.3;
+        const labelRadius = radius * 1.2; // Reduced radius to save space
         const labelX = centerX + Math.cos(labelAngle) * labelRadius;
         const labelY = centerY + Math.sin(labelAngle) * labelRadius;
 
@@ -149,11 +144,24 @@ const RechartsGenerator = ({
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // Draw label text without value in black
+        // Save the current context state
+        ctx.save();
+
+        // Move to where we want to draw the text
+        ctx.translate(labelX, labelY);
+
+        // Apply the custom rotation angle in radians
+        const rotationAngle = trait.rotation * (Math.PI / 180);
+        ctx.rotate(rotationAngle);
+
+        // Draw the text
         ctx.fillStyle = "#000000";
         ctx.font = "bold 16px Montserrat, Arial, sans-serif";
-        ctx.textAlign = labelX > centerX ? "left" : "right";
-        ctx.fillText(`${trait.name}`, labelX, labelY);
+        ctx.textAlign = "center";
+        ctx.fillText(`${trait.name}`, 0, 0);
+
+        // Restore the context to its original state
+        ctx.restore();
 
         startAngle += sliceAngle;
       });
@@ -246,21 +254,38 @@ const RechartsGenerator = ({
   // Prepare chart data based on chart type
   let chartData;
   let chartColors;
-  // Restore original chart sizes
-  let chartWidth = "600px";
-  let chartHeight = "400px";
+  // Reduced chart size to save space
+  let chartWidth = "550px";
+  let chartHeight = "350px";
 
   if (chartType === "personality") {
     // Personality chart data with actual values from reportScores
     chartData = [
-      { name: "Openness", value: reportScores?.openness || 9 },
+      {
+        name: "Openness",
+        value: reportScores?.openness || 9,
+        rotation: 0,
+      },
       {
         name: "Conscientiousness",
         value: reportScores?.conscientiousness || 6,
+        rotation: -10, // Rotate by -10 degrees as requested
       },
-      { name: "Extraversion", value: reportScores?.extraversion || 7 },
-      { name: "Agreeableness", value: reportScores?.agreeableness || 8 },
-      { name: "Neuroticism", value: reportScores?.neuroticism || 4 },
+      {
+        name: "Extraversion",
+        value: reportScores?.extraversion || 7,
+        rotation: 45, // Rotate by 45 degrees as requested
+      },
+      {
+        name: "Agreeableness",
+        value: reportScores?.agreeableness || 8,
+        rotation: 0,
+      },
+      {
+        name: "Neuroticism",
+        value: reportScores?.neuroticism || 4,
+        rotation: 10, // Rotate by 10 degrees as requested
+      },
     ];
     // Use mint, gold and more vibrant colors
     chartColors = ["#F0C93B", "#B4E0E0", "#FF5757", "#7B68EE", "#00C2A8"];
@@ -280,6 +305,54 @@ const RechartsGenerator = ({
     chartHeight = "300px";
   }
 
+  // Custom Label Component with specific rotations for each label
+  const CustomRotatedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    name,
+    index,
+  }) => {
+    const RADIAN = Math.PI / 180;
+    const radius = outerRadius * 1.2;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+    // Get the specific rotation for this trait
+    const customRotation = chartData[index]?.rotation || 0;
+
+    return (
+      <g>
+        {/* Line from pie to label */}
+        <path
+          d={`M${cx + innerRadius * Math.cos(-midAngle * RADIAN)},${
+            cy + innerRadius * Math.sin(-midAngle * RADIAN)
+          }L${cx + radius * 0.85 * Math.cos(-midAngle * RADIAN)},${
+            cy + radius * 0.85 * Math.sin(-midAngle * RADIAN)
+          }`}
+          stroke={chartColors[index % chartColors.length]}
+          fill="none"
+          strokeWidth={2}
+        />
+        {/* Text with custom rotation */}
+        <text
+          x={x}
+          y={y}
+          fill="#000000"
+          textAnchor="middle"
+          dominantBaseline="central"
+          fontSize={12}
+          fontWeight="bold"
+          transform={`rotate(${customRotation}, ${x}, ${y})`}
+        >
+          {name}
+        </text>
+      </g>
+    );
+  };
+
   return (
     <div
       ref={chartRef}
@@ -296,11 +369,7 @@ const RechartsGenerator = ({
             data={chartData}
             cx="50%"
             cy="50%"
-            labelLine={
-              chartType === "personality"
-                ? { stroke: "#333333", strokeWidth: 1 }
-                : false
-            }
+            labelLine={false} // Remove default label lines
             outerRadius={chartType === "personality" ? 120 : 100}
             fill="#8884d8"
             dataKey="value"
@@ -357,7 +426,7 @@ const RechartsGenerator = ({
                   fontSize: "24px",
                   fontWeight: "bold",
                   fontFamily: "Montserrat",
-                  fill: "#000000", // Changed to black text
+                  fill: "#000000",
                 }}
               />
             )}
@@ -368,30 +437,13 @@ const RechartsGenerator = ({
               data={chartData}
               cx="50%"
               cy="50%"
-              outerRadius={180}
+              outerRadius={170} // Reduced to save space
               innerRadius={140}
               fill="#8884d8"
               dataKey="value"
-              label={({ name, cx, cy, midAngle, innerRadius, outerRadius }) => {
-                const RADIAN = Math.PI / 180;
-                const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-                const x = cx + radius * Math.cos(-midAngle * RADIAN);
-                const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-                return (
-                  <text
-                    x={x}
-                    y={y}
-                    fill="#000000"
-                    textAnchor="middle"
-                    dominantBaseline="central"
-                    fontWeight="bold"
-                    fontSize={12}
-                  >
-                    {name}
-                  </text>
-                );
-              }}
+              label={(props) => (
+                <CustomRotatedLabel {...props} index={props.index} />
+              )} // Pass index to identify which trait
             >
               {chartData.map((entry, index) => (
                 <Cell
@@ -403,11 +455,17 @@ const RechartsGenerator = ({
               ))}
             </Pie>
           )}
+          {/* Compact legend */}
           <Legend
-            layout={chartType === "personality" ? "vertical" : "horizontal"}
-            align={chartType === "personality" ? "right" : "center"}
-            verticalAlign={chartType === "personality" ? "middle" : "bottom"}
-            wrapperStyle={{ fontSize: "12px", fontFamily: "Montserrat" }}
+            layout={chartType === "personality" ? "horizontal" : "horizontal"}
+            align="center"
+            verticalAlign="bottom"
+            iconSize={10}
+            wrapperStyle={{
+              fontSize: "11px",
+              fontFamily: "Montserrat",
+              paddingTop: "10px",
+            }}
           />
         </PieChart>
       </ResponsiveContainer>

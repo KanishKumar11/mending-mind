@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/app/lib/mongodb";
 import User from "@/app/models/User";
+import { withAuth } from "../middleware";
 
-export async function POST(request) {
+export const POST = withAuth(async (request) => {
   try {
     // Connect to the database
     await dbConnect();
@@ -76,9 +77,9 @@ export async function POST(request) {
       { status: 500 }
     );
   }
-}
+});
 
-export async function GET() {
+export const GET = withAuth(async () => {
   try {
     // Connect to the database
     await dbConnect();
@@ -95,4 +96,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-}
+});
