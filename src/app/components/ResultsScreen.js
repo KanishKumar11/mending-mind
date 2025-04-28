@@ -184,14 +184,14 @@ const ResultsScreen = ({ userInfo, scores }) => {
         </div>
       )}
 
-      {emailStatus === "error" && (
+      {/* {emailStatus === "error" && (
         <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-2 mb-4 rounded">
           <p className="text-sm">
             There was an error sending your report to your email. You can still
             download it using the button above.
           </p>
         </div>
-      )}
+      )} */}
 
       {/* Thank You Message */}
       <div className="text-center mb-6">
