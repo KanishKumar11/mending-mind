@@ -2,15 +2,31 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import dynamic from "next/dynamic";
 import { LanguageProvider } from "./contexts/LanguageContext";
-import { QuestionnaireProvider } from "./contexts/QuestionnaireContext";
-import Questionnaire from "./components/Questionnaire";
 
-import UserForm from "./components/UserForm";
-import PageTransition from "./components/PageTransition";
-import ReportGenerator from "./components/ReportGenerator";
-import ResultsScreen from "./components/ResultsScreen";
-import { generateAndDownloadPDF } from "./utils/generatePDF";
+// Dynamically import components with client-side only execution
+const QuestionnaireProvider = dynamic(
+  () =>
+    import("./contexts/QuestionnaireContext").then(
+      (mod) => mod.QuestionnaireProvider
+    ),
+  { ssr: false }
+);
+
+const Questionnaire = dynamic(() => import("./components/Questionnaire"), {
+  ssr: false,
+});
+
+const UserForm = dynamic(() => import("./components/UserForm"), { ssr: false });
+
+const PageTransition = dynamic(() => import("./components/PageTransition"), {
+  ssr: false,
+});
+
+const ResultsScreen = dynamic(() => import("./components/ResultsScreen"), {
+  ssr: false,
+});
 
 export default function Home() {
   // App state to control which screen is visible
