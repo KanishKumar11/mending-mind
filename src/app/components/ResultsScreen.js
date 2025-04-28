@@ -8,11 +8,12 @@ import ReportDownlaoder from "./ReportDownloader";
 const ResultsScreen = ({ userInfo, scores }) => {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [saveStatus, setSaveStatus] = useState("idle"); // idle, loading, success, error
+  const [emailStatus, setEmailStatus] = useState("idle"); // idle, sending, sent, error
 
   // Save user data to the database when component mounts
   useEffect(() => {
     const saveUserData = async () => {
-      if (!userInfo || !scores) return;
+      if (!userInfo || !scores || typeof window === "undefined") return;
 
       try {
         setSaveStatus("loading");
@@ -25,9 +26,10 @@ const ResultsScreen = ({ userInfo, scores }) => {
           email: userInfo.emailId || "",
           contact: userInfo.contactNo || "",
           scores: scores,
+          pdfBlob: window.pdfBlob ? true : false, // Indicate if PDF is available
         };
 
-        // Send the data to the API
+        // Send the data to the API to save user data
         const response = await fetch("/api/users", {
           method: "POST",
           headers: {
@@ -38,11 +40,48 @@ const ResultsScreen = ({ userInfo, scores }) => {
 
         const data = await response.json();
 
-        if (data.success) {
-          setSaveStatus("success");
-        } else {
-          setSaveStatus("error");
+        // if (data.success) {
+        // If user data is saved successfully, send the PDF via email
+        if (window.pdfBlob && userData.email) {
+          try {
+            setEmailStatus("sending");
+
+            // Convert PDF blob to base64
+            const reader = new FileReader();
+            reader.readAsDataURL(window.pdfBlob);
+
+            reader.onloadend = async () => {
+              const base64data = reader.result.split(",")[1];
+
+              // Send email with PDF attachment
+              const emailResponse = await fetch("/api/send-email", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  email: userData.email,
+                  name: userData.name,
+                  pdfData: base64data,
+                }),
+              });
+
+              const emailData = await emailResponse.json();
+              if (emailData.success) {
+                console.log("Email sent successfully");
+                setEmailStatus("sent");
+              } else {
+                console.error("Failed to send email:", emailData.error);
+                setEmailStatus("error");
+              }
+            };
+          } catch (emailError) {
+            console.error("Error sending email:", emailError);
+            setEmailStatus("error");
+          }
         }
+
+        setSaveStatus("success");
       } catch (error) {
         setSaveStatus("error");
       }
@@ -126,10 +165,31 @@ const ResultsScreen = ({ userInfo, scores }) => {
         <ReportDownlaoder userInfo={userInfo} scores={scores} />
       </div>
 
-      {/* Status Indicator */}
+      {/* Status Indicators */}
       {saveStatus === "loading" && (
         <div className="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-2 mb-4 rounded">
           <p className="text-sm">Loading your personalized report...</p>
+        </div>
+      )}
+
+      {emailStatus === "sending" && (
+        <div className="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-2 mb-4 rounded">
+          <p className="text-sm">Sending your report to your email...</p>
+        </div>
+      )}
+
+      {emailStatus === "sent" && (
+        <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-2 mb-4 rounded">
+          <p className="text-sm">Your report has been sent to your email!</p>
+        </div>
+      )}
+
+      {emailStatus === "error" && (
+        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-2 mb-4 rounded">
+          <p className="text-sm">
+            There was an error sending your report to your email. You can still
+            download it using the button above.
+          </p>
         </div>
       )}
 

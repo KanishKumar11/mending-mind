@@ -3,7 +3,8 @@ import dbConnect from "@/app/lib/mongodb";
 import User from "@/app/models/User";
 import { withAuth } from "../middleware";
 
-export const POST = withAuth(async (request) => {
+// POST route doesn't require authentication
+export async function POST(request) {
   try {
     // Connect to the database
     await dbConnect();
@@ -77,7 +78,7 @@ export const POST = withAuth(async (request) => {
       { status: 500 }
     );
   }
-});
+}
 
 export const GET = withAuth(async () => {
   try {
