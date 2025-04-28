@@ -37,7 +37,12 @@ ChartJS.register(
 );
 
 // Main component that handles both mobile view and PDF generation
-const ReportDownloader = ({ userInfo, scores, onRestart }) => {
+const ReportDownloader = ({
+  userInfo,
+  scores,
+  onRestart,
+  disabled = false,
+}) => {
   const [chartData, setChartData] = useState(null);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [refreshPdfTrigger, setRefreshPdfTrigger] = useState(0);
@@ -208,7 +213,7 @@ const ReportDownloader = ({ userInfo, scores, onRestart }) => {
               setIsGeneratingPDF(false);
             }
           }}
-          disabled={isGeneratingPDF}
+          disabled={isGeneratingPDF || disabled}
           className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-[#B4E0E0] hover:bg-[#8ECACA] text-black h-10 px-4 py-2"
         >
           {isGeneratingPDF ? (
@@ -234,6 +239,30 @@ const ReportDownloader = ({ userInfo, scores, onRestart }) => {
                 ></path>
               </svg>
               Generating PDF...
+            </>
+          ) : disabled ? (
+            <>
+              <svg
+                className="animate-spin -ml-1 mr-2 h-5 w-5 text-black"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                ></path>
+              </svg>
+              Preparing Report...
             </>
           ) : (
             <>

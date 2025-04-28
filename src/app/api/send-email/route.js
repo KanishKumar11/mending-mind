@@ -2,10 +2,24 @@ import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 export async function POST(request) {
+  console.log("Email API endpoint called");
   try {
-    const { email, name, pdfData } = await request.json();
+    const body = await request.json();
+    console.log("Request body received:", {
+      hasEmail: !!body.email,
+      hasName: !!body.name,
+      hasPdfData: !!body.pdfData,
+      emailLength: body.email?.length,
+      pdfDataLength: body.pdfData ? body.pdfData.length : 0,
+    });
+
+    const { email, name, pdfData } = body;
 
     if (!email || !pdfData) {
+      console.log("Missing required fields:", {
+        email: !!email,
+        pdfData: !!pdfData,
+      });
       return NextResponse.json(
         {
           success: false,
@@ -15,16 +29,25 @@ export async function POST(request) {
       );
     }
 
+    console.log("Preparing to send email to:", email);
+
     // Create a transporter using Hostinger SMTP settings
+    console.log("Setting up email transporter with host: smtp.hostinger.com");
+    console.log("Email password available:", !!process.env.EMAIL_PASSWORD);
+
     const transporter = nodemailer.createTransport({
       host: "smtp.hostinger.com",
       port: 465,
       secure: true, // use SSL
       auth: {
         user: "support@mendingmind.org",
-        pass: process.env.EMAIL_PASSWORD, // Store this in .env file
+        pass: process.env.EMAIL_PASSWORD || "default-password-for-testing", // Store this in .env file
       },
+      debug: true, // Show debug output
+      logger: true, // Log information about the mail
     });
+
+    console.log("Transporter created successfully");
 
     // Create HTML email template with inline styles and no external images
     const htmlTemplate = `
@@ -83,7 +106,9 @@ export async function POST(request) {
     `;
 
     // Send email with PDF attachment
-    const info = await transporter.sendMail({
+    console.log("Preparing email with PDF attachment");
+
+    const mailOptions = {
       from: '"Mending Mind" <support@mendingmind.org>',
       to: email,
       subject: "Your Skill Based Psychometric Assessment Report",
@@ -96,13 +121,24 @@ export async function POST(request) {
           contentType: "application/pdf",
         },
       ],
-    });
+    };
 
-    console.log("Email sent: %s", info.messageId);
+    console.log("Mail options prepared, sending email now...");
+
+    let messageId;
+    try {
+      const info = await transporter.sendMail(mailOptions);
+      console.log("Email sent successfully: %s", info.messageId);
+      console.log("Email response:", info);
+      messageId = info.messageId;
+    } catch (emailError) {
+      console.error("Error in sendMail:", emailError);
+      throw emailError; // Re-throw to be caught by the outer try/catch
+    }
 
     return NextResponse.json({
       success: true,
-      messageId: info.messageId,
+      messageId: messageId,
     });
   } catch (error) {
     console.error("Error sending email:", error);

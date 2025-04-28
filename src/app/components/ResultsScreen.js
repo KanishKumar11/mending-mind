@@ -9,6 +9,32 @@ const ResultsScreen = ({ userInfo, scores }) => {
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [saveStatus, setSaveStatus] = useState("idle"); // idle, loading, success, error
   const [emailStatus, setEmailStatus] = useState("idle"); // idle, sending, sent, error
+  const [pdfReady, setPdfReady] = useState(false);
+
+  // Check if PDF blob is available in window object
+  useEffect(() => {
+    const checkPdfBlob = () => {
+      if (typeof window !== "undefined" && window.pdfBlob) {
+        console.log("PDF blob found in window object");
+        setPdfReady(true);
+        return true;
+      }
+      return false;
+    };
+
+    // Check immediately
+    if (!checkPdfBlob()) {
+      // If not available, set up an interval to check every second
+      const intervalId = setInterval(() => {
+        if (checkPdfBlob()) {
+          clearInterval(intervalId);
+        }
+      }, 1000);
+
+      // Clean up interval
+      return () => clearInterval(intervalId);
+    }
+  }, []);
 
   // Save user data to the database when component mounts
   useEffect(() => {
@@ -17,6 +43,7 @@ const ResultsScreen = ({ userInfo, scores }) => {
 
       try {
         setSaveStatus("loading");
+        console.log("PDF ready state:", pdfReady);
 
         // Prepare the data to be sent to the API
         const userData = {
@@ -40,55 +67,96 @@ const ResultsScreen = ({ userInfo, scores }) => {
 
         const data = await response.json();
 
-        // if (data.success) {
-        // If user data is saved successfully, send the PDF via email
-        if (window.pdfBlob && userData.email) {
-          try {
-            setEmailStatus("sending");
-
-            // Convert PDF blob to base64
-            const reader = new FileReader();
-            reader.readAsDataURL(window.pdfBlob);
-
-            reader.onloadend = async () => {
-              const base64data = reader.result.split(",")[1];
-
-              // Send email with PDF attachment
-              const emailResponse = await fetch("/api/send-email", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  email: userData.email,
-                  name: userData.name,
-                  pdfData: base64data,
-                }),
-              });
-
-              const emailData = await emailResponse.json();
-              if (emailData.success) {
-                console.log("Email sent successfully");
-                setEmailStatus("sent");
-              } else {
-                console.error("Failed to send email:", emailData.error);
-                setEmailStatus("error");
-              }
-            };
-          } catch (emailError) {
-            console.error("Error sending email:", emailError);
-            setEmailStatus("error");
-          }
+        // Set database save status
+        if (data.success) {
+          setSaveStatus("success");
+          console.log("User data saved successfully to database");
+        } else {
+          console.error("Failed to save user data to database:", data);
+          setSaveStatus("error");
         }
-
-        setSaveStatus("success");
       } catch (error) {
+        console.error("Error in API call:", error);
         setSaveStatus("error");
       }
     };
 
     saveUserData();
   }, [userInfo, scores]);
+
+  // Separate useEffect for sending email when PDF is ready
+  useEffect(() => {
+    const sendEmailWithPdf = async () => {
+      // Only proceed if PDF is ready and we have user email
+      if (
+        !pdfReady ||
+        !userInfo?.emailId ||
+        typeof window === "undefined" ||
+        !window.pdfBlob
+      ) {
+        console.log("Not ready to send email yet:", {
+          pdfReady,
+          hasEmail: !!userInfo?.emailId,
+          hasPdfBlob: typeof window !== "undefined" && !!window.pdfBlob,
+        });
+        return;
+      }
+
+      try {
+        setEmailStatus("sending");
+        console.log("PDF is ready, starting email process...");
+
+        // Convert PDF blob to base64 using a Promise
+        const base64data = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+
+          reader.onloadend = () => {
+            try {
+              const base64 = reader.result.split(",")[1];
+              resolve(base64);
+            } catch (error) {
+              reject(error);
+            }
+          };
+
+          reader.onerror = () => {
+            reject(new Error("Error reading file"));
+          };
+
+          reader.readAsDataURL(window.pdfBlob);
+        });
+
+        console.log("PDF converted to base64, sending email...");
+
+        // Send email with PDF attachment
+        const emailResponse = await fetch("/api/send-email", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: userInfo.emailId,
+            name: userInfo.name,
+            pdfData: base64data,
+          }),
+        });
+
+        const emailData = await emailResponse.json();
+        if (emailData.success) {
+          console.log("Email sent successfully");
+          setEmailStatus("sent");
+        } else {
+          console.error("Failed to send email:", emailData.error);
+          setEmailStatus("error");
+        }
+      } catch (emailError) {
+        console.error("Error sending email:", emailError);
+        setEmailStatus("error");
+      }
+    };
+
+    sendEmailWithPdf();
+  }, [pdfReady, userInfo]);
   return (
     <div className="flex flex-col items-center justify-between min-h-screen bg-white">
       {/* Logo */}
@@ -162,8 +230,41 @@ const ResultsScreen = ({ userInfo, scores }) => {
 
       {/* Download Section */}
       <div className="flex flex-col items-center mb-10">
-        <ReportDownlaoder userInfo={userInfo} scores={scores} />
+        <ReportDownlaoder
+          userInfo={userInfo}
+          scores={scores}
+          disabled={!pdfReady || emailStatus === "sending"}
+        />
       </div>
+
+      {/* PDF Generation Status */}
+      {!pdfReady && (
+        <div className="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-2 mb-4 rounded">
+          <div className="flex items-center">
+            <svg
+              className="animate-spin h-5 w-5 mr-2 text-blue-500"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            <p className="text-sm">Generating your personalized report...</p>
+          </div>
+        </div>
+      )}
 
       {/* Status Indicators */}
       {saveStatus === "loading" && (
@@ -184,14 +285,14 @@ const ResultsScreen = ({ userInfo, scores }) => {
         </div>
       )}
 
-      {/* {emailStatus === "error" && (
+      {emailStatus === "error" && (
         <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-2 mb-4 rounded">
           <p className="text-sm">
             There was an error sending your report to your email. You can still
             download it using the button above.
           </p>
         </div>
-      )} */}
+      )}
 
       {/* Thank You Message */}
       <div className="text-center mb-6">
