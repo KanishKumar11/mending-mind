@@ -209,7 +209,7 @@ export default function UserForm({ onComplete }) {
 
       <div className="max-w-lg mx-auto z-10 relative ">
         <motion.div
-          className="flex justify-between items-end bg-background mb-6"
+          className="flex justify-between items-end mb-6"
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
