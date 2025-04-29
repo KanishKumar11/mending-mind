@@ -27,18 +27,26 @@ const ResilienceChartGenerator = ({
     setIsClient(typeof window !== "undefined");
   }, []);
 
-  // Determine color based on score
+  // Calculate normalized score for display (25-125 scale to 0-100 scale)
+  const minScore = 25; // Minimum possible score
+  const maxScore = 125; // Maximum possible score
+  const normalizedScore = Math.min(maxScore, Math.max(minScore, score)); // Ensure score is within range
+  const displayScore =
+    ((normalizedScore - minScore) / (maxScore - minScore)) * 100;
+
+  // Determine color based on actual score
   const getColor = () => {
-    if (score <= 50) return "#B4E0E0"; // Mint for low resilience
-    if (score <= 75) return "#F0C93B"; // Gold for moderate resilience
-    return "#4CAF50"; // Green for high resilience
+    if (score <= 58) return "#B4E0E0"; // Mint for low resilience (25-58)
+    if (score <= 91) return "#F0C93B"; // Gold for moderate resilience (59-91)
+    return "#4CAF50"; // Green for high resilience (92-125)
   };
 
   // Create data for the chart
   const data = [
     {
       name: "Resilience",
-      score: score,
+      score: displayScore, // Use normalized score for display
+      actualScore: score, // Keep actual score for reference
       fill: getColor(),
     },
   ];
@@ -69,7 +77,7 @@ const ResilienceChartGenerator = ({
           ctx.fillStyle = getColor();
           const barHeight = 40;
           const barY = (height - barHeight) / 2;
-          const barWidth = (score / 100) * (width - 60);
+          const barWidth = (displayScore / 100) * (width - 60); // Use normalized score
           ctx.fillRect(30, barY, barWidth, barHeight);
 
           // Draw the main axis line
@@ -99,12 +107,12 @@ const ResilienceChartGenerator = ({
           ctx.fillText("Low", 30, barY + barHeight + 30);
 
           // Moderate marker
-          const moderateX = 30 + (50 / 100) * (width - 60);
+          const moderateX = 30 + (33 / 100) * (width - 60); // 33% mark
           ctx.textAlign = "center";
           ctx.fillText("Moderate", moderateX, barY + barHeight + 30);
 
           // High marker
-          const highX = 30 + (100 / 100) * (width - 60);
+          const highX = 30 + (66 / 100) * (width - 60); // 66% mark
           ctx.textAlign = "center";
           ctx.fillText("High", highX, barY + barHeight + 30);
 
@@ -112,13 +120,13 @@ const ResilienceChartGenerator = ({
           ctx.strokeStyle = "#666666";
           ctx.setLineDash([3, 3]); // Dashed line
 
-          // Moderate line
+          // Moderate line (33% mark)
           ctx.beginPath();
           ctx.moveTo(moderateX, barY - 10);
           ctx.lineTo(moderateX, barY + barHeight + 10);
           ctx.stroke();
 
-          // High line
+          // High line (66% mark)
           ctx.beginPath();
           ctx.moveTo(highX, barY - 10);
           ctx.lineTo(highX, barY + barHeight + 10);
@@ -185,7 +193,7 @@ const ResilienceChartGenerator = ({
               offset={5}
             />
           </ReferenceLine>
-          <ReferenceLine x={50} stroke="#666" strokeDasharray="3 3">
+          <ReferenceLine x={33} stroke="#666" strokeDasharray="3 3">
             <Label
               value="Moderate"
               position="insideBottom"
@@ -194,7 +202,7 @@ const ResilienceChartGenerator = ({
               offset={5}
             />
           </ReferenceLine>
-          <ReferenceLine x={75} stroke="#666" strokeDasharray="3 3">
+          <ReferenceLine x={66} stroke="#666" strokeDasharray="3 3">
             <Label
               value="High"
               position="insideBottom"

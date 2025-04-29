@@ -64,14 +64,17 @@ const styles = StyleSheet.create({
 
 // Helper function to determine resilience level and interpretation
 const getResilienceLevelInfo = (score) => {
-  if (score <= 50) {
+  // Adjust thresholds for CD-RISC-25 scale (25-125)
+  if (score <= 58) {
+    // 25 + (125-25) * 0.33 = 58
     return {
       level: "Low Resilience",
       subtitle: "You may be Reflective & Building Stability",
       description:
         "You are currently reflective and working toward building greater emotional stability. While you may feel more affected by external stressors, your self-awareness, honesty, and openness to growth suggest strong potential for strengthening your resilience over time.",
     };
-  } else if (score <= 75) {
+  } else if (score <= 91) {
+    // 25 + (125-25) * 0.66 = 91
     return {
       level: "Moderate Resilience",
       subtitle: "You may be Steady & Adaptively Growing",
@@ -91,14 +94,18 @@ const getResilienceLevelInfo = (score) => {
 const ResilienceScaleDisplay = ({ score, chartImage }) => {
   const { subtitle, description } = getResilienceLevelInfo(score);
 
-  // Calculate percentage for the bar (assuming max score is 100)
-  const percentage = Math.min(100, Math.max(0, score));
+  // Calculate percentage for the bar (based on CD-RISC-25 scale: 25-125)
+  const minScore = 25; // Minimum possible score
+  const maxScore = 125; // Maximum possible score
+  const normalizedScore = Math.min(maxScore, Math.max(minScore, score)); // Ensure score is within range
+  const percentage =
+    ((normalizedScore - minScore) / (maxScore - minScore)) * 100;
 
-  // Determine color based on score
+  // Determine color based on normalized score range
   const getColor = () => {
-    if (score <= 50) return "#B4E0E0"; // Mint for low resilience
-    if (score <= 75) return "#F0C93B"; // Gold for moderate resilience
-    return "#4CAF50"; // Green for high resilience
+    if (score <= 58) return "#B4E0E0"; // Mint for low resilience (25-58)
+    if (score <= 91) return "#F0C93B"; // Gold for moderate resilience (59-91)
+    return "#4CAF50"; // Green for high resilience (92-125)
   };
 
   return (

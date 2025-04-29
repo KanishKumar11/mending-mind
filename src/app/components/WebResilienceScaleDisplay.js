@@ -16,21 +16,24 @@ import {
 
 // Helper function to determine resilience level and interpretation
 const getResilienceLevelInfo = (score) => {
-  if (score <= 50) {
+  // Adjust thresholds for CD-RISC-25 scale (25-125)
+  if (score <= 58) {
+    // 25 + (125-25) * 0.33 = 58
     return {
       level: "Low Resilience",
       subtitle: "You may be Reflective & Building Stability",
       description:
-        "Your results suggest that you may be Emotionally sensitive, Honest, Self-aware, Open to support, Deep thinker, Growth-minded, Curious, In progress, Thoughtful, Observant",
+        "You are currently reflective and working toward building greater emotional stability. While you may feel more affected by external stressors, your self-awareness, honesty, and openness to growth suggest strong potential for strengthening your resilience over time.",
       impact:
         "You may currently feel more affected by stress or unexpected changes",
     };
-  } else if (score <= 75) {
+  } else if (score <= 91) {
+    // 25 + (125-25) * 0.66 = 91
     return {
       level: "Moderate Resilience",
       subtitle: "You may be Steady & Adaptively Growing",
       description:
-        "Your results suggest that you may be Reliable, Cautiously optimistic, Reflective, Adaptable, Grounded, Calm under pressure, Self-improving, Emotionally aware, Solution-inclined, Willing to learn",
+        "You demonstrate steadiness and adaptable growth. You handle challenges thoughtfully, maintaining calmness under pressure while remaining emotionally aware and solution-focused. Your willingness to learn and improve supports continued resilience development.",
       impact: "You often handle challenges with balance and care.",
     };
   } else {
@@ -38,7 +41,7 @@ const getResilienceLevelInfo = (score) => {
       level: "High Resilience",
       subtitle: "You may be Resilient & Resourceful",
       description:
-        "Your results suggest that you may be Confident, Emotionally strong, Optimistic, Flexible, Composed, Proactive, Grounded, Quick to recover, Empowered, Self-assured",
+        "You are emotionally strong, confident, and resourceful in adversity. You recover quickly from setbacks, approach challenges with clarity and optimism, and embody a grounded and proactive attitude toward change and uncertainty.",
       impact: "You likely navigate adversity with clarity and confidence.",
     };
   }
@@ -47,9 +50,17 @@ const getResilienceLevelInfo = (score) => {
 // Custom tooltip component
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
+    // Determine resilience level based on score
+    let level = "Low";
+    if (payload[0].payload.actualScore > 91) {
+      level = "High";
+    } else if (payload[0].payload.actualScore > 58) {
+      level = "Moderate";
+    }
+
     return (
       <div className="bg-white p-3 shadow-md rounded-md border border-gray-200">
-        <p className="font-semibold">{`Score: ${payload[0].value}`}</p>
+        <p className="font-semibold">{`Resilience Level: ${level}`}</p>
       </div>
     );
   }
@@ -60,18 +71,26 @@ const WebResilienceScaleDisplay = ({ score }) => {
   const { level, subtitle, description, impact } =
     getResilienceLevelInfo(score);
 
-  // Determine color based on score
+  // Determine color based on normalized score range
   const getColor = () => {
-    if (score <= 50) return "#B4E0E0"; // Mint for low resilience
-    if (score <= 75) return "#F0C93B"; // Gold for moderate resilience
-    return "#4CAF50"; // Green for high resilience
+    if (score <= 58) return "#B4E0E0"; // Mint for low resilience (25-58)
+    if (score <= 91) return "#F0C93B"; // Gold for moderate resilience (59-91)
+    return "#4CAF50"; // Green for high resilience (92-125)
   };
+
+  // Calculate normalized score for display (25-125 scale to 0-100 scale)
+  const minScore = 25; // Minimum possible score
+  const maxScore = 125; // Maximum possible score
+  const normalizedScore = Math.min(maxScore, Math.max(minScore, score)); // Ensure score is within range
+  const displayScore =
+    ((normalizedScore - minScore) / (maxScore - minScore)) * 100;
 
   // Create data for the bar chart
   const data = [
     {
       name: "Resilience",
-      score: score,
+      score: displayScore, // Use normalized score for display
+      actualScore: score, // Keep actual score for tooltip
       fill: getColor(),
     },
   ];
@@ -79,8 +98,8 @@ const WebResilienceScaleDisplay = ({ score }) => {
   // Create domain markers for the chart
   const domainMarkers = [
     { value: 0, label: "Low" },
-    { value: 50, label: "Moderate" },
-    { value: 75, label: "High" },
+    { value: 33, label: "Moderate" }, // 33% of the way from 0 to 100
+    { value: 66, label: "High" }, // 66% of the way from 0 to 100
     { value: 100, label: "" },
   ];
 
@@ -123,7 +142,7 @@ const WebResilienceScaleDisplay = ({ score }) => {
                 offset={5}
               />
             </ReferenceLine>
-            <ReferenceLine x={50} stroke="#666" strokeDasharray="3 3">
+            <ReferenceLine x={33} stroke="#666" strokeDasharray="3 3">
               <Label
                 value="Moderate"
                 position="insideBottom"
@@ -132,7 +151,7 @@ const WebResilienceScaleDisplay = ({ score }) => {
                 offset={5}
               />
             </ReferenceLine>
-            <ReferenceLine x={75} stroke="#666" strokeDasharray="3 3">
+            <ReferenceLine x={66} stroke="#666" strokeDasharray="3 3">
               <Label
                 value="High"
                 position="insideBottom"
