@@ -48,7 +48,6 @@ export default function ReportPage() {
     if (!userInfo || !scores) {
       // Use dummy data instead of redirecting
       setUseDummyData(true);
-      console.log("Using dummy data for testing");
     }
   }, [router]);
 

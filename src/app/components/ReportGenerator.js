@@ -45,7 +45,6 @@ const ReportGenerator = ({ userInfo, scores, onRestart }) => {
 
   // Use provided scores
   const reportScores = scores;
-  console.log(scores);
   useEffect(() => {
     // Personality data
     const personalityData = {

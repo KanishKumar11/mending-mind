@@ -43,7 +43,6 @@ const ChartImageGenerator = ({ reportScores, onChartsGenerated }) => {
     resilienceChartImage,
     onChartsGenerated,
   ]);
-  console.log(reportScores);
   return (
     <div style={{ position: "absolute", left: "-9999px" }}>
       {/* Use Recharts for all charts */}

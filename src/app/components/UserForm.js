@@ -123,7 +123,6 @@ export default function UserForm({ onComplete }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Form submitted:", formData);
       onComplete(formData);
     } else {
       // Announce form errors to screen readers

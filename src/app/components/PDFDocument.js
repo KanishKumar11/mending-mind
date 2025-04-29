@@ -233,9 +233,7 @@ export const MyDocument = (props) => {
 
         {/* Main title */}
         <View style={styles.mainTitleContainer}>
-          <Text style={styles.mainSubtitle}>
-            Treatment | Therapy | Transformation
-          </Text>
+          <Text style={styles.mainSubtitle}></Text>
         </View>
 
         {/* Contact information with icons */}

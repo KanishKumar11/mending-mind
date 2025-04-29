@@ -266,9 +266,7 @@ const MyDocument = (props) => {
 
         {/* Main title */}
         <View style={styles.mainTitleContainer}>
-          <Text style={styles.mainSubtitle}>
-            Treatment | Therapy | Transformation
-          </Text>
+          <Text style={styles.mainSubtitle}> </Text>
         </View>
 
         {/* Contact information with icons */}
@@ -1539,7 +1537,6 @@ const PDFViewer = ({ userInfo, reportScores, refreshTrigger = 0 }) => {
   const handleChartsGenerated = (images) => {
     // Only log and update state if we haven't already done so
     if (!chartImagesSetRef.current) {
-      // console.log("Chart images generated:", images);
       setChartImages(images);
       chartImagesSetRef.current = true;
     }

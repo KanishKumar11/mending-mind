@@ -184,7 +184,6 @@ const StressGauge = ({
 
     // Draw needle
     const needleAngle = Math.PI + (normalizedScore / 40) * Math.PI;
-    console.log("anagle", needleAngle);
     const needleLength = outerRadius * 0.9;
 
     ctx.save();

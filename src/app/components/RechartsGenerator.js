@@ -23,7 +23,6 @@ const RechartsGenerator = ({
   const [isRechartsAvailable, setIsRechartsAvailable] = useState(false);
   // Add a ref to track if we've already generated the image
   const imageGeneratedRef = useRef(false);
-  console.log(reportScores);
   // Try to dynamically import Recharts
   useEffect(() => {
     const loadRecharts = async () => {
@@ -31,7 +30,6 @@ const RechartsGenerator = ({
         const recharts = await import("recharts");
         setRechartsComponents(recharts);
         setIsRechartsAvailable(true);
-        console.log("Recharts loaded successfully");
       } catch (error) {
         console.error("Failed to load Recharts:", error);
         setIsRechartsAvailable(false);

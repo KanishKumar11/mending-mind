@@ -15,7 +15,6 @@ const ResultsScreen = ({ userInfo, scores }) => {
   useEffect(() => {
     const checkPdfBlob = () => {
       if (typeof window !== "undefined" && window.pdfBlob) {
-        console.log("PDF blob found in window object");
         setPdfReady(true);
         return true;
       }
@@ -43,7 +42,6 @@ const ResultsScreen = ({ userInfo, scores }) => {
 
       try {
         setSaveStatus("loading");
-        console.log("PDF ready state:", pdfReady);
 
         // Prepare the data to be sent to the API
         const userData = {
@@ -70,7 +68,6 @@ const ResultsScreen = ({ userInfo, scores }) => {
         // Set database save status
         if (data.success) {
           setSaveStatus("success");
-          console.log("User data saved successfully to database");
         } else {
           console.error("Failed to save user data to database:", data);
           setSaveStatus("error");
@@ -94,17 +91,11 @@ const ResultsScreen = ({ userInfo, scores }) => {
         typeof window === "undefined" ||
         !window.pdfBlob
       ) {
-        console.log("Not ready to send email yet:", {
-          pdfReady,
-          hasEmail: !!userInfo?.emailId,
-          hasPdfBlob: typeof window !== "undefined" && !!window.pdfBlob,
-        });
         return;
       }
 
       try {
         setEmailStatus("sending");
-        console.log("PDF is ready, starting email process...");
 
         // Convert PDF blob to base64 using a Promise
         const base64data = await new Promise((resolve, reject) => {
@@ -126,8 +117,6 @@ const ResultsScreen = ({ userInfo, scores }) => {
           reader.readAsDataURL(window.pdfBlob);
         });
 
-        console.log("PDF converted to base64, sending email...");
-
         // Send email with PDF attachment
         const emailResponse = await fetch("/api/send-email", {
           method: "POST",
@@ -143,7 +132,6 @@ const ResultsScreen = ({ userInfo, scores }) => {
 
         const emailData = await emailResponse.json();
         if (emailData.success) {
-          console.log("Email sent successfully");
           setEmailStatus("sent");
         } else {
           console.error("Failed to send email:", emailData.error);

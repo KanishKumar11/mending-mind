@@ -1315,9 +1315,6 @@ export function QuestionnaireProvider({ children }) {
         const traitLower = trait.toLowerCase();
         if (traitLower in newScores.personality) {
           newScores.personality[traitLower] += score;
-          console.log(
-            `Added ${score} to ${traitLower}, now: ${newScores.personality[traitLower]}`
-          );
         } else {
           console.log(`Trait not found: ${trait} (${traitLower})`);
         }
@@ -1394,7 +1391,6 @@ export function QuestionnaireProvider({ children }) {
         (empathyAvg + emotionalAvg + decisionAvg) / totalDimensions
       );
     }
-    console.log(newScores);
     return newScores;
   };
 
@@ -1413,8 +1409,6 @@ export function QuestionnaireProvider({ children }) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
       // Handle completion of questionnaire
-      console.log("Questionnaire completed", newAnswers);
-      console.log("Final scores:", newScores);
       // You can add logic to submit answers or show results
     }
   };

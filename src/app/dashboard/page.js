@@ -37,7 +37,6 @@ export default function DashboardPage() {
       const data = await response.json();
 
       if (data.success) {
-        console.log("API Response:", data.users);
         setUsers(data.users);
       } else {
         setError(data.message || "Failed to fetch users");
