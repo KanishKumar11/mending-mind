@@ -258,7 +258,7 @@ const resilienceQuestions = [
     en: {
       number: "02",
       image: "/r2.svg",
-      text: "I have one close and secure relationship.",
+      text: "When facing challenges, do you have someone you feel you can turn to?",
       options: commonOptions.en,
     },
     hi: {
@@ -1182,7 +1182,8 @@ const baseQuestions = [
       image: "/personality.svg",
     },
   },
-  ...pssQuestions,
+  ...cbicQuestions,
+
   {
     id: "section3",
     type: "section_start",
@@ -1197,7 +1198,8 @@ const baseQuestions = [
       image: "/personality.svg",
     },
   },
-  ...decisionStyleQuestions,
+  ...pssQuestions,
+
   {
     id: "section4",
     type: "section_start",
@@ -1212,7 +1214,8 @@ const baseQuestions = [
       image: "/resilience.svg",
     },
   },
-  ...resilienceQuestions,
+  ...decisionStyleQuestions,
+
   {
     id: "section5",
     type: "section_start",
@@ -1227,7 +1230,7 @@ const baseQuestions = [
       image: "/resilience.svg",
     },
   },
-  ...cbicQuestions,
+  ...resilienceQuestions,
 ];
 
 // Apply continuous numbering to questions

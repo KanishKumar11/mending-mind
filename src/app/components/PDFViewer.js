@@ -225,9 +225,9 @@ const MyDocument = (props) => {
         {/* Disclaimer at the top */}
         <View style={styles.disclaimer}>
           <Text style={styles.disclaimerText}>
-            Note: This assessment is intended for self-awareness and
-            developmental insights. For clinical concerns or diagnostic clarity,
-            we recommend consulting a qualified mental health professional.
+            This assessment is created to guide you toward greater
+            self-awareness and development. It is intended for
+            personal insights only.
           </Text>
         </View>
 

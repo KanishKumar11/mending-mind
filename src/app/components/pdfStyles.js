@@ -215,6 +215,7 @@ export const styles = StyleSheet.create({
     fontFamily: "Montserrat",
     textAlign: "center",
     fontWeight: 300,
+    visibility: "invisible",
   },
   contactInfoContainer: {
     flexDirection: "row",
