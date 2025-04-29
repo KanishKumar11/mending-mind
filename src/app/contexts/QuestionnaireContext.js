@@ -267,6 +267,7 @@ const resilienceQuestions = [
       options: commonOptions.hi,
     },
   },
+
   {
     id: "resilience_3",
     isReversed: false,
