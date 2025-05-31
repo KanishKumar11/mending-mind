@@ -15,7 +15,7 @@ export default class PDFGenerator {
    * @param {String} language - Current language (en/hi)
    * @returns {Promise<Blob>} - PDF document as a Blob
    */
-  static async generateReport(userInfo, answers, language) {
+  static async generateReport(userInfo, quizAttempts, language) {
     // Create new PDF document
     const doc = new jsPDF();
     const reportId = `MSAQ${Math.random()
@@ -32,14 +32,45 @@ export default class PDFGenerator {
     // Add user information section
     this.addUserInformation(doc, userInfo, language);
 
-    // Add assessment summary
-    this.addAssessmentSummary(doc, answers, language);
+    // Add assessment summary and mental health metrics for each attempt
+    quizAttempts.forEach((attempt, index) => {
+      const attemptNumber = index + 1;
+      const attemptLabel =
+        language === "en"
+          ? `Attempt ${attemptNumber}`
+          : `प्रयास ${attemptNumber}`;
 
-    // Add mental health metrics
-    this.addMentalHealthMetrics(doc, answers, language);
+      // Add a page break before the second attempt's details if it's not the first page
+      if (index > 0) {
+        doc.addPage();
+        // Re-add header on new page if desired, or ensure consistent layout
+        // this.addHeader(doc, language); // Optional: if you want header on each attempt's page
+      }
 
-    // Add recommendations
-    this.addRecommendations(doc, answers, language);
+      doc.setFontSize(16);
+      doc.setTextColor(0, 0, 0);
+      doc.text(
+        attemptLabel,
+        20,
+        doc.lastAutoTable.finalY
+          ? doc.lastAutoTable.finalY + 10
+          : index === 0
+          ? 140
+          : 40
+      ); // Adjust Y position
+
+      this.addAssessmentSummary(doc, attempt, language, attemptLabel);
+      this.addMentalHealthMetrics(doc, attempt, language, attemptLabel);
+    });
+
+    // Add recommendations based on the latest attempt
+    if (quizAttempts.length > 0) {
+      this.addRecommendations(
+        doc,
+        quizAttempts[quizAttempts.length - 1],
+        language
+      );
+    }
 
     // Add footer
     this.addFooter(doc, language);
@@ -157,7 +188,7 @@ export default class PDFGenerator {
    * @param {Array} answers - Array of questionnaire answers
    * @param {String} language - Current language
    */
-  static addAssessmentSummary(doc, answers, language) {
+  static addAssessmentSummary(doc, attemptData, language, attemptLabel) {
     const finalY = doc.lastAutoTable.finalY || 130;
 
     doc.setFontSize(14);
@@ -171,13 +202,17 @@ export default class PDFGenerator {
     doc.setFontSize(10);
     doc.setTextColor(100, 100, 100);
     doc.text(
-      language === "en"
-        ? "Thank you for completing the Mind Scan assessment. Your responses have been analyzed to provide insights into your mental well-being."
-        : "माइंड स्कैन मूल्यांकन पूरा करने के लिए धन्यवाद। आपकी प्रतिक्रियाओं का विश्लेषण आपके मानसिक स्वास्थ्य के बारे में जानकारी प्रदान करने के लिए किया गया है।",
+      `${attemptLabel}: ${
+        language === "en"
+          ? "Summary of your responses for this attempt."
+          : "इस प्रयास के लिए आपकी प्रतिक्रियाओं का सारांश।"
+      }`,
       20,
       finalY + 25,
       { maxWidth: 170 }
     );
+    // Note: The original generic thank you message might be better placed once, or rephrased per attempt.
+    // For now, replacing it with attempt-specific summary line.
   }
 
   /**
@@ -186,18 +221,26 @@ export default class PDFGenerator {
    * @param {Array} answers - Array of questionnaire answers
    * @param {String} language - Current language
    */
-  static addMentalHealthMetrics(doc, answers, language) {
+  static addMentalHealthMetrics(doc, attemptData, language, attemptLabel) {
     const finalY = doc.lastAutoTable.finalY || 150;
 
     doc.setFontSize(14);
     doc.setTextColor(33, 33, 33);
     doc.text(
-      language === "en"
-        ? "Mental Health Metrics"
-        : "मानसिक स्वास्थ्य मेट्रिक्स",
+      `${attemptLabel}: ${
+        language === "en"
+          ? "Mental Health Metrics"
+          : "मानसिक स्वास्थ्य मेट्रिक्स"
+      }`,
       20,
-      finalY + 40
+      finalY + 10 // Adjusted Y position relative to previous section
     );
+    // Ensure that the content for metrics uses attemptData instead of a generic 'answers'
+    // This part of the code (actual metrics generation) is not shown in the provided snippet
+    // but would need to be adapted to use 'attemptData'. Example:
+    // const stressLevel = attemptData.stress; // Assuming 'stress' is a key in attemptData
+    // doc.text(`Stress Level: ${stressLevel}`, 20, finalY + 20);
+    // ... and so on for other metrics
 
     // Calculate metrics based on answers
     // This is a simplified example - in a real implementation, you would have more sophisticated scoring

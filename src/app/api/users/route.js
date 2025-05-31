@@ -19,7 +19,9 @@ export async function POST(request) {
       !body.gender ||
       !body.email ||
       !body.contact ||
-      !body.scores
+      !body.quizAttempts || // Changed from scores to quizAttempts
+      !Array.isArray(body.quizAttempts) ||
+      body.quizAttempts.length === 0
     ) {
       return NextResponse.json(
         { success: false, message: "Missing required fields" },
@@ -28,43 +30,53 @@ export async function POST(request) {
     }
 
     // Check if user with this email already exists
-    const existingUser = await User.findOne({ email: body.email });
+    let user = await User.findOne({ email: body.email });
 
-    if (existingUser) {
-      // Update the existing user's scores
-      existingUser.scores = body.scores;
-      existingUser.name = body.name;
-      existingUser.age = body.age;
-      existingUser.gender = body.gender;
-      existingUser.contact = body.contact;
-      await existingUser.save();
+    if (user) {
+      // Ensure quizAttempts is an array
+      if (!Array.isArray(user.quizAttempts)) {
+        user.quizAttempts = [];
+      }
+      // Append the new quiz attempt to the existing user's attempts
+      // body.quizAttempts from frontend is an array with the latest score object
+      user.quizAttempts.push(body.quizAttempts[0]);
+      // Update other user details if they can change
+      user.name = body.name;
+      user.age = body.age;
+      user.gender = body.gender;
+      user.contact = body.contact;
+      await user.save();
 
       return NextResponse.json(
         {
           success: true,
-          message: "User data updated successfully",
-          user: existingUser,
+          message: "User data updated successfully with new quiz attempt",
+          user: user, // Send back the updated user object
         },
         { status: 200 }
       );
     }
 
-    // Create a new user
-    const newUser = new User({
+    // Create a new user with the first quiz attempt
+    user = new User({
       name: body.name,
       age: body.age,
       gender: body.gender,
       email: body.email,
       contact: body.contact,
-      scores: body.scores,
+      quizAttempts: body.quizAttempts, // body.quizAttempts is already an array with one score object
     });
 
     // Save the user to the database
-    await newUser.save();
+    await user.save();
 
     // Return success response
     return NextResponse.json(
-      { success: true, message: "User data saved successfully", user: newUser },
+      {
+        success: true,
+        message: "New user created with first quiz attempt",
+        user: user,
+      },
       { status: 201 }
     );
   } catch (error) {

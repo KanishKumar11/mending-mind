@@ -6,6 +6,16 @@ import { format } from "date-fns";
 
 export const columns = [
   {
+    accessorKey: "quizAttempts",
+    header: "Quiz Attempts",
+    cell: ({ row }) => {
+      const attempts = row.original.quizAttempts;
+      return (
+        <div className="text-center">{attempts ? attempts.length : 0}</div>
+      );
+    },
+  },
+  {
     accessorKey: "name",
     header: ({ column }) => {
       return (
@@ -56,7 +66,9 @@ export const columns = [
   {
     id: "extraversion",
     header: "Extraversion",
-    accessorFn: (row) => row.scores?.personality?.extraversion,
+    accessorFn: (row) =>
+      row.quizAttempts?.[row.quizAttempts?.length - 1]?.personality
+        ?.extraversion,
     cell: ({ getValue }) => {
       const value = getValue();
       return (
@@ -67,7 +79,9 @@ export const columns = [
   {
     id: "agreeableness",
     header: "Agreeableness",
-    accessorFn: (row) => row.scores?.personality?.agreeableness,
+    accessorFn: (row) =>
+      row.quizAttempts?.[row.quizAttempts?.length - 1]?.personality
+        ?.agreeableness,
     cell: ({ getValue }) => {
       const value = getValue();
       return (
@@ -78,7 +92,9 @@ export const columns = [
   {
     id: "conscientiousness",
     header: "Conscientiousness",
-    accessorFn: (row) => row.scores?.personality?.conscientiousness,
+    accessorFn: (row) =>
+      row.quizAttempts?.[row.quizAttempts?.length - 1]?.personality
+        ?.conscientiousness,
     cell: ({ getValue }) => {
       const value = getValue();
       return (
@@ -89,7 +105,9 @@ export const columns = [
   {
     id: "neuroticism",
     header: "Neuroticism",
-    accessorFn: (row) => row.scores?.personality?.neuroticism,
+    accessorFn: (row) =>
+      row.quizAttempts?.[row.quizAttempts?.length - 1]?.personality
+        ?.neuroticism,
     cell: ({ getValue }) => {
       const value = getValue();
       return (
@@ -100,7 +118,8 @@ export const columns = [
   {
     id: "openness",
     header: "Openness",
-    accessorFn: (row) => row.scores?.personality?.openness,
+    accessorFn: (row) =>
+      row.quizAttempts?.[row.quizAttempts?.length - 1]?.personality?.openness,
     cell: ({ getValue }) => {
       const value = getValue();
       return (
@@ -111,7 +130,8 @@ export const columns = [
   {
     id: "stress",
     header: "Stress",
-    accessorFn: (row) => row.scores?.stress,
+    accessorFn: (row) =>
+      row.quizAttempts?.[row.quizAttempts?.length - 1]?.stress,
     cell: ({ getValue }) => {
       const value = getValue();
       return (
@@ -122,7 +142,8 @@ export const columns = [
   {
     id: "rational",
     header: "Rational",
-    accessorFn: (row) => row.scores?.decisionStyle?.rational,
+    accessorFn: (row) =>
+      row.quizAttempts?.[row.quizAttempts?.length - 1]?.decisionStyle?.rational,
     cell: ({ getValue }) => {
       const value = getValue();
       return (
@@ -133,7 +154,9 @@ export const columns = [
   {
     id: "intuitive",
     header: "Intuitive",
-    accessorFn: (row) => row.scores?.decisionStyle?.intuitive,
+    accessorFn: (row) =>
+      row.quizAttempts?.[row.quizAttempts?.length - 1]?.decisionStyle
+        ?.intuitive,
     cell: ({ getValue }) => {
       const value = getValue();
       return (
@@ -144,7 +167,8 @@ export const columns = [
   {
     id: "resilience",
     header: "Resilience",
-    accessorFn: (row) => row.scores?.resilience,
+    accessorFn: (row) =>
+      row.quizAttempts?.[row.quizAttempts?.length - 1]?.resilience,
     cell: ({ getValue }) => {
       const value = getValue();
       return (
@@ -155,7 +179,8 @@ export const columns = [
   {
     id: "taxpayerJudgement",
     header: "Taxpayer Judgement",
-    accessorFn: (row) => row.scores?.taxpayerJudgement,
+    accessorFn: (row) =>
+      row.quizAttempts?.[row.quizAttempts?.length - 1]?.taxpayerJudgement,
     cell: ({ getValue }) => {
       const value = getValue();
       return (

@@ -10,6 +10,7 @@ const ResultsScreen = ({ userInfo, scores }) => {
   const [saveStatus, setSaveStatus] = useState("idle"); // idle, loading, success, error
   const [emailStatus, setEmailStatus] = useState("idle"); // idle, sending, sent, error
   const [pdfReady, setPdfReady] = useState(false);
+  const [quizAttemptsCount, setQuizAttemptsCount] = useState(0); // Declare quizAttemptsCount state
 
   // Check if PDF blob is available in window object
   useEffect(() => {
@@ -50,7 +51,7 @@ const ResultsScreen = ({ userInfo, scores }) => {
           gender: userInfo.gender || "",
           email: userInfo.emailId || "",
           contact: userInfo.contactNo || "",
-          scores: scores,
+          quizAttempts: [scores], // Send current scores as a new attempt
           pdfBlob: window.pdfBlob ? true : false, // Indicate if PDF is available
         };
 
@@ -65,9 +66,15 @@ const ResultsScreen = ({ userInfo, scores }) => {
 
         const data = await response.json();
 
-        // Set database save status
+        // Set database save status and update attempts count
         if (data.success) {
           setSaveStatus("success");
+          if (data.user && data.user.quizAttempts) {
+            setQuizAttemptsCount(data.user.quizAttempts.length);
+          } else {
+            // Fallback if the structure is different or it's a new user
+            setQuizAttemptsCount(1);
+          }
         } else {
           console.error("Failed to save user data to database:", data);
           setSaveStatus("error");
@@ -143,8 +150,11 @@ const ResultsScreen = ({ userInfo, scores }) => {
       }
     };
 
-    sendEmailWithPdf();
-  }, [pdfReady, userInfo]);
+    // Only send email if it's not the first attempt and PDF is ready
+    if (quizAttemptsCount > 1) {
+      sendEmailWithPdf();
+    }
+  }, [pdfReady, userInfo, quizAttemptsCount]); // Add quizAttemptsCount to dependency array
   return (
     <div className="flex flex-col items-center justify-between min-h-screen bg-white">
       {/* Logo */}
@@ -218,15 +228,38 @@ const ResultsScreen = ({ userInfo, scores }) => {
 
       {/* Download Section */}
       <div className="flex flex-col items-center mb-10">
-        <ReportDownlaoder
-          userInfo={userInfo}
-          scores={scores}
-          disabled={!pdfReady || emailStatus === "sending"}
-        />
+        {saveStatus === "loading" || saveStatus === "idle" ? (
+          <p className="text-sm text-gray-500 mb-6">
+            Checking your assessment history...
+          </p>
+        ) : saveStatus === "success" ? (
+          <>
+            <p className="text-sm text-gray-500 mb-6">
+              {quizAttemptsCount <= 1
+                ? "Your assessment results have been saved. You will be able to download your report and receive it via email after your next assessment."
+                : "Your detailed report has been generated and is ready for download. You will also receive a copy via email shortly."}
+            </p>
+            {quizAttemptsCount > 1 ? (
+              <ReportDownlaoder userInfo={userInfo} scores={scores} />
+            ) : (
+              <Button
+                disabled
+                className="bg-gray-300 text-gray-500 cursor-not-allowed font-semibold py-3 px-6 rounded-lg shadow-md flex items-center justify-center gap-2 mb-6"
+              >
+                Download Report (Available after next assessment)
+              </Button>
+            )}
+          </>
+        ) : (
+          <p className="text-sm text-red-500 mb-6">
+            There was an error checking your assessment history. Please try
+            refreshing the page.
+          </p>
+        )}
       </div>
 
-      {/* PDF Generation Status */}
-      {!pdfReady && (
+      {/* PDF Generation Status - Only show if not first attempt and PDF not ready */}
+      {!pdfReady && quizAttemptsCount > 1 && (
         <div className="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-2 mb-4 rounded">
           <div className="flex items-center">
             <svg

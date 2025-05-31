@@ -19,6 +19,10 @@ const Questionnaire = dynamic(() => import("./components/Questionnaire"), {
 });
 
 const UserForm = dynamic(() => import("./components/UserForm"), { ssr: false });
+const QuizPasscodeForm = dynamic(
+  () => import("./components/QuizPasscodeForm"),
+  { ssr: false }
+);
 
 const PageTransition = dynamic(() => import("./components/PageTransition"), {
   ssr: false,
@@ -30,13 +34,22 @@ const ResultsScreen = dynamic(() => import("./components/ResultsScreen"), {
 
 export default function Home() {
   // App state to control which screen is visible
-  const [currentScreen, setCurrentScreen] = useState("home"); // home, userInfo, questionnaire, results
+  const [currentScreen, setCurrentScreen] = useState("home"); // home, passcode, userInfo, questionnaire, results
+  const [isPasscodeAuthenticated, setIsPasscodeAuthenticated] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
   const [questionnaireScores, setQuestionnaireScores] = useState();
 
   // Handle navigation between screens
   const handleGetStarted = () => {
-    setCurrentScreen("userInfo");
+    setCurrentScreen("passcode"); // Go to passcode screen first
+  };
+
+  const handlePasscodeAuthenticated = (isAuthenticated) => {
+    if (isAuthenticated) {
+      setIsPasscodeAuthenticated(true);
+      setCurrentScreen("userInfo");
+    }
+    // Optionally handle failed authentication attempt if needed
   };
 
   const handleUserInfoComplete = (formData) => {
@@ -134,11 +147,32 @@ export default function Home() {
             </div>
           )}
 
-          {currentScreen === "userInfo" && (
+          {currentScreen === "passcode" && (
+            <PageTransition>
+              <QuizPasscodeForm onAuthenticated={handlePasscodeAuthenticated} />
+            </PageTransition>
+          )}
+
+          {currentScreen === "userInfo" && isPasscodeAuthenticated && (
             <PageTransition>
               <QuestionnaireProvider>
                 <UserForm onComplete={handleUserInfoComplete} />
               </QuestionnaireProvider>
+            </PageTransition>
+          )}
+
+          {/* Fallback if trying to access userInfo without passcode auth - might redirect or show error */}
+          {currentScreen === "userInfo" && !isPasscodeAuthenticated && (
+            <PageTransition>
+              {/* Optional: redirect to home or passcode, or show an error message */}
+              <div className="flex flex-col items-center justify-center min-h-screen">
+                <p className="text-xl text-red-500">
+                  Authentication Required. Redirecting...
+                </p>
+                {/* Basic redirect after a delay, or use Next.js router for cleaner navigation */}
+                {typeof window !== "undefined" &&
+                  setTimeout(() => setCurrentScreen("home"), 2000)}
+              </div>
             </PageTransition>
           )}
 

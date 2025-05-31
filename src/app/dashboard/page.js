@@ -6,6 +6,7 @@ import LoginForm from "./components/LoginForm";
 import { DataTable } from "./components/DataTable";
 import { columns } from "./components/columns";
 import DashboardSummary from "./components/DashboardSummary";
+import QuizSettingsForm from "./components/QuizSettingsForm"; // Import the new component
 import { Button } from "@/app/components/ui/button";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
@@ -15,7 +16,7 @@ export default function DashboardPage() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [activeTab, setActiveTab] = useState("summary"); // "summary" or "users"
+  const [activeTab, setActiveTab] = useState("summary"); // "summary", "users", or "settings"
 
   useEffect(() => {
     if (isAuthenticated && token) {
@@ -106,6 +107,16 @@ export default function DashboardPage() {
             >
               User Data
             </button>
+            <button
+              onClick={() => setActiveTab("settings")}
+              className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                activeTab === "settings"
+                  ? "border-[#F0C93B] text-[#F0C93B]"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              }`}
+            >
+              Quiz Settings
+            </button>
           </nav>
         </div>
       </div>
@@ -120,11 +131,11 @@ export default function DashboardPage() {
         </div>
       ) : (
         <>
-          {activeTab === "summary" ? (
-            <DashboardSummary users={users} />
-          ) : (
+          {activeTab === "summary" && <DashboardSummary users={users} />}
+          {activeTab === "users" && (
             <DataTable columns={columns} data={users} />
           )}
+          {activeTab === "settings" && <QuizSettingsForm />}
         </>
       )}
     </div>
