@@ -193,38 +193,40 @@ const ResultsScreen = ({ userInfo, scores }) => {
       </div>
 
       {/* Completion Message */}
-      <div className="text-center mb-8">
-        <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded-md shadow-sm max-w-md mx-auto">
-          <div className="flex items-center">
-            <div className="flex-shrink-0">
-              <svg
-                className="h-5 w-5 text-green-500"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <h3 className="text-lg font-medium text-green-800">
-                Assessment Complete!
-              </h3>
-              <div className="mt-2 text-sm text-green-700">
-                <p>
-                  Your personalized assessment report is ready. Click the button
-                  below to download your detailed report with insights and
-                  recommendations.
-                </p>
+      {quizAttemptsCount > 1 ? (
+        <div className="text-center mb-8">
+          <div className="bg-green-50 border-l-4 border-green-500 p-4 rounded-md shadow-sm max-w-md mx-auto">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <svg
+                  className="h-5 w-5 text-green-500"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-lg font-medium text-green-800">
+                  Assessment Complete!
+                </h3>
+                <div className="mt-2 text-sm text-green-700">
+                  <p>
+                    Your personalized assessment report is ready. Click the
+                    button below to download your detailed report with insights
+                    and recommendations.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : null}
 
       {/* Download Section */}
       <div className="flex flex-col items-center mb-10">
@@ -239,15 +241,8 @@ const ResultsScreen = ({ userInfo, scores }) => {
                 ? "Your assessment results have been saved. You will be able to download your report and receive it via email after your next assessment."
                 : "Your detailed report has been generated and is ready for download. You will also receive a copy via email shortly."}
             </p>
-            {quizAttemptsCount > 1 ? (
+            {quizAttemptsCount > 1 && (
               <ReportDownlaoder userInfo={userInfo} scores={scores} />
-            ) : (
-              <Button
-                disabled
-                className="bg-gray-300 text-gray-500 cursor-not-allowed font-semibold py-3 px-6 rounded-lg shadow-md flex items-center justify-center gap-2 mb-6"
-              >
-                Download Report (Available after next assessment)
-              </Button>
             )}
           </>
         ) : (
@@ -288,25 +283,25 @@ const ResultsScreen = ({ userInfo, scores }) => {
       )}
 
       {/* Status Indicators */}
-      {saveStatus === "loading" && (
+      {quizAttemptsCount > 1 && saveStatus === "loading" && (
         <div className="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-2 mb-4 rounded">
           <p className="text-sm">Loading your personalized report...</p>
         </div>
       )}
 
-      {emailStatus === "sending" && (
+      {quizAttemptsCount > 1 && emailStatus === "sending" && (
         <div className="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-2 mb-4 rounded">
           <p className="text-sm">Sending your report to your email...</p>
         </div>
       )}
 
-      {emailStatus === "sent" && (
+      {quizAttemptsCount > 1 && emailStatus === "sent" && (
         <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-2 mb-4 rounded">
           <p className="text-sm">Your report has been sent to your email!</p>
         </div>
       )}
 
-      {emailStatus === "error" && (
+      {quizAttemptsCount > 1 && emailStatus === "error" && (
         <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-2 mb-4 rounded">
           <p className="text-sm">
             There was an error sending your report to your email. You can still
@@ -316,14 +311,16 @@ const ResultsScreen = ({ userInfo, scores }) => {
       )}
 
       {/* Thank You Message */}
-      <div className="text-center mb-6">
-        <h3 className="text-xl font-semibold text-gray-800">
-          Thank You for Completing the Assessment!
-        </h3>
-        <p className="text-gray-600 mt-2 max-w-md mx-auto">
-          We appreciate your participation.
-        </p>
-      </div>
+      {quizAttemptsCount > 1 ? (
+        <div className="text-center mb-6">
+          <h3 className="text-xl font-semibold text-gray-800">
+            Thank You for Completing the Assessment!
+          </h3>
+          <p className="text-gray-600 mt-2 max-w-md mx-auto">
+            We appreciate your participation.
+          </p>
+        </div>
+      ) : null}
 
       {/* Contact Info */}
 
