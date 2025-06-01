@@ -79,12 +79,12 @@ const cbicQuestions = [
     en: {
       number: "01",
       image: "/c1.svg",
-      text: "When taxpayers approach with questions outside their scope of understanding, it's more efficient to redirect than over-explain.",
+      text: "It’s better to guide someone to the rules than explain everything myself.",
       options: commonOptions.en,
     },
     hi: {
       number: "01",
-      text: "जब करदाता अपनी समझ के दायरे से बाहर के प्रश्नों के साथ संपर्क करते हैं, तो अधिक समझाने की तुलना में उन्हें पुनःनिर्देशित करना अधिक कुशल है।",
+      text: "सब कुछ खुद समझाने के बजाय किसी को नियमों का मार्गदर्शन करना बेहतर है।",
       options: commonOptions.hi,
     },
   },
@@ -95,12 +95,12 @@ const cbicQuestions = [
     en: {
       number: "02",
       image: "/c2.svg",
-      text: "In high-pressure hours, offering time to a confused taxpayer can set a tone of inefficiency for the day.",
+      text: "Helping one person too long can delay other work.",
       options: commonOptions.en,
     },
     hi: {
       number: "02",
-      text: "उच्च दबाव वाले घंटों में, एक भ्रमित करदाता को समय देने से दिन के लिए अकुशलता का स्वर सेट हो सकता है।",
+      text: "एक व्यक्ति की बहुत देर तक मदद करने से अन्य काम में देरी हो सकती है।",
       options: commonOptions.hi,
     },
   },
@@ -111,12 +111,12 @@ const cbicQuestions = [
     en: {
       number: "03",
       image: "/c3.png",
-      text: "A calm response can feel inadequate when a taxpayer is aggressively challenging an unavoidable penalty.",
+      text: "Staying calm feels hard when someone talks rudely.",
       options: commonOptions.en,
     },
     hi: {
       number: "03",
-      text: "जब कोई करदाता आक्रामक रूप से एक अपरिहार्य जुर्माने को चुनौती दे रहा हो, तो शांत प्रतिक्रिया अपर्याप्त महसूस हो सकती है।",
+      text: "जब कोई असभ्य तरीके से बात करता है तो शांत रहना मुश्किल लगता है।",
       options: commonOptions.hi,
     },
   },
@@ -127,12 +127,12 @@ const cbicQuestions = [
     en: {
       number: "04",
       image: "/c4.svg",
-      text: "Repeatedly clarifying the same rule to a taxpayer often reflects on how the system communicates — not just the person's capacity.",
+      text: "If many people ask the same thing, the process might be confusing.",
       options: commonOptions.en,
     },
     hi: {
       number: "04",
-      text: "बार-बार किसी करदाता को एक ही नियम को स्पष्ट करना अक्सर इस बात को दर्शाता है कि सिस्टम कैसे संवाद करता है - न कि सिर्फ व्यक्ति की क्षमता।",
+      text: "यदि कई लोग एक ही बात पूछते हैं, तो प्रक्रिया भ्रमित करने वाली हो सकती है।",
       options: commonOptions.hi,
     },
   },
@@ -143,12 +143,12 @@ const cbicQuestions = [
     en: {
       number: "05",
       image: "/c5.svg",
-      text: "When a taxpayer insists they've 'heard differently' from another officer, it's often simpler not to contradict openly.",
+      text: "If someone says they heard it differently, I avoid correcting them.",
       options: commonOptions.en,
     },
     hi: {
       number: "05",
-      text: "जब कोई करदाता जोर देता है कि उन्होंने किसी अन्य अधिकारी से 'अलग सुना' है, तो अक्सर खुले तौर पर विरोध न करना अधिक सरल होता है।",
+      text: "यदि कोई कहता है कि उन्होंने इसे अलग तरीके से सुना है, तो मैं उन्हें ठीक करने से बचता हूं।",
       options: commonOptions.hi,
     },
   },
@@ -159,12 +159,12 @@ const cbicQuestions = [
     en: {
       number: "06",
       image: "/c6.svg",
-      text: "Taxpayers who lack preparation slow down processes and must be nudged to take more responsibility.",
+      text: "People who aren’t prepared should be reminded to be more responsible.",
       options: commonOptions.en,
     },
     hi: {
       number: "06",
-      text: "तैयारी की कमी वाले करदाता प्रक्रियाओं को धीमा कर देते हैं और उन्हें अधिक जिम्मेदारी लेने के लिए प्रेरित किया जाना चाहिए।",
+      text: "जो लोग तैयार नहीं हैं, उन्हें अधिक जिम्मेदार होने की याद दिलाई जानी चाहिए।",
       options: commonOptions.hi,
     },
   },
@@ -175,12 +175,12 @@ const cbicQuestions = [
     en: {
       number: "07",
       image: "/c7.png",
-      text: "Not all confusion at the helpdesk needs a detailed answer — some questions correct themselves with a bit of firmness.",
+      text: "Some doubts don’t need full answers — a short reply works.",
       options: commonOptions.en,
     },
     hi: {
       number: "07",
-      text: "हेल्पडेस्क पर सभी भ्रम को विस्तृत उत्तर की आवश्यकता नहीं होती है - कुछ प्रश्न थोड़ी दृढ़ता के साथ स्वयं ही सही हो जाते हैं।",
+      text: "कुछ संदेहों को पूरे उत्तर की आवश्यकता नहीं होती है - एक छोटा जवाब काम करता है।",
       options: commonOptions.hi,
     },
   },
@@ -191,12 +191,12 @@ const cbicQuestions = [
     en: {
       number: "08",
       image: "/c8.png",
-      text: "Maintaining composure with emotionally reactive taxpayers sometimes means avoiding engagement until they settle.",
+      text: "I stay quiet when someone is upset and wait for them to calm down.",
       options: commonOptions.en,
     },
     hi: {
       number: "08",
-      text: "भावनात्मक रूप से प्रतिक्रियाशील करदाताओं के साथ संयम बनाए रखने का अर्थ कभी-कभी उनके शांत होने तक जुड़ाव से बचना होता है।",
+      text: "जब कोई परेशान होता है तो मैं चुप रहता हूं और उनके शांत होने का इंतजार करता हूं।",
       options: commonOptions.hi,
     },
   },
@@ -207,12 +207,12 @@ const cbicQuestions = [
     en: {
       number: "09",
       image: "/c9.svg",
-      text: "Overexplaining even simple rules can sometimes make taxpayers overthink and doubt the process.",
+      text: "Explaining too much can make things more confusing.",
       options: commonOptions.en,
     },
     hi: {
       number: "09",
-      text: "यहां तक कि सरल नियमों को भी अतिसमझाना कभी-कभी करदाताओं को अतिसोच और प्रक्रिया पर संदेह कर सकता है।",
+      text: "बहुत अधिक समझाने से चीजें और भ्रमित हो सकती हैं।",
       options: commonOptions.hi,
     },
   },
@@ -223,12 +223,12 @@ const cbicQuestions = [
     en: {
       number: "10",
       image: "/c10.svg",
-      text: "At the end of a busy day, choosing which queries to 'filter' is part of staying efficient.",
+      text: "When I’m tired, I choose which things to reply to and leave the rest.",
       options: commonOptions.en,
     },
     hi: {
       number: "10",
-      text: "एक व्यस्त दिन के अंत में, यह चुनना कि किन प्रश्नों को 'फिल्टर' करना है, कुशल बने रहने का हिस्सा है।",
+      text: "जब मैं थका हुआ होता हूं, तो मैं चुनता हूं कि किन चीजों का जवाब देना है और बाकी को छोड़ देता हूं।",
       options: commonOptions.hi,
     },
   },
