@@ -161,8 +161,10 @@ const MyDocument = (props) => {
     emailIconUrl,
     webIconUrl,
     locationIconUrl,
-    reportScores,
-    chartImages,
+    reportScores, // First attempt scores
+    reportScores2, // Second attempt scores (optional)
+    chartImages, // First attempt chart images
+    chartImages2, // Second attempt chart images (optional)
     // PDF folder images
     founderImageUrl,
     instaIconUrl,
@@ -176,6 +178,7 @@ const MyDocument = (props) => {
     webIconPdfUrl,
     bgImageUrl,
   } = props;
+
   const today = new Date();
   const formattedDate = `${String(today.getDate()).padStart(2, "0")}-${String(
     today.getMonth() + 1
@@ -538,6 +541,296 @@ const MyDocument = (props) => {
           />
         </View>
       </Page>
+
+      {/* Second Attempt Content Pages - Only render if second attempt data exists */}
+      {reportScores2 && (
+        <Page size="A4" style={styles.contentPage}>
+          {/* Disclaimer at the top */}
+          <View style={styles.disclaimer}>
+            <Text style={styles.disclaimerText}>
+              Note: This assessment is intended for self-awareness and
+              developmental insights. For clinical concerns or diagnostic
+              clarity, we recommend consulting a qualified mental health
+              professional.
+            </Text>
+          </View>
+
+          {/* Header with logo and barcode */}
+          <View style={styles.headerContainer}>
+            <View style={{ width: "20%" }} />
+            <View style={styles.centerLogoContainer}>
+              {logoUrl && <PDFImage src={logoUrl} style={styles.centerLogo} />}
+            </View>
+            <View style={styles.barcodeContainer}>
+              {barcodeUrl ? (
+                <PDFImage src={barcodeUrl} style={styles.barcodeImage} />
+              ) : (
+                <View
+                  style={{
+                    width: 150,
+                    height: 60,
+                    backgroundColor: "#f0f0f0",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Text
+                    style={{
+                      fontFamily: "Montserrat",
+                      fontSize: 12,
+                      fontWeight: "bold",
+                    }}
+                  >
+                    ID: {quizId}
+                  </Text>
+                </View>
+              )}
+            </View>
+          </View>
+
+          {/* Main title */}
+          <View style={styles.mainTitleContainer}>
+            <Text style={styles.mainSubtitle}>
+              Treatment | Therapy | Transformation
+            </Text>
+          </View>
+
+          {/* Contact information with icons */}
+          <View style={styles.contactInfoContainer}>
+            <View style={styles.contactItem}>
+              {/* Phone icon */}
+              {phoneIconUrl ? (
+                <PDFImage src={phoneIconUrl} style={styles.contactIcon} />
+              ) : (
+                <Text
+                  style={{
+                    fontFamily: "Montserrat",
+                    fontSize: 14,
+                    marginRight: 5,
+                  }}
+                >
+                  ☎
+                </Text>
+              )}
+              <Text style={styles.contactText}>+91-8433805514</Text>
+            </View>
+            <View style={styles.contactItem}>
+              {/* Email icon */}
+              {emailIconUrl ? (
+                <PDFImage src={emailIconUrl} style={styles.contactIcon} />
+              ) : (
+                <Text
+                  style={{
+                    fontFamily: "Montserrat",
+                    fontSize: 14,
+                    marginRight: 5,
+                  }}
+                >
+                  ✉
+                </Text>
+              )}
+              <Text style={styles.contactText}>support@mendingmind.org</Text>
+            </View>
+            <View style={styles.contactItem}>
+              {/* Website icon */}
+              {webIconUrl ? (
+                <PDFImage src={webIconUrl} style={styles.contactIcon} />
+              ) : (
+                <Text
+                  style={{
+                    fontFamily: "Montserrat",
+                    fontSize: 14,
+                    marginRight: 5,
+                  }}
+                >
+                  🌐
+                </Text>
+              )}
+              <Text style={styles.contactText}>mendingmind.org</Text>
+            </View>
+          </View>
+
+          {/* Horizontal line */}
+          <View style={styles.horizontalLine} />
+
+          {/* Address with location icon */}
+          <View style={styles.addressContainer}>
+            <View style={styles.contactItem}>
+              {/* Location icon */}
+              {locationIconUrl ? (
+                <PDFImage src={locationIconUrl} style={styles.contactIcon} />
+              ) : (
+                <Text
+                  style={{
+                    fontFamily: "Montserrat",
+                    fontSize: 14,
+                    marginRight: 5,
+                  }}
+                >
+                  📍
+                </Text>
+              )}
+              <Text style={styles.addressText}>
+                Shingar vastu building, Gr floor, Flat no 001, JN Road, Mulund
+                west, Mumbai 400080
+              </Text>
+            </View>
+          </View>
+
+          {/* Horizontal line */}
+          <View style={styles.horizontalLine} />
+
+          {/* Mental Health Evaluation title */}
+          <View style={styles.evaluationTitleContainer}>
+            <Text style={styles.evaluationTitle}>
+              Mental Health Evaluation - Second Assessment
+            </Text>
+          </View>
+
+          {/* User info box */}
+          <View style={styles.userInfoBox}>
+            <View style={styles.userInfoLeft}>
+              <View style={styles.userInfoItem}>
+                <Text style={styles.userInfoLabel}>Name: </Text>
+                <Text style={styles.userInfoValue}>
+                  {userInfo?.name || "N/A"}
+                </Text>
+              </View>
+              <View style={styles.userInfoItem}>
+                <Text style={styles.userInfoLabel}>Age: </Text>
+                <Text style={styles.userInfoValue}>
+                  {userInfo?.age || "N/A"}
+                </Text>
+              </View>
+              <View style={styles.userInfoItem}>
+                <Text style={styles.userInfoLabel}>Sex: </Text>
+                <Text style={styles.userInfoValue}>
+                  {userInfo?.gender || "N/A"}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.userInfoRight}>
+              <View style={styles.userInfoItem}>
+                <Text style={styles.userInfoLabel}>ID: </Text>
+                <Text style={styles.userInfoValue}>{quizId}</Text>
+              </View>
+              <View style={styles.userInfoItem}>
+                <Text style={styles.userInfoValue}>{formattedDate}</Text>
+              </View>
+              <View style={styles.userInfoItem}>
+                <Text style={styles.userInfoLabel}>Report generated on: </Text>
+              </View>
+            </View>
+          </View>
+
+          {/* Results introduction */}
+          <View style={styles.resultsIntroContainer}>
+            <Text
+              style={[
+                styles.resultsIntroText,
+                {
+                  marginVertical: 20,
+                },
+              ]}
+            >
+              Based on your second assessment, your results are as follows:
+            </Text>
+          </View>
+
+          {/* BFI-10 Personality Test Section - Second Attempt */}
+          <View style={styles.testSectionContainer}>
+            <Text style={styles.testSectionTitle}>
+              PERSONALITY TRAITS - Second Assessment
+            </Text>
+
+            {/* Personality traits with visual scales and descriptions */}
+            <View style={styles.personalityDescriptionContainer}>
+              <View style={{ marginVertical: 20 }}>
+                <PersonalityTraitDisplay
+                  trait="Extraversion"
+                  score={reportScores2?.personality?.extraversion || 7}
+                />
+              </View>
+              {/* Agreeableness */}
+              <PersonalityTraitDisplay
+                trait="Agreeableness"
+                score={reportScores2?.personality?.agreeableness || 8}
+              />
+
+              {/* Conscientiousness */}
+              <PersonalityTraitDisplay
+                trait="Conscientiousness"
+                score={reportScores2?.personality?.conscientiousness || 6}
+              />
+
+              {/* Neuroticism */}
+              <PersonalityTraitDisplay
+                trait="Neuroticism"
+                score={reportScores2?.personality?.neuroticism || 4}
+              />
+
+              {/* Openness */}
+              <PersonalityTraitDisplay
+                trait="Openness"
+                score={reportScores2?.personality?.openness || 9}
+              />
+            </View>
+          </View>
+
+          {/* PSS Stress Assessment Section - Second Attempt */}
+          <View style={styles.testSectionContainer}>
+            <Text style={styles.testSectionTitle}>
+              Perceived Stress Scale (PSS) - Second Assessment
+            </Text>
+
+            {/* Stress radial bar chart visualization */}
+            <StressScaleDisplay
+              score={reportScores2?.stress || 14}
+              chartImage={chartImages2?.stressChart}
+            />
+          </View>
+
+          {/* Decision Style Assessment Section - Second Attempt */}
+          <View style={styles.testSectionContainer}>
+            <Text style={styles.testSectionTitle}>
+              Decision Making Style Assessment - Second Assessment
+            </Text>
+
+            {/* Decision style visualization with chart */}
+            <DecisionStyleDisplay
+              rationalScore={reportScores2?.decisionStyle?.rational || 18}
+              intuitiveScore={reportScores2?.decisionStyle?.intuitive || 22}
+              chartImage={chartImages2?.decisionChart}
+            />
+          </View>
+
+          {/* Resilience Scale Section - Second Attempt */}
+          <View style={styles.testSectionContainer}>
+            <Text style={styles.testSectionTitle}>
+              Resilience Assessment - Second Assessment
+            </Text>
+
+            {/* Resilience scale visualization with horizontal bar */}
+            <ResilienceScaleDisplay
+              score={reportScores2?.resilience || 65}
+              chartImage={chartImages2?.resilienceChart}
+            />
+          </View>
+
+          {/* Taxpayer Situational Judgement Test Section - Second Attempt */}
+          <View style={styles.testSectionContainer}>
+            <Text style={styles.testSectionTitle}>
+              Taxpayer Situational Judgement Test - Second Assessment
+            </Text>
+
+            {/* Taxpayer judgement test results without charts */}
+            <TaxpayerJudgementDisplay
+              score={reportScores2?.taxpayerJudgement || 4}
+            />
+          </View>
+        </Page>
+      )}
+
       <Page
         size="A4"
         style={{
@@ -1242,7 +1535,12 @@ const MyDocument = (props) => {
   );
 };
 
-const PDFViewer = ({ userInfo, reportScores, refreshTrigger = 0 }) => {
+const PDFViewer = ({
+  userInfo,
+  reportScores,
+  reportScores2,
+  refreshTrigger = 0,
+}) => {
   const [isClient, setIsClient] = useState(false);
   const [pdfBlob, setPdfBlob] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -1254,6 +1552,7 @@ const PDFViewer = ({ userInfo, reportScores, refreshTrigger = 0 }) => {
   const [webIconUrl, setWebIconUrl] = useState(null);
   const [locationIconUrl, setLocationIconUrl] = useState(null);
   const [chartImages, setChartImages] = useState(null);
+  const [chartImages2, setChartImages2] = useState(null);
 
   // PDF folder images
   const [founderImageUrl, setFounderImageUrl] = useState(null);
@@ -1270,6 +1569,7 @@ const PDFViewer = ({ userInfo, reportScores, refreshTrigger = 0 }) => {
   const quizId = useMemo(() => generateQuizId(), []);
   // Use useRef to track if we've already set the chart images
   const chartImagesSetRef = useRef(false);
+  const chartImages2SetRef = useRef(false);
 
   // Generate barcode using JsBarcode directly
   useEffect(() => {
@@ -1410,6 +1710,7 @@ const PDFViewer = ({ userInfo, reportScores, refreshTrigger = 0 }) => {
           <MyDocument
             userInfo={userInfo}
             reportScores={reportScores}
+            reportScores2={reportScores2}
             logoUrl={logoUrl}
             reportImageUrl={reportImageUrl}
             quizId={quizId}
@@ -1419,6 +1720,7 @@ const PDFViewer = ({ userInfo, reportScores, refreshTrigger = 0 }) => {
             webIconUrl={webIconUrl}
             locationIconUrl={locationIconUrl}
             chartImages={chartImages}
+            chartImages2={chartImages2}
             // PDF folder images
             founderImageUrl={founderImageUrl}
             instaIconUrl={instaIconUrl}
@@ -1450,6 +1752,8 @@ const PDFViewer = ({ userInfo, reportScores, refreshTrigger = 0 }) => {
       reportImageUrl &&
       barcodeUrl &&
       chartImages &&
+      // If there's a second attempt, wait for its charts too
+      (!reportScores2 || chartImages2) &&
       // PDF folder images
       founderImageUrl &&
       instaIconUrl &&
@@ -1478,6 +1782,7 @@ const PDFViewer = ({ userInfo, reportScores, refreshTrigger = 0 }) => {
   }, [
     userInfo,
     reportScores,
+    reportScores2,
     refreshTrigger,
     logoUrl,
     reportImageUrl,
@@ -1488,6 +1793,7 @@ const PDFViewer = ({ userInfo, reportScores, refreshTrigger = 0 }) => {
     webIconUrl,
     locationIconUrl,
     chartImages,
+    chartImages2,
     // PDF folder images
     founderImageUrl,
     instaIconUrl,
@@ -1542,14 +1848,31 @@ const PDFViewer = ({ userInfo, reportScores, refreshTrigger = 0 }) => {
     }
   };
 
+  const handleCharts2Generated = (images) => {
+    // Only log and update state if we haven't already done so
+    if (!chartImages2SetRef.current) {
+      setChartImages2(images);
+      chartImages2SetRef.current = true;
+    }
+  };
+
   return (
     <div className="w-full h-full flex flex-col items-center">
-      {/* Chart image generator component (hidden) */}
+      {/* Chart image generator components (hidden) */}
       {isClient && (
-        <ChartImageGenerator
-          reportScores={reportScores}
-          onChartsGenerated={handleChartsGenerated}
-        />
+        <>
+          <ChartImageGenerator
+            reportScores={reportScores}
+            onChartsGenerated={handleChartsGenerated}
+          />
+          {/* Second attempt chart generator - only if second attempt data exists */}
+          {reportScores2 && (
+            <ChartImageGenerator
+              reportScores={reportScores2}
+              onChartsGenerated={handleCharts2Generated}
+            />
+          )}
+        </>
       )}
 
       {isLoading || !logoUrl || !reportImageUrl ? (
@@ -1571,6 +1894,7 @@ const PDFViewer = ({ userInfo, reportScores, refreshTrigger = 0 }) => {
             <MyDocument
               userInfo={userInfo}
               reportScores={reportScores}
+              reportScores2={reportScores2}
               logoUrl={logoUrl}
               reportImageUrl={reportImageUrl}
               quizId={quizId}
@@ -1580,6 +1904,7 @@ const PDFViewer = ({ userInfo, reportScores, refreshTrigger = 0 }) => {
               webIconUrl={webIconUrl}
               locationIconUrl={locationIconUrl}
               chartImages={chartImages}
+              chartImages2={chartImages2}
               // PDF folder images
               founderImageUrl={founderImageUrl}
               instaIconUrl={instaIconUrl}

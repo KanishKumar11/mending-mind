@@ -46,9 +46,41 @@ const ReportDownloader = ({
   const [chartData, setChartData] = useState(null);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
   const [refreshPdfTrigger, setRefreshPdfTrigger] = useState(0);
+  const [previousAttempt, setPreviousAttempt] = useState(null);
 
-  // Use provided scores
+  // Use provided scores as current attempt
   const reportScores = scores;
+
+  // Fetch previous attempt data
+  useEffect(() => {
+    const fetchPreviousAttempt = async () => {
+      if (!userInfo?.emailId) {
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `/api/users?email=${encodeURIComponent(userInfo.emailId)}`
+        );
+        const data = await response.json();
+
+        if (
+          data.success &&
+          data.user &&
+          data.user.quizAttempts &&
+          data.user.quizAttempts.length >= 2
+        ) {
+          // Get the first attempt (previous attempt)
+          setPreviousAttempt(data.user.quizAttempts[0]);
+        }
+      } catch (error) {
+        // Silently handle error
+      }
+    };
+
+    fetchPreviousAttempt();
+  }, [userInfo?.emailId]);
+
   useEffect(() => {
     // Personality data
     const personalityData = {
@@ -293,6 +325,7 @@ const ReportDownloader = ({
         <PDFViewer
           userInfo={userInfo}
           reportScores={reportScores}
+          reportScores2={previousAttempt}
           refreshTrigger={refreshPdfTrigger}
         />
       </div>

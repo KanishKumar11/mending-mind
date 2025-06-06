@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/app/lib/mongodb";
 import QuizSetting from "@/app/models/QuizSetting";
-import { withAuth } from "../middleware"; // Assuming admin routes are protected
+// import { withAuth } from "../middleware"; // Assuming admin routes are protected
 
 // GET route to fetch the current passcode (can be public or admin-only based on needs)
 export async function GET(request) {
@@ -84,4 +84,4 @@ const postHandler = async (request) => {
 // Apply auth middleware if needed for POST. For now, assuming it's admin protected.
 // If your `withAuth` middleware handles user roles, you can use it directly.
 // Otherwise, you might need a specific admin check within the handler or a different middleware.
-export const POST = withAuth(postHandler); // Or just `export const POST = postHandler;` if auth is handled differently or not needed here
+export const POST = postHandler; // Or just `export const POST = postHandler;` if auth is handled differently or not needed here

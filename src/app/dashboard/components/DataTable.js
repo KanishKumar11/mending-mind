@@ -67,6 +67,9 @@ export function DataTable({ columns, data }) {
       openness: false,
       rational: false,
       intuitive: false,
+      empathy: false,
+      emotional: false,
+      decision: false,
     };
   });
   const [rowSelection, setRowSelection] = useState({});
@@ -100,13 +103,36 @@ export function DataTable({ columns, data }) {
     },
   });
 
-  // Improved function to export data as CSV
+  // Enhanced function to export comprehensive data as CSV
   const exportToCSV = () => {
     try {
-      // Get visible columns
-      const visibleColumns = table
-        .getAllColumns()
-        .filter((column) => column.getIsVisible());
+      // Define all possible columns for comprehensive export
+      const allPossibleColumns = [
+        { key: "name", header: "Name" },
+        { key: "age", header: "Age" },
+        { key: "gender", header: "Gender" },
+        { key: "email", header: "Email" },
+        { key: "contact", header: "Contact" },
+        { key: "attemptNumber", header: "Attempt Number" },
+        { key: "totalAttempts", header: "Total Attempts" },
+        { key: "attemptDate", header: "Attempt Date" },
+        { key: "extraversion", header: "Extraversion" },
+        { key: "agreeableness", header: "Agreeableness" },
+        { key: "conscientiousness", header: "Conscientiousness" },
+        { key: "neuroticism", header: "Neuroticism" },
+        { key: "openness", header: "Openness" },
+        { key: "stress", header: "Stress" },
+        { key: "rational", header: "Rational" },
+        { key: "intuitive", header: "Intuitive" },
+        { key: "resilience", header: "Resilience" },
+        { key: "taxpayerJudgement", header: "Taxpayer Judgement" },
+        { key: "empathy", header: "CBIC Empathy" },
+        { key: "emotional", header: "CBIC Emotional" },
+        { key: "decision", header: "CBIC Decision" },
+        { key: "createdAt", header: "User Created Date" },
+      ];
+
+      // Note: We export all columns regardless of visibility for comprehensive data
 
       // Helper function to escape CSV values properly
       const escapeCSV = (value) => {
@@ -129,69 +155,83 @@ export function DataTable({ columns, data }) {
         return stringValue;
       };
 
-      // Create header row with proper text headers
-      const headers = visibleColumns
-        .map((column) => {
-          const headerDef = column.columnDef.header;
-          let headerText;
-
-          // Handle different header types
-          if (typeof headerDef === "string") {
-            headerText = headerDef;
-          } else if (column.id) {
-            // Use column ID as fallback, capitalize first letter
-            headerText = column.id.charAt(0).toUpperCase() + column.id.slice(1);
-          } else {
-            headerText = "";
-          }
-
-          return escapeCSV(headerText);
-        })
+      // Create header row using comprehensive column list
+      const headers = allPossibleColumns
+        .map((column) => escapeCSV(column.header))
         .join(",");
 
-      // Create data rows
+      // Create data rows using comprehensive column extraction
       const rows = table
         .getFilteredRowModel()
         .rows.map((row) => {
-          return visibleColumns
+          return allPossibleColumns
             .map((column) => {
               let cellValue;
 
               try {
-                // Special handling for date columns
-                if (column.id === "createdAt" && row.getValue(column.id)) {
-                  cellValue = format(
-                    new Date(row.getValue(column.id)),
-                    "yyyy-MM-dd"
-                  );
-                } else {
-                  // Try to get the value using the cell value
-                  cellValue = row.getValue(column.id);
+                const rowData = row.original;
 
-                  // If that doesn't work and there's an accessorFn, use it directly
-                  if (
-                    (cellValue === undefined || cellValue === null) &&
-                    column.columnDef.accessorFn
-                  ) {
-                    cellValue = column.columnDef.accessorFn(row.original);
-                  }
+                // Extract data based on column key
+                switch (column.key) {
+                  case "name":
+                  case "age":
+                  case "gender":
+                  case "email":
+                  case "contact":
+                  case "attemptNumber":
+                  case "totalAttempts":
+                    cellValue = rowData[column.key];
+                    break;
+                  case "attemptDate":
+                    cellValue = rowData.attemptDate
+                      ? format(
+                          new Date(rowData.attemptDate),
+                          "yyyy-MM-dd HH:mm:ss"
+                        )
+                      : "";
+                    break;
+                  case "createdAt":
+                    cellValue = rowData.createdAt
+                      ? format(
+                          new Date(rowData.createdAt),
+                          "yyyy-MM-dd HH:mm:ss"
+                        )
+                      : "";
+                    break;
+                  case "extraversion":
+                  case "agreeableness":
+                  case "conscientiousness":
+                  case "neuroticism":
+                  case "openness":
+                    cellValue =
+                      rowData.currentAttempt?.personality?.[column.key];
+                    break;
+                  case "stress":
+                  case "resilience":
+                  case "taxpayerJudgement":
+                    cellValue = rowData.currentAttempt?.[column.key];
+                    break;
+                  case "rational":
+                  case "intuitive":
+                    cellValue =
+                      rowData.currentAttempt?.decisionStyle?.[column.key];
+                    break;
+                  case "empathy":
+                  case "emotional":
+                  case "decision":
+                    cellValue = rowData.currentAttempt?.cbic?.[column.key];
+                    break;
+                  default:
+                    cellValue = "";
                 }
 
-                // Format objects and arrays properly
-                if (typeof cellValue === "object" && cellValue !== null) {
-                  if (Array.isArray(cellValue)) {
-                    cellValue = cellValue.join(", ");
-                  } else {
-                    // Convert object to string, but handle Date objects specially
-                    cellValue =
-                      cellValue instanceof Date
-                        ? format(cellValue, "yyyy-MM-dd")
-                        : JSON.stringify(cellValue);
-                  }
+                // Handle undefined/null values
+                if (cellValue === undefined || cellValue === null) {
+                  cellValue = "";
                 }
               } catch (error) {
                 console.error(
-                  `Error getting value for column ${column.id}:`,
+                  `Error getting value for column ${column.key}:`,
                   error
                 );
                 cellValue = "";
@@ -211,7 +251,10 @@ export function DataTable({ columns, data }) {
       const url = URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.setAttribute("href", url);
-      link.setAttribute("download", "user_data.csv");
+      link.setAttribute(
+        "download",
+        `user_quiz_data_${new Date().toISOString().split("T")[0]}.csv`
+      );
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

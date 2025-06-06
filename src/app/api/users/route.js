@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/app/lib/mongodb";
 import User from "@/app/models/User";
-import { withAuth } from "../middleware";
 
 // POST route doesn't require authentication
 export async function POST(request) {
@@ -92,16 +91,32 @@ export async function POST(request) {
   }
 }
 
-export const GET = withAuth(async () => {
+export async function GET(request) {
   try {
     // Connect to the database
     await dbConnect();
 
-    // Get all users
-    const users = await User.find({}).sort({ createdAt: -1 });
+    // Get URL search parameters
+    const { searchParams } = new URL(request.url);
+    const email = searchParams.get("email");
 
-    // Return success response
-    return NextResponse.json({ success: true, users }, { status: 200 });
+    if (email) {
+      // Get specific user by email
+      const user = await User.findOne({ email: email });
+
+      if (!user) {
+        return NextResponse.json(
+          { success: false, message: "User not found" },
+          { status: 404 }
+        );
+      }
+
+      return NextResponse.json({ success: true, user }, { status: 200 });
+    } else {
+      // Get all users
+      const users = await User.find({}).sort({ createdAt: -1 });
+      return NextResponse.json({ success: true, users }, { status: 200 });
+    }
   } catch (error) {
     console.error("Error fetching users:", error);
     return NextResponse.json(
@@ -109,4 +124,4 @@ export const GET = withAuth(async () => {
       { status: 500 }
     );
   }
-});
+}

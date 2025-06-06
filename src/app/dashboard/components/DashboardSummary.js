@@ -1,25 +1,50 @@
 "use client";
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/app/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/app/components/ui/card";
 import { Bar, Doughnut, Line } from "react-chartjs-2";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title } from "chart.js";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  Title,
+} from "chart.js";
 
 // Register ChartJS components
 ChartJS.register(
-  ArcElement, 
-  Tooltip, 
-  Legend, 
-  CategoryScale, 
-  LinearScale, 
-  PointElement, 
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  PointElement,
   LineElement,
   BarElement,
   Title
 );
 
 export default function DashboardSummary({ users }) {
-  // Calculate gender distribution
-  const genderCounts = users.reduce((acc, user) => {
+  // Get unique users (deduplicate since we now have multiple rows per user)
+  const uniqueUsers = users.reduce((acc, user) => {
+    if (!acc.find((u) => u.originalUserId === user.originalUserId)) {
+      acc.push(user);
+    }
+    return acc;
+  }, []);
+
+  // Calculate gender distribution (based on unique users)
+  const genderCounts = uniqueUsers.reduce((acc, user) => {
     const gender = user.gender || "Not Specified";
     acc[gender] = (acc[gender] || 0) + 1;
     return acc;
@@ -31,16 +56,8 @@ export default function DashboardSummary({ users }) {
       {
         label: "Gender Distribution",
         data: Object.values(genderCounts),
-        backgroundColor: [
-          "#F0C93B",
-          "#B4E0E0",
-          "#9A8BC5",
-        ],
-        borderColor: [
-          "#e0b92b",
-          "#8ECACA",
-          "#8A7BB5",
-        ],
+        backgroundColor: ["#F0C93B", "#B4E0E0", "#9A8BC5"],
+        borderColor: ["#e0b92b", "#8ECACA", "#8A7BB5"],
         borderWidth: 1,
       },
     ],
@@ -56,10 +73,10 @@ export default function DashboardSummary({ users }) {
     "55+": 0,
   };
 
-  users.forEach(user => {
+  uniqueUsers.forEach((user) => {
     const age = parseInt(user.age);
     if (isNaN(age)) return;
-    
+
     if (age < 18) ageGroups["Under 18"]++;
     else if (age >= 18 && age <= 24) ageGroups["18-24"]++;
     else if (age >= 25 && age <= 34) ageGroups["25-34"]++;
@@ -81,33 +98,68 @@ export default function DashboardSummary({ users }) {
     ],
   };
 
-  // Calculate average personality traits
+  // Calculate average personality traits (from all attempts)
   const personalityAverages = users.reduce(
     (acc, user) => {
-      if (user.scores?.personality) {
-        acc.extraversion += user.scores.personality.extraversion || 0;
-        acc.agreeableness += user.scores.personality.agreeableness || 0;
-        acc.conscientiousness += user.scores.personality.conscientiousness || 0;
-        acc.neuroticism += user.scores.personality.neuroticism || 0;
-        acc.openness += user.scores.personality.openness || 0;
+      if (user.currentAttempt?.personality) {
+        acc.extraversion += user.currentAttempt.personality.extraversion || 0;
+        acc.agreeableness += user.currentAttempt.personality.agreeableness || 0;
+        acc.conscientiousness +=
+          user.currentAttempt.personality.conscientiousness || 0;
+        acc.neuroticism += user.currentAttempt.personality.neuroticism || 0;
+        acc.openness += user.currentAttempt.personality.openness || 0;
         acc.count++;
       }
       return acc;
     },
-    { extraversion: 0, agreeableness: 0, conscientiousness: 0, neuroticism: 0, openness: 0, count: 0 }
+    {
+      extraversion: 0,
+      agreeableness: 0,
+      conscientiousness: 0,
+      neuroticism: 0,
+      openness: 0,
+      count: 0,
+    }
   );
 
   const personalityData = {
-    labels: ["Extraversion", "Agreeableness", "Conscientiousness", "Neuroticism", "Openness"],
+    labels: [
+      "Extraversion",
+      "Agreeableness",
+      "Conscientiousness",
+      "Neuroticism",
+      "Openness",
+    ],
     datasets: [
       {
         label: "Average Personality Traits",
         data: [
-          personalityAverages.count ? (personalityAverages.extraversion / personalityAverages.count).toFixed(2) : 0,
-          personalityAverages.count ? (personalityAverages.agreeableness / personalityAverages.count).toFixed(2) : 0,
-          personalityAverages.count ? (personalityAverages.conscientiousness / personalityAverages.count).toFixed(2) : 0,
-          personalityAverages.count ? (personalityAverages.neuroticism / personalityAverages.count).toFixed(2) : 0,
-          personalityAverages.count ? (personalityAverages.openness / personalityAverages.count).toFixed(2) : 0,
+          personalityAverages.count
+            ? (
+                personalityAverages.extraversion / personalityAverages.count
+              ).toFixed(2)
+            : 0,
+          personalityAverages.count
+            ? (
+                personalityAverages.agreeableness / personalityAverages.count
+              ).toFixed(2)
+            : 0,
+          personalityAverages.count
+            ? (
+                personalityAverages.conscientiousness /
+                personalityAverages.count
+              ).toFixed(2)
+            : 0,
+          personalityAverages.count
+            ? (
+                personalityAverages.neuroticism / personalityAverages.count
+              ).toFixed(2)
+            : 0,
+          personalityAverages.count
+            ? (
+                personalityAverages.openness / personalityAverages.count
+              ).toFixed(2)
+            : 0,
         ],
         backgroundColor: "rgba(176, 224, 224, 0.2)",
         borderColor: "#B4E0E0",
@@ -121,21 +173,24 @@ export default function DashboardSummary({ users }) {
     ],
   };
 
-  // Calculate assessments over time
+  // Calculate assessments over time (each attempt counts)
   const assessmentsByMonth = {};
-  
-  users.forEach(user => {
-    const date = new Date(user.createdAt);
-    const monthYear = `${date.getMonth() + 1}/${date.getFullYear()}`;
-    
-    assessmentsByMonth[monthYear] = (assessmentsByMonth[monthYear] || 0) + 1;
+
+  users.forEach((user) => {
+    if (user.attemptNumber > 0) {
+      // Only count actual attempts
+      const date = new Date(user.attemptDate);
+      const monthYear = `${date.getMonth() + 1}/${date.getFullYear()}`;
+
+      assessmentsByMonth[monthYear] = (assessmentsByMonth[monthYear] || 0) + 1;
+    }
   });
 
   // Sort by date
   const sortedMonths = Object.keys(assessmentsByMonth).sort((a, b) => {
-    const [aMonth, aYear] = a.split('/').map(Number);
-    const [bMonth, bYear] = b.split('/').map(Number);
-    
+    const [aMonth, aYear] = a.split("/").map(Number);
+    const [bMonth, bYear] = b.split("/").map(Number);
+
     if (aYear !== bYear) return aYear - bYear;
     return aMonth - bMonth;
   });
@@ -145,7 +200,7 @@ export default function DashboardSummary({ users }) {
     datasets: [
       {
         label: "Assessments Completed",
-        data: sortedMonths.map(month => assessmentsByMonth[month]),
+        data: sortedMonths.map((month) => assessmentsByMonth[month]),
         borderColor: "#F0C93B",
         backgroundColor: "rgba(240, 201, 59, 0.5)",
         tension: 0.1,
@@ -161,8 +216,8 @@ export default function DashboardSummary({ users }) {
           <CardDescription>Breakdown of users by gender</CardDescription>
         </CardHeader>
         <CardContent className="pl-2">
-          <Doughnut 
-            data={genderData} 
+          <Doughnut
+            data={genderData}
             options={{
               responsive: true,
               plugins: {
@@ -174,14 +229,14 @@ export default function DashboardSummary({ users }) {
           />
         </CardContent>
       </Card>
-      
+
       <Card className="col-span-1">
         <CardHeader>
           <CardTitle>Age Distribution</CardTitle>
           <CardDescription>Breakdown of users by age group</CardDescription>
         </CardHeader>
         <CardContent className="pl-2">
-          <Bar 
+          <Bar
             data={ageData}
             options={{
               responsive: true,
@@ -194,14 +249,14 @@ export default function DashboardSummary({ users }) {
           />
         </CardContent>
       </Card>
-      
+
       <Card className="col-span-1 md:col-span-2 lg:col-span-1">
         <CardHeader>
           <CardTitle>Personality Traits</CardTitle>
           <CardDescription>Average scores across all users</CardDescription>
         </CardHeader>
         <CardContent className="pl-2">
-          <Line 
+          <Line
             data={personalityData}
             options={{
               responsive: true,
@@ -220,14 +275,16 @@ export default function DashboardSummary({ users }) {
           />
         </CardContent>
       </Card>
-      
+
       <Card className="col-span-1 md:col-span-2 lg:col-span-3">
         <CardHeader>
           <CardTitle>Assessments Over Time</CardTitle>
-          <CardDescription>Number of assessments completed by month</CardDescription>
+          <CardDescription>
+            Number of assessments completed by month
+          </CardDescription>
         </CardHeader>
         <CardContent className="pl-2">
-          <Line 
+          <Line
             data={assessmentsData}
             options={{
               responsive: true,
