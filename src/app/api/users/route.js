@@ -28,8 +28,16 @@ export async function POST(request) {
       );
     }
 
+    // Normalize email for consistent comparison
+    const normalizedEmail = body.email.toLowerCase().trim();
+
     // Check if user with this email already exists
-    let user = await User.findOne({ email: body.email });
+    let user = await User.findOne({
+      email: { $regex: new RegExp(`^${normalizedEmail}$`, "i") },
+    });
+
+    console.log(`Looking for user with email: ${normalizedEmail}`);
+    console.log(`Found existing user: ${user ? "Yes" : "No"}`);
 
     if (user) {
       // Ensure quizAttempts is an array
@@ -46,6 +54,10 @@ export async function POST(request) {
       user.contact = body.contact;
       await user.save();
 
+      console.log(
+        `Updated user ${user.email} with new quiz attempt. Total attempts: ${user.quizAttempts.length}`
+      );
+
       return NextResponse.json(
         {
           success: true,
@@ -61,13 +73,15 @@ export async function POST(request) {
       name: body.name,
       age: body.age,
       gender: body.gender,
-      email: body.email,
+      email: normalizedEmail, // Use normalized email
       contact: body.contact,
       quizAttempts: body.quizAttempts, // body.quizAttempts is already an array with one score object
     });
 
     // Save the user to the database
     await user.save();
+
+    console.log(`Created new user ${normalizedEmail} with first quiz attempt`);
 
     // Return success response
     return NextResponse.json(
@@ -101,8 +115,13 @@ export async function GET(request) {
     const email = searchParams.get("email");
 
     if (email) {
+      // Normalize email for consistent comparison
+      const normalizedEmail = email.toLowerCase().trim();
+
       // Get specific user by email
-      const user = await User.findOne({ email: email });
+      const user = await User.findOne({
+        email: { $regex: new RegExp(`^${normalizedEmail}$`, "i") },
+      });
 
       if (!user) {
         return NextResponse.json(

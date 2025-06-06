@@ -729,7 +729,7 @@ const MyDocument = (props) => {
               style={[
                 styles.resultsIntroText,
                 {
-                  marginVertical: 20,
+                  marginVertical: 40,
                 },
               ]}
             >
