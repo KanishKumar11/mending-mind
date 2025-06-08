@@ -223,14 +223,72 @@ const MyDocument = (props) => {
         </View>
       </Page>
 
+      {/* Mental Health Evaluation - Round 1 Cover Page */}
+      <Page size="A4" style={styles.coverPage}>
+        {logoUrl && (
+          <PDFImage
+            src={logoUrl}
+            style={{ ...styles.centerLogo, marginBottom: 40 }}
+          />
+        )}
+
+        <Text style={styles.title}>MENTAL HEALTH EVALUATION</Text>
+        <Text style={styles.subtitle}>Round 1</Text>
+
+        <View
+          style={{
+            marginTop: 40,
+            padding: 20,
+            backgroundColor: "#FFF8E1",
+            borderRadius: 10,
+            borderTopWidth: 3,
+            borderTopColor: "#F0C93B",
+            width: "80%",
+            alignSelf: "center",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 14,
+              textAlign: "center",
+              fontFamily: "Montserrat",
+              marginBottom: 10,
+            }}
+          >
+            This assessment provides insights into your mental well-being and
+            psychological traits to help guide your personal growth journey.
+          </Text>
+          <Text
+            style={{
+              fontSize: 12,
+              textAlign: "center",
+              fontFamily: "Montserrat",
+              fontStyle: "italic",
+            }}
+          >
+            The following pages contain your personalized results from the first
+            round of evaluation.
+          </Text>
+        </View>
+
+        {reportImageUrl && (
+          <PDFImage
+            src={reportImageUrl}
+            style={{ ...styles.brainImage, marginTop: 40 }}
+          />
+        )}
+
+        <Text style={styles.broughtBy}>brought to you by Mending Mind</Text>
+      </Page>
+
       {/* Content Page 1 */}
       <Page size="A4" style={styles.contentPage}>
         {/* Disclaimer at the top */}
         <View style={styles.disclaimer}>
           <Text style={styles.disclaimerText}>
             This assessment is created to guide you toward greater
-            self-awareness and development. It is intended for
-            personal insights only.
+            self-awareness and development. It is intended for personal insights
+            only.
           </Text>
         </View>
 
@@ -359,7 +417,9 @@ const MyDocument = (props) => {
 
         {/* Mental Health Evaluation title */}
         <View style={styles.evaluationTitleContainer}>
-          <Text style={styles.evaluationTitle}>Mental Health Evaluation</Text>
+          <Text style={styles.evaluationTitle}>
+            Mental Health Evaluation - Round 1
+          </Text>
         </View>
 
         {/* User info box */}
@@ -529,10 +589,10 @@ const MyDocument = (props) => {
           />
         </View>
 
-        {/* Taxpayer Situational Judgement Test Section */}
+        {/* Workplace Situational Judgement Scale (WSJS) Section */}
         <View style={styles.testSectionContainer}>
           <Text style={styles.testSectionTitle}>
-            Taxpayer Situational Judgement Test
+            Workplace Situational Judgement Scale (WSJS)
           </Text>
 
           {/* Taxpayer judgement test results without charts */}
@@ -544,291 +604,355 @@ const MyDocument = (props) => {
 
       {/* Second Attempt Content Pages - Only render if second attempt data exists */}
       {reportScores2 && (
-        <Page size="A4" style={styles.contentPage}>
-          {/* Disclaimer at the top */}
-          <View style={styles.disclaimer}>
-            <Text style={styles.disclaimerText}>
-              Note: This assessment is intended for self-awareness and
-              developmental insights. For clinical concerns or diagnostic
-              clarity, we recommend consulting a qualified mental health
-              professional.
-            </Text>
-          </View>
+        <>
+          {/* Mental Health Evaluation - Round 2 Cover Page */}
+          <Page size="A4" style={styles.coverPage}>
+            {logoUrl && (
+              <PDFImage
+                src={logoUrl}
+                style={{ ...styles.centerLogo, marginBottom: 40 }}
+              />
+            )}
 
-          {/* Header with logo and barcode */}
-          <View style={styles.headerContainer}>
-            <View style={{ width: "20%" }} />
-            <View style={styles.centerLogoContainer}>
-              {logoUrl && <PDFImage src={logoUrl} style={styles.centerLogo} />}
+            <Text style={styles.title}>MENTAL HEALTH EVALUATION</Text>
+            <Text style={styles.subtitle}>Round 2</Text>
+
+            <View
+              style={{
+                marginTop: 40,
+                padding: 20,
+                backgroundColor: "#FFF8E1",
+                borderRadius: 10,
+                borderTopWidth: 3,
+                borderTopColor: "#F0C93B",
+                width: "80%",
+                alignSelf: "center",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 14,
+                  textAlign: "center",
+                  fontFamily: "Montserrat",
+                  marginBottom: 10,
+                }}
+              >
+                This follow-up assessment tracks your progress and changes in
+                mental well-being since your first evaluation.
+              </Text>
+              <Text
+                style={{
+                  fontSize: 12,
+                  textAlign: "center",
+                  fontFamily: "Montserrat",
+                  fontStyle: "italic",
+                }}
+              >
+                The following pages contain your personalized results from the
+                second round of evaluation.
+              </Text>
             </View>
-            <View style={styles.barcodeContainer}>
-              {barcodeUrl ? (
-                <PDFImage src={barcodeUrl} style={styles.barcodeImage} />
-              ) : (
-                <View
-                  style={{
-                    width: 150,
-                    height: 60,
-                    backgroundColor: "#f0f0f0",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
+
+            {reportImageUrl && (
+              <PDFImage
+                src={reportImageUrl}
+                style={{ ...styles.brainImage, marginTop: 40 }}
+              />
+            )}
+
+            <Text style={styles.broughtBy}>brought to you by Mending Mind</Text>
+          </Page>
+
+          <Page size="A4" style={styles.contentPage}>
+            {/* Disclaimer at the top */}
+            <View style={styles.disclaimer}>
+              <Text style={styles.disclaimerText}>
+                Note: This assessment is intended for self-awareness and
+                developmental insights. For clinical concerns or diagnostic
+                clarity, we recommend consulting a qualified mental health
+                professional.
+              </Text>
+            </View>
+
+            {/* Header with logo and barcode */}
+            <View style={styles.headerContainer}>
+              <View style={{ width: "20%" }} />
+              <View style={styles.centerLogoContainer}>
+                {logoUrl && (
+                  <PDFImage src={logoUrl} style={styles.centerLogo} />
+                )}
+              </View>
+              <View style={styles.barcodeContainer}>
+                {barcodeUrl ? (
+                  <PDFImage src={barcodeUrl} style={styles.barcodeImage} />
+                ) : (
+                  <View
+                    style={{
+                      width: 150,
+                      height: 60,
+                      backgroundColor: "#f0f0f0",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Text
+                      style={{
+                        fontFamily: "Montserrat",
+                        fontSize: 12,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      ID: {quizId}
+                    </Text>
+                  </View>
+                )}
+              </View>
+            </View>
+
+            {/* Main title */}
+            <View style={styles.mainTitleContainer}>
+              <Text style={styles.mainSubtitle}>
+                Treatment | Therapy | Transformation
+              </Text>
+            </View>
+
+            {/* Contact information with icons */}
+            <View style={styles.contactInfoContainer}>
+              <View style={styles.contactItem}>
+                {/* Phone icon */}
+                {phoneIconUrl ? (
+                  <PDFImage src={phoneIconUrl} style={styles.contactIcon} />
+                ) : (
                   <Text
                     style={{
                       fontFamily: "Montserrat",
-                      fontSize: 12,
-                      fontWeight: "bold",
+                      fontSize: 14,
+                      marginRight: 5,
                     }}
                   >
-                    ID: {quizId}
+                    ☎
                   </Text>
-                </View>
-              )}
+                )}
+                <Text style={styles.contactText}>+91-8433805514</Text>
+              </View>
+              <View style={styles.contactItem}>
+                {/* Email icon */}
+                {emailIconUrl ? (
+                  <PDFImage src={emailIconUrl} style={styles.contactIcon} />
+                ) : (
+                  <Text
+                    style={{
+                      fontFamily: "Montserrat",
+                      fontSize: 14,
+                      marginRight: 5,
+                    }}
+                  >
+                    ✉
+                  </Text>
+                )}
+                <Text style={styles.contactText}>support@mendingmind.org</Text>
+              </View>
+              <View style={styles.contactItem}>
+                {/* Website icon */}
+                {webIconUrl ? (
+                  <PDFImage src={webIconUrl} style={styles.contactIcon} />
+                ) : (
+                  <Text
+                    style={{
+                      fontFamily: "Montserrat",
+                      fontSize: 14,
+                      marginRight: 5,
+                    }}
+                  >
+                    🌐
+                  </Text>
+                )}
+                <Text style={styles.contactText}>mendingmind.org</Text>
+              </View>
             </View>
-          </View>
 
-          {/* Main title */}
-          <View style={styles.mainTitleContainer}>
-            <Text style={styles.mainSubtitle}>
-              Treatment | Therapy | Transformation
-            </Text>
-          </View>
+            {/* Horizontal line */}
+            <View style={styles.horizontalLine} />
 
-          {/* Contact information with icons */}
-          <View style={styles.contactInfoContainer}>
-            <View style={styles.contactItem}>
-              {/* Phone icon */}
-              {phoneIconUrl ? (
-                <PDFImage src={phoneIconUrl} style={styles.contactIcon} />
-              ) : (
-                <Text
-                  style={{
-                    fontFamily: "Montserrat",
-                    fontSize: 14,
-                    marginRight: 5,
-                  }}
-                >
-                  ☎
+            {/* Address with location icon */}
+            <View style={styles.addressContainer}>
+              <View style={styles.contactItem}>
+                {/* Location icon */}
+                {locationIconUrl ? (
+                  <PDFImage src={locationIconUrl} style={styles.contactIcon} />
+                ) : (
+                  <Text
+                    style={{
+                      fontFamily: "Montserrat",
+                      fontSize: 14,
+                      marginRight: 5,
+                    }}
+                  >
+                    📍
+                  </Text>
+                )}
+                <Text style={styles.addressText}>
+                  Shingar vastu building, Gr floor, Flat no 001, JN Road, Mulund
+                  west, Mumbai 400080
                 </Text>
-              )}
-              <Text style={styles.contactText}>+91-8433805514</Text>
+              </View>
             </View>
-            <View style={styles.contactItem}>
-              {/* Email icon */}
-              {emailIconUrl ? (
-                <PDFImage src={emailIconUrl} style={styles.contactIcon} />
-              ) : (
-                <Text
-                  style={{
-                    fontFamily: "Montserrat",
-                    fontSize: 14,
-                    marginRight: 5,
-                  }}
-                >
-                  ✉
-                </Text>
-              )}
-              <Text style={styles.contactText}>support@mendingmind.org</Text>
-            </View>
-            <View style={styles.contactItem}>
-              {/* Website icon */}
-              {webIconUrl ? (
-                <PDFImage src={webIconUrl} style={styles.contactIcon} />
-              ) : (
-                <Text
-                  style={{
-                    fontFamily: "Montserrat",
-                    fontSize: 14,
-                    marginRight: 5,
-                  }}
-                >
-                  🌐
-                </Text>
-              )}
-              <Text style={styles.contactText}>mendingmind.org</Text>
-            </View>
-          </View>
 
-          {/* Horizontal line */}
-          <View style={styles.horizontalLine} />
+            {/* Horizontal line */}
+            <View style={styles.horizontalLine} />
 
-          {/* Address with location icon */}
-          <View style={styles.addressContainer}>
-            <View style={styles.contactItem}>
-              {/* Location icon */}
-              {locationIconUrl ? (
-                <PDFImage src={locationIconUrl} style={styles.contactIcon} />
-              ) : (
-                <Text
-                  style={{
-                    fontFamily: "Montserrat",
-                    fontSize: 14,
-                    marginRight: 5,
-                  }}
-                >
-                  📍
-                </Text>
-              )}
-              <Text style={styles.addressText}>
-                Shingar vastu building, Gr floor, Flat no 001, JN Road, Mulund
-                west, Mumbai 400080
+            {/* Mental Health Evaluation title */}
+            <View style={styles.evaluationTitleContainer}>
+              <Text style={styles.evaluationTitle}>
+                Mental Health Evaluation - Round 2
               </Text>
             </View>
-          </View>
 
-          {/* Horizontal line */}
-          <View style={styles.horizontalLine} />
-
-          {/* Mental Health Evaluation title */}
-          <View style={styles.evaluationTitleContainer}>
-            <Text style={styles.evaluationTitle}>
-              Mental Health Evaluation - Second Assessment
-            </Text>
-          </View>
-
-          {/* User info box */}
-          <View style={styles.userInfoBox}>
-            <View style={styles.userInfoLeft}>
-              <View style={styles.userInfoItem}>
-                <Text style={styles.userInfoLabel}>Name: </Text>
-                <Text style={styles.userInfoValue}>
-                  {userInfo?.name || "N/A"}
-                </Text>
+            {/* User info box */}
+            <View style={styles.userInfoBox}>
+              <View style={styles.userInfoLeft}>
+                <View style={styles.userInfoItem}>
+                  <Text style={styles.userInfoLabel}>Name: </Text>
+                  <Text style={styles.userInfoValue}>
+                    {userInfo?.name || "N/A"}
+                  </Text>
+                </View>
+                <View style={styles.userInfoItem}>
+                  <Text style={styles.userInfoLabel}>Age: </Text>
+                  <Text style={styles.userInfoValue}>
+                    {userInfo?.age || "N/A"}
+                  </Text>
+                </View>
+                <View style={styles.userInfoItem}>
+                  <Text style={styles.userInfoLabel}>Sex: </Text>
+                  <Text style={styles.userInfoValue}>
+                    {userInfo?.gender || "N/A"}
+                  </Text>
+                </View>
               </View>
-              <View style={styles.userInfoItem}>
-                <Text style={styles.userInfoLabel}>Age: </Text>
-                <Text style={styles.userInfoValue}>
-                  {userInfo?.age || "N/A"}
-                </Text>
-              </View>
-              <View style={styles.userInfoItem}>
-                <Text style={styles.userInfoLabel}>Sex: </Text>
-                <Text style={styles.userInfoValue}>
-                  {userInfo?.gender || "N/A"}
-                </Text>
-              </View>
-            </View>
-            <View style={styles.userInfoRight}>
-              <View style={styles.userInfoItem}>
-                <Text style={styles.userInfoLabel}>ID: </Text>
-                <Text style={styles.userInfoValue}>{quizId}</Text>
-              </View>
-              <View style={styles.userInfoItem}>
-                <Text style={styles.userInfoValue}>{formattedDate}</Text>
-              </View>
-              <View style={styles.userInfoItem}>
-                <Text style={styles.userInfoLabel}>Report generated on: </Text>
+              <View style={styles.userInfoRight}>
+                <View style={styles.userInfoItem}>
+                  <Text style={styles.userInfoLabel}>ID: </Text>
+                  <Text style={styles.userInfoValue}>{quizId}</Text>
+                </View>
+                <View style={styles.userInfoItem}>
+                  <Text style={styles.userInfoValue}>{formattedDate}</Text>
+                </View>
+                <View style={styles.userInfoItem}>
+                  <Text style={styles.userInfoLabel}>
+                    Report generated on:{" "}
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
 
-          {/* Results introduction */}
-          <View style={styles.resultsIntroContainer}>
-            <Text
-              style={[
-                styles.resultsIntroText,
-                {
-                  marginVertical: 40,
-                },
-              ]}
-            >
-              Based on your second assessment, your results are as follows:
-            </Text>
-          </View>
+            {/* Results introduction */}
+            <View style={styles.resultsIntroContainer}>
+              <Text
+                style={[
+                  styles.resultsIntroText,
+                  {
+                    marginBottom: 70,
+                  },
+                ]}
+              >
+                Based on your second assessment, your results are as follows:
+              </Text>
+            </View>
 
-          {/* BFI-10 Personality Test Section - Second Attempt */}
-          <View style={styles.testSectionContainer}>
-            <Text style={styles.testSectionTitle}>
-              PERSONALITY TRAITS - Second Assessment
-            </Text>
+            {/* BFI-10 Personality Test Section - Second Attempt */}
+            <View style={styles.testSectionContainer}>
+              <Text style={styles.testSectionTitle}>
+                PERSONALITY TRAITS - Second Assessment
+              </Text>
 
-            {/* Personality traits with visual scales and descriptions */}
-            <View style={styles.personalityDescriptionContainer}>
-              <View style={{ marginVertical: 20 }}>
+              {/* Personality traits with visual scales and descriptions */}
+              <View style={styles.personalityDescriptionContainer}>
+                <View style={{ marginVertical: 20 }}>
+                  <PersonalityTraitDisplay
+                    trait="Extraversion"
+                    score={reportScores2?.personality?.extraversion || 7}
+                  />
+                </View>
+                {/* Agreeableness */}
                 <PersonalityTraitDisplay
-                  trait="Extraversion"
-                  score={reportScores2?.personality?.extraversion || 7}
+                  trait="Agreeableness"
+                  score={reportScores2?.personality?.agreeableness || 8}
+                />
+
+                {/* Conscientiousness */}
+                <PersonalityTraitDisplay
+                  trait="Conscientiousness"
+                  score={reportScores2?.personality?.conscientiousness || 6}
+                />
+
+                {/* Neuroticism */}
+                <PersonalityTraitDisplay
+                  trait="Neuroticism"
+                  score={reportScores2?.personality?.neuroticism || 4}
+                />
+
+                {/* Openness */}
+                <PersonalityTraitDisplay
+                  trait="Openness"
+                  score={reportScores2?.personality?.openness || 9}
                 />
               </View>
-              {/* Agreeableness */}
-              <PersonalityTraitDisplay
-                trait="Agreeableness"
-                score={reportScores2?.personality?.agreeableness || 8}
-              />
+            </View>
 
-              {/* Conscientiousness */}
-              <PersonalityTraitDisplay
-                trait="Conscientiousness"
-                score={reportScores2?.personality?.conscientiousness || 6}
-              />
+            {/* PSS Stress Assessment Section - Second Attempt */}
+            <View style={styles.testSectionContainer}>
+              <Text style={styles.testSectionTitle}>
+                Perceived Stress Scale (PSS) - Second Assessment
+              </Text>
 
-              {/* Neuroticism */}
-              <PersonalityTraitDisplay
-                trait="Neuroticism"
-                score={reportScores2?.personality?.neuroticism || 4}
-              />
-
-              {/* Openness */}
-              <PersonalityTraitDisplay
-                trait="Openness"
-                score={reportScores2?.personality?.openness || 9}
+              {/* Stress radial bar chart visualization */}
+              <StressScaleDisplay
+                score={reportScores2?.stress || 14}
+                chartImage={chartImages2?.stressChart}
               />
             </View>
-          </View>
 
-          {/* PSS Stress Assessment Section - Second Attempt */}
-          <View style={styles.testSectionContainer}>
-            <Text style={styles.testSectionTitle}>
-              Perceived Stress Scale (PSS) - Second Assessment
-            </Text>
+            {/* Decision Style Assessment Section - Second Attempt */}
+            <View style={styles.testSectionContainer}>
+              <Text style={styles.testSectionTitle}>
+                Decision Making Style Assessment - Second Assessment
+              </Text>
 
-            {/* Stress radial bar chart visualization */}
-            <StressScaleDisplay
-              score={reportScores2?.stress || 14}
-              chartImage={chartImages2?.stressChart}
-            />
-          </View>
+              {/* Decision style visualization with chart */}
+              <DecisionStyleDisplay
+                rationalScore={reportScores2?.decisionStyle?.rational || 18}
+                intuitiveScore={reportScores2?.decisionStyle?.intuitive || 22}
+                chartImage={chartImages2?.decisionChart}
+              />
+            </View>
 
-          {/* Decision Style Assessment Section - Second Attempt */}
-          <View style={styles.testSectionContainer}>
-            <Text style={styles.testSectionTitle}>
-              Decision Making Style Assessment - Second Assessment
-            </Text>
+            {/* Resilience Scale Section - Second Attempt */}
+            <View style={styles.testSectionContainer}>
+              <Text style={styles.testSectionTitle}>
+                Resilience Assessment - Second Assessment
+              </Text>
 
-            {/* Decision style visualization with chart */}
-            <DecisionStyleDisplay
-              rationalScore={reportScores2?.decisionStyle?.rational || 18}
-              intuitiveScore={reportScores2?.decisionStyle?.intuitive || 22}
-              chartImage={chartImages2?.decisionChart}
-            />
-          </View>
+              {/* Resilience scale visualization with horizontal bar */}
+              <ResilienceScaleDisplay
+                score={reportScores2?.resilience || 65}
+                chartImage={chartImages2?.resilienceChart}
+              />
+            </View>
 
-          {/* Resilience Scale Section - Second Attempt */}
-          <View style={styles.testSectionContainer}>
-            <Text style={styles.testSectionTitle}>
-              Resilience Assessment - Second Assessment
-            </Text>
+            {/* Workplace Situational Judgement Scale (WSJS) Section - Second Attempt */}
+            <View style={styles.testSectionContainer}>
+              <Text style={styles.testSectionTitle}>
+                Workplace Situational Judgement Scale (WSJS) - Second Assessment
+              </Text>
 
-            {/* Resilience scale visualization with horizontal bar */}
-            <ResilienceScaleDisplay
-              score={reportScores2?.resilience || 65}
-              chartImage={chartImages2?.resilienceChart}
-            />
-          </View>
-
-          {/* Taxpayer Situational Judgement Test Section - Second Attempt */}
-          <View style={styles.testSectionContainer}>
-            <Text style={styles.testSectionTitle}>
-              Taxpayer Situational Judgement Test - Second Assessment
-            </Text>
-
-            {/* Taxpayer judgement test results without charts */}
-            <TaxpayerJudgementDisplay
-              score={reportScores2?.taxpayerJudgement || 4}
-            />
-          </View>
-        </Page>
+              {/* Taxpayer judgement test results without charts */}
+              <TaxpayerJudgementDisplay
+                score={reportScores2?.taxpayerJudgement || 4}
+              />
+            </View>
+          </Page>
+        </>
       )}
 
       <Page
